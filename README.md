@@ -15,7 +15,6 @@ The frontend is built with React and provides a fast, modern, and responsive UI 
 ```bash
 npm install
 npm start
-npm run dev
 ```
 
 ## Development
