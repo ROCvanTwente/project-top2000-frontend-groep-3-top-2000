@@ -6,15 +6,16 @@ The frontend is built with React and provides a fast, modern, and responsive UI 
 
 ## Features
 
-* React-based user interface
-* Responsive layout for desktop and mobile
-* Clean and simple design for browsing the Top 2000 list
+- React-based user interface
+- Responsive layout for desktop and mobile
+- Clean and simple design for browsing the Top 2000 list
 
 ## Installation
 
 ```bash
 npm install
 npm start
+npm run dev
 ```
 
 ## Development
