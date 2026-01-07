@@ -1,0 +1,21 @@
+/* Base styles (mobile-first) */
+.container {
+  padding: 16px;
+  font-size: 1rem;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .container {
+    padding: 24px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container {
+    padding: 32px;
+    font-size: 1.2rem;
+  }
+}
