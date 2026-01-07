@@ -25,7 +25,7 @@ All development occurs within the `/src` directory. Contributions and improvemen
 
 - all pages in /src/pages
 - all small componenents in /src/components
-- all assets, like images, videos, jsonfiles etc componenents in /src/assets
+- all assets, like images, videos, jsonfiles etc componenents in /public
 - all logic, compute, api fetches should be in /src/services/
 
 

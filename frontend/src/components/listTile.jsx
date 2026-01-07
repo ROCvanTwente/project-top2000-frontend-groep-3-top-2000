@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import graphIcon from '../assets/icons/graph.png'
+import graphIcon from '/icons/graph.png'
 
 const useIsMobile = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)

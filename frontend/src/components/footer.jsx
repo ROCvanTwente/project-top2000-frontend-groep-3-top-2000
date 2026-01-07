@@ -1,7 +1,9 @@
 import React from 'react'
-
-export const footer = () => {
+export const Footer = () => {
     return (
-        <div>footer</div>
+
+        <footer class="container-fluid">
+            <img src="/top-2000-logo-empty.png" alt="top2000 logo" class="w-100" />
+        </footer>
     )
 }

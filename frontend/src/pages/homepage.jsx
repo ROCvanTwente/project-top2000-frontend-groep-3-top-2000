@@ -1,6 +1,7 @@
 import React from 'react'
 import NavBar from '../components/navBar'
 import { ListTile } from '../components/listTile'
+import { Footer } from '../components/footer'
 
 
 
@@ -41,6 +42,7 @@ const Homepage = () => {
                     trend={0}
                 />
             </main>
+            <Footer />
         </div>
     )
 }
