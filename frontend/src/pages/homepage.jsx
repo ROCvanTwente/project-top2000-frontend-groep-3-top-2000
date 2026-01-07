@@ -9,8 +9,6 @@ const carouselItems = [
         image: '/example.png',
         href: '/',
         alt: 'Description',
-        caption: 'Title',
-        description: 'Optional description'
     },
     {
         image: 'example.png',
