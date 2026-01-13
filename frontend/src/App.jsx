@@ -6,7 +6,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
-      <Route path="/Song.jsx" element={<Song />} />
+      <Route path="/Song" element={<Song />} />
     </Routes>
   );
 }
