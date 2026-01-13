@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar"; // deploy 
 import { Footer } from "../components/footer";
-import "./Song.css";
+import "./song.css";
 
 const Song = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
