@@ -1,0 +1,269 @@
+/* Base styles (mobile-first) */
+.song-page {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.song-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Desktop content hidden on mobile */
+.song-content-desktop {
+  display: none;
+}
+
+/* Mobile Layout */
+.song-content-mobile {
+  display: block;
+}
+
+.song-cover-mobile {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 16px;
+  background-color: #d3d3d3;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.song-cover-mobile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.song-info-mobile {
+  background-color: #fff;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.song-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+  color: #000;
+}
+
+.song-meta {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+.song-weeks-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.year-list-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.year-row-mobile {
+  background-color: #e8e8e8;
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.year-label {
+  font-weight: bold;
+  font-size: 1rem;
+  min-width: 50px;
+}
+
+.year-weeks {
+  font-size: 0.9rem;
+  color: #666;
+  min-width: 30px;
+}
+
+.year-position {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  border: 2px solid;
+  background-color: #fff;
+}
+
+.year-position.trend-up {
+  border-color: #90ee90;
+}
+
+.year-position.trend-down {
+  border-color: #ff6b6b;
+}
+
+.position-number {
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.trend-icon {
+  font-size: 0.8rem;
+}
+
+.trend-up .trend-icon {
+  color: #28a745;
+}
+
+.trend-down .trend-icon {
+  color: #dc3545;
+}
+
+.youtube-btn-mobile {
+  width: 100%;
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.youtube-icon {
+  font-size: 1.2rem;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .song-page {
+    padding: 24px;
+  }
+
+  .song-cover-mobile {
+    max-width: 350px;
+  }
+
+  .song-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .song-page {
+    padding: 32px;
+  }
+
+  /* Hide mobile layout */
+  .song-content-mobile {
+    display: none;
+  }
+
+  /* Show desktop layout */
+  .song-content-desktop {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+  }
+
+  .song-left {
+    flex-shrink: 0;
+    width: 280px;
+  }
+
+  .song-cover {
+    width: 280px;
+    height: 280px;
+    background-color: #d3d3d3;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .song-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .song-info {
+    margin-bottom: 16px;
+  }
+
+  .song-title {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  .song-meta {
+    font-size: 1rem;
+  }
+
+  .youtube-btn {
+    width: 100%;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .song-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .year-row {
+    background-color: #e8e8e8;
+    padding: 16px 24px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .year-row .year-label {
+    font-weight: bold;
+    font-size: 1.1rem;
+    min-width: 60px;
+  }
+
+  .year-row .year-weeks {
+    font-size: 1rem;
+    color: #666;
+    min-width: 40px;
+  }
+
+  .year-row .year-position {
+    margin-left: auto;
+  }
+}
