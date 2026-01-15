@@ -4,14 +4,15 @@ import Song from "./pages/song.jsx";
 import Login from "./pages/login.jsx";
 import Account from "./pages/account.jsx";
 import Register from "./pages/register.jsx";
+import Songlist from "./pages/Songlist.jsx";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
       <Route path="/Song" element={<Song />} />
-      <Route path="/Songlist" element={<SongList />} />
-      <Route path="/Accountinfo" element={<Accountinfo />} />
+      <Route path="/Songlist" element={<Songlist />} />
+      <Route path="/Accountinfo" element={<Account />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/account" element={<Account />} />
