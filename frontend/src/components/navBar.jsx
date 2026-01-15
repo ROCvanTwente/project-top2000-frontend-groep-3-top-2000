@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import './navBar.css'
 
 export default function NavBar({ onMenuToggle }) {
@@ -13,6 +14,31 @@ export default function NavBar({ onMenuToggle }) {
         e.preventDefault()
         console.log('Search for:', searchQuery)
     }
+
+    const [accountPath, setAccountPath] = useState('/login')
+    const [accountEmail, setAccountEmail] = useState(null)
+
+    useEffect(() => {
+        const check = () => {
+            const token = typeof window !== 'undefined' && localStorage.getItem('accessToken')
+            const email = typeof window !== 'undefined' && localStorage.getItem('userEmail')
+            if (token && email) {
+                setAccountPath('/account')
+                setAccountEmail(email)
+            } else {
+                setAccountPath('/login')
+                setAccountEmail(null)
+            }
+        }
+
+        check()
+        // update if other tabs change auth
+        const onStorage = (e) => {
+            if (e.key === 'accessToken' || e.key === 'userEmail' || e.key === null) check()
+        }
+        window.addEventListener('storage', onStorage)
+        return () => window.removeEventListener('storage', onStorage)
+    }, [])
 
     return (
         <nav className="navbar bg-body-tertiary sticky-top">
@@ -61,6 +87,14 @@ export default function NavBar({ onMenuToggle }) {
                         <path d="m21 21-4.35-4.35"></path>
                     </svg>
                 </button>
+
+                {/* Account icon on the far right */}
+                <Link to={accountPath} className="btn btn-link account-btn" aria-label="Account" title={accountEmail ? `Signed in as ${accountEmail}` : 'Account'}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </Link>
             </div>
         </nav>
     )
