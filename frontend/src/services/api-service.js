@@ -1,14 +1,30 @@
 class ApiService {
     static async getTop2000() {
-        try {
-            const response = await fetch("https://api.example.com/top2000");
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+        // Mock data since the API is placeholder
+        return [
+            {
+                position: 1,
+                imagePath: "/some/cover.jpg",
+                songName: "Bohemian Rhapsody",
+                artistName: "Queen",
+                trend: 12
+            },
+            {
+                position: 2,
+                imagePath: "/some/cover.jpg",
+                songName: "Stairway to Heaven",
+                artistName: "Led Zeppelin",
+                trend: -5
+            },
+            {
+                position: 3,
+                imagePath: "/some/cover.jpg",
+                songName: "Hotel California",
+                artistName: "Eagles",
+                trend: 0
             }
-            return await response.json();
-        } catch (error) {
-            console.error("Failed to fetch top 2000 data:", error);
-            throw error;
-        }
+        ];
     }
 }
+
+export default ApiService;
