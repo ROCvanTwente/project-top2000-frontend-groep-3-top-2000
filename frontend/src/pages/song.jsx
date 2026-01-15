@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NavBar from "../components/navBar";
-import { Sidebar } from "../components/sidebar";
+import { Sidebar } from "../components/sidebar"; // deploy 
 import { Footer } from "../components/footer";
 import "./song.css";
 
