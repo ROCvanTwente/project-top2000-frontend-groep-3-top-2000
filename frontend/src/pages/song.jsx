@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar"; // deploy 
 import { Footer } from "../components/footer";
-import "./Song.css";
+import "./song.css";
 
 const Song = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -21,6 +21,7 @@ const Song = () => {
     artist: "ARTIST NAME",
     year: 1990,
     image: "/example.png",
+    spotifyUrl: "https://open.spotify.com/embed/track/4uLU6hMCjMI75M1A2tKUQC", // TODO: Replace with API data
     years: [
       { year: 2025, weeks: 1, position: 1, trend: null },
       { year: 2024, weeks: 24, position: 12, trend: "up" },
@@ -65,6 +66,16 @@ const Song = () => {
                 <button className="youtube-btn">
                   <span className="youtube-icon">▶</span> Youtube
                 </button>
+                <iframe
+                  src={songData.spotifyUrl}
+                  width="600"
+                  height="380"
+                  frameBorder="0"
+                  allowTransparency="true"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  title="Spotify Player"
+                ></iframe>
               </div>
 
               {/* Right side - Year statistics */}
@@ -134,6 +145,16 @@ const Song = () => {
               <button className="youtube-btn-mobile">
                 <span className="youtube-icon">▶</span> Youtube
               </button>
+              <iframe
+                src={songData.spotifyUrl}
+                width="300"
+                height="380"
+                frameBorder="0"
+                allowTransparency="true"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+                title="Spotify Player"
+              ></iframe>
             </div>
           </div>
         </div>
