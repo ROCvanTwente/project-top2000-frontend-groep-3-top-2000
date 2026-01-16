@@ -1,0 +1,121 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/auth.css';
+import logo from '../assets/top-2000-logo.png';
+
+export default function Register() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirm, setConfirm] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    let apiBase = '';
+    try { apiBase = import.meta?.env?.VITE_API_URL || ''; } catch (e) { apiBase = ''; }
+    const apiPrefix = apiBase || '';
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (password !== confirm) {
+            setError('Passwords do not match');
+            return;
+        }
+        setLoading(true);
+
+        try {
+            const base = apiPrefix ? apiPrefix.replace(/\/$/, '') : '';
+            const url = (base || '') + '/api/auth/register';
+            console.log('POST', url, { email });
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const raw = await res.text();
+            console.log('Register response raw:', res.status, raw);
+
+            if (!res.ok) {
+                let body = null;
+                try { body = JSON.parse(raw); } catch (e) { body = null; }
+                const serverMsg = body?.message || body?.error || raw || `Register failed (${res.status})`;
+                setError(serverMsg);
+                setLoading(false);
+                return;
+            }
+
+            let data = {};
+            try { data = JSON.parse(raw); } catch (e) { data = {}; }
+
+            // Save tokens and email
+            if (data.token) localStorage.setItem('accessToken', data.token);
+            if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
+            if (data.expiresAt) localStorage.setItem('tokenExpiresAt', new Date(data.expiresAt).toISOString());
+            try { localStorage.setItem('userEmail', email); } catch (e) { }
+
+            // Redirect to account page
+            navigate('/account');
+        } catch (err) {
+            console.error('Register error', err);
+            setError(err?.message || 'Network error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="auth-container">
+            <div className="auth-logo">
+                <img src={logo} alt="logo" style={{ height: 140 }} />
+            </div>
+            <div className="auth-title">Registreer</div>
+
+            <div className="auth-tabs">
+                <a href="/login" className="auth-tab">Log in</a>
+                <div className="auth-tab active">Registreer</div>
+            </div>
+
+            {error && (
+                <div className="auth-error">{error}</div>
+            )}
+
+            <form onSubmit={handleSubmit} className="auth-form">
+                <input
+                    className="auth-input"
+                    type="email"
+                    placeholder="E-mail"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+
+                <input
+                    className="auth-input"
+                    type="password"
+                    placeholder="Wachtwoord"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+
+                <input
+                    className="auth-input"
+                    type="password"
+                    placeholder="Bevestig wachtwoord"
+                    value={confirm}
+                    onChange={(e) => setConfirm(e.target.value)}
+                    required
+                />
+
+                <button className="auth-button" type="submit" disabled={loading}>
+                    {loading ? 'Registering...' : 'Registreer'}
+                </button>
+            </form>
+
+            <a className="auth-link" href="/login">Al een account? Log in</a>
+        </div>
+    );
+}
