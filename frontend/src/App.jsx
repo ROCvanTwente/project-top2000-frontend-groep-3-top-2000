@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Homepage from "./pages/homepage.jsx";
 import Song from "./pages/song.jsx";
+import Artist from "./pages/artist.jsx";
 import Login from "./pages/login.jsx";
 import Account from "./pages/account.jsx";
 import Register from "./pages/register.jsx";
@@ -11,6 +12,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Homepage />} />
       <Route path="/Song" element={<Song />} />
+      <Route path="/Artist" element={<Artist />} />
       <Route path="/Songlist" element={<Songlist />} />
       <Route path="/Accountinfo" element={<Account />} />
       <Route path="/login" element={<Login />} />
