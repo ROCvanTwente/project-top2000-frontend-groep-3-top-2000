@@ -11,13 +11,14 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
-      <Route path="/Song" element={<Song />} />
-      <Route path="/Artist" element={<Artist />} />
-      <Route path="/Songlist" element={<Songlist />} />
-      <Route path="/Accountinfo" element={<Account />} />
+      <Route path="/song" element={<Song />} />
+      <Route path="/artist" element={<Artist />} />
+      <Route path="/songlist" element={<Songlist />} />
+      <Route path="/accountinfo" element={<Account />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/faq" element={<FAQ />} />
     </Routes>
   );
 }
