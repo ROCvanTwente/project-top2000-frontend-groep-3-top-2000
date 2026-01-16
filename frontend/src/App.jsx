@@ -11,7 +11,8 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Homepage />} />
       <Route path="/Song" element={<Song />} />
-      <Route path="/Songlist" element={<Songlist />} />
+      <Route path="/Artist" element={<Artist />} />
+      <Route path="/songlist" element={<Songlist />} />
       <Route path="/Accountinfo" element={<Account />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
