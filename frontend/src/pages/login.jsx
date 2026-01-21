@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import '../styles/auth.css';
 import logo from '../assets/top-2000-logo.png';
@@ -13,7 +14,7 @@ export default function Login() {
     // Prefer using relative `/api` so the Vite proxy (vite.config.js) can forward calls to the backend.
     // If you need to target a remote backend directly, set VITE_API_URL in `.env`.
     let apiBase = '';
-    try { apiBase = import.meta?.env?.VITE_API_URL || ''; } catch (e) { apiBase = ''; }
+    try { apiBase = import.meta?.env?.VITE_API_URL || ''; } catch (e) { apiBase = '';  }
 
     const apiPrefix = apiBase || '';
 
@@ -40,7 +41,7 @@ export default function Login() {
 
             if (!res.ok) {
                 let body = null;
-                try { body = JSON.parse(raw); } catch (e) { body = null; }
+                try { body = JSON.parse(raw); } catch (e) { body = e; }
                 const serverMsg = body?.message || body?.error || raw || `Login failed (${res.status})`;
                 setError(serverMsg);
                 setLoading(false);
@@ -48,7 +49,7 @@ export default function Login() {
             }
 
             let data = {};
-            try { data = JSON.parse(raw); } catch (e) { data = {}; }
+            try { data = JSON.parse(raw); } catch (e) { data = {e}; }
 
             if (data.token) localStorage.setItem('accessToken', data.token);
             if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
