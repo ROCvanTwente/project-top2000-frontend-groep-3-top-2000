@@ -15,8 +15,8 @@ function FAQ() {
                 <h1 className="faq-title">Frequently Asked Questions</h1>
                  {/* FAQ dropdown */}
                 <Faq
-                question="?gfd" 
-                answer="bniwqmi"
+                question="What is the top 2000?" 
+                answer="the top 2000 is a music event which ranks the 2000 most popular songs as voted by the public."
                 />
                 <Faq 
                 question="mdkwd?" 

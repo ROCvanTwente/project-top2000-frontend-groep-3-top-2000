@@ -21,10 +21,19 @@
 
 .faq-item {
   background-color: #ffffff;
-  border-color : #00000090;
+  border-right-color: #00000090;
+  border-bottom-color : #00000090;
+  border-left-color:#ababab90;
+  border-top-color:#ababab90;
   border-bottom-style: solid ;
   border-right-style: solid;
-  border-width: 4px;
+  border-top-style: solid;
+  border-left-style: solid;
+  border-top-width: 1px;
+  border-left-width: 1px;
+  border-bottom-width: 4px;
+  border-right-width: 4px;
+
   padding: 12px 16px;
   border-radius: 8px;
   margin-bottom: 12px;
