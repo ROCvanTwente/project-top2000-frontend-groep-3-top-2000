@@ -1,0 +1,159 @@
+.account-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.account-main.container {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 16px 48px;
+  flex: 1 0 auto;
+}
+
+.account-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 2px solid #e5e5e5;
+}
+
+.avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #333;
+}
+
+.welcome {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.welcome .muted {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-top: 6px;
+}
+
+.account-card {
+  margin-top: 22px;
+  background: #fff;
+  padding: 22px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.account-card h2 {
+  margin-top: 0;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.advanced {
+  margin-top: 20px;
+}
+
+.info-row .label {
+  width: 140px;
+  font-weight: 700;
+}
+
+.info-row .value {
+  flex: 1 0 auto;
+}
+
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #333;
+}
+
+.icon-btn svg {
+  display: block;
+  color: #555;
+}
+
+.edit-inline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.edit-input {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn-save {
+  background: #2b8a3e;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.link-danger {
+  background: transparent;
+  border: none;
+  color: #d32f2f;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.link-danger svg {
+  vertical-align: middle;
+  color: #d32f2f;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.btn-logout {
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .info-row .label {
+    width: auto;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+}
