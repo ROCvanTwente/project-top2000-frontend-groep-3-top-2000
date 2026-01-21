@@ -14,11 +14,18 @@ function FAQ() {
             <main className="faq-content">
                 <h1 className="faq-title">Frequently Asked Questions</h1>
                  {/* FAQ dropdown */}
-                <Faq />
-                <Faq />
+                <Faq
+                question="?gfd" 
+                answer="bniwqmi"
+                />
+                <Faq 
+                question="mdkwd?" 
+                answer="mdkvmdk"
+                />
                 <Faq />
                 <Faq />
             </main>
+            <Footer />
         </div>
     );                    
 }

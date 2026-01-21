@@ -31,6 +31,9 @@ export const Sidebar = ({ isOpen, onClose }) => {
               <a href="#popular">Popular</a>
             </li>
             <li>
+              <a href="/FAQ">FAQ</a>
+            </li>
+            <li>
               <a href="#categories">Categories</a>
             </li>
             <li>
