@@ -1,17 +1,25 @@
-import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Homepage from "./pages/homepage.jsx";
+import Song from "./pages/song.jsx";
+import Artist from "./pages/artist.jsx";
+import Login from "./pages/login.jsx";
+import Account from "./pages/account.jsx";
+import Register from "./pages/register.jsx";
+import Songlist from "./pages/Songlist.jsx";
+import FAQ from "./pages/FAQ.jsx";
+
 export default function App() {
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-100 text-center p-4">
-      <h1 className="text-4xl font-bold mb-4">Website in Opbouw👷🏗️🔨</h1>
-      <img
-        src="/top2000logo.png"
-        alt="Top2000 Logo"
-        style={{ width: "200px", height: "auto", marginBottom: "1rem" }}
-      />
-      <p className="text-lg max-w-md">
-        De Top2000-site wordt op dit moment gebouwd.
-      </p>
-      <p className="text-md mt-4 text-gray-600">🚧Kom later gerust terug!🚧</p>
-    </div>
+    <Routes>
+      <Route path="/" element={<Homepage />} />
+      <Route path="/Song" element={<Song />} />
+      <Route path="/Artist" element={<Artist />} />
+      <Route path="/Songlist" element={<Songlist />} />
+      <Route path="/Accountinfo" element={<Account />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/account" element={<Account />} />
+      <Route path="/FAQ" element={<FAQ />} />
+    </Routes>
   );
 }
