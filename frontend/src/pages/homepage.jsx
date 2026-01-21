@@ -45,13 +45,15 @@ const Homepage = () => {
             trend={12}
           />
         </Link>
-        <ListTile
-          position={2}
-          imagePath="/some/cover.jpg"
-          songName="Song name"
-          artistName="Artist"
-          trend={-12}
-        />
+        <Link to="/artist">
+          <ListTile
+            position={2}
+            imagePath="/some/cover.jpg"
+            songName="Song name"
+            artistName="Artist"
+            trend={-12}
+          />
+        </Link>
         <ListTile
           position={3}
           imagePath="/some/cover.jpg"
