@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { ListTile } from "../components/listTile";
@@ -7,16 +7,7 @@ import "./artist.css";
 
 const Artist = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const handleMenuToggle = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
-  const handleCloseSidebar = () => {
-    setSidebarOpen(false);
-  };
-
-  const artistData = {
+  const [artistData, setArtistData] = useState({
     name: "ARTIST NAME",
     image: "/example.png",
     website: "https://artistwebsite.com",
@@ -25,6 +16,55 @@ const Artist = () => {
     amountOfSongs: 4,
     averagePosition: 722,
     highestPosition: 12,
+    songs: [],
+  });
+
+  useEffect(() => {
+    const fetchArtistData = async () => {
+      try {
+        const responseArtist = await fetch("http://top2000api.runasp.net/api/Artist/4");
+        const responsesongs = await fetch("http://top2000api.runasp.net/api/Top2000/by-song/1");
+        const artistData = await responseArtist.json();
+        const songsData = await responsesongs.json();
+
+        const songsWithDetails = await Promise.all(
+        (artistData.songs || []).map(async (song) => {
+          const songRes = await fetch(
+            `http://top2000api.runasp.net/api/Top2000/by-song/${song.songId}`
+          );
+          const songData = await songRes.json();
+          return {
+            ...song,
+            ...songData,
+          };
+        })
+      );
+
+      console.log(songsWithDetails);
+
+        setArtistData(prev => ({
+          ...prev,
+          name: artistData.name,
+          biography: artistData.biography,  
+          photo: artistData.photo || "/example.png",
+          songs: artistData.songs || [],
+          trend: songsData?.trend || 0,
+          amountOfSongs: artistData.songs.length || 0,
+        }));
+      } catch (error) {
+        console.error("Error fetching artist data:", error);
+      }
+    };
+
+    fetchArtistData();
+  }, []);
+
+  const handleMenuToggle = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
   };
 
   return (
@@ -37,11 +77,11 @@ const Artist = () => {
           <div className="container-left col-6">
             <div className="image-container">
               <img
-                src={artistData.image}
+                src={artistData.photo}
                 alt={artistData.name}
                 className="image-artist"
               ></img>
-              <p className="artist-name">artist name</p>
+              <p className="artist-name">{artistData.name}</p>
             </div>
             <div className="links-container">
               <a href={artistData.website} className="link">
@@ -55,7 +95,7 @@ const Artist = () => {
           <div className="container-right col-6">
             <div className="artist-bio">
               <h2>Biografie</h2>
-              <p>{artistData.bio}</p>
+              <p>{artistData.biography}</p>
             </div>
             <div className="artist-positions">
               <p>Aantal liedjes dit jaar: {artistData.amountOfSongs}</p>
@@ -65,27 +105,16 @@ const Artist = () => {
             <div className="artist-song-list">
               <h2>Top 2000 nummers</h2>
               <div className="songs-listtiles">
-                <ListTile
-                  position={1}
-                  imagePath="/example.png"
-                  songName="Song name"
-                  artistName="Artist"
-                  trend={12}
-                />
-                <ListTile
-                  position={2}
-                  imagePath="/some/cover.jpg"
-                  songName="Song name"
-                  artistName="Artist"
-                  trend={-12}
-                />
-                <ListTile
-                  position={3}
-                  imagePath="/some/cover.jpg"
-                  songName="Song name"
-                  artistName="Artist"
-                  trend={0}
-                />
+                {artistData.songs?.map((song, index) => (
+                  <ListTile
+                    key={song.songId}
+                    position={index + 1}
+                    imagePath={song.imgUrl || "/example.png"}
+                    songName={song.titel}
+                    artistName={song.artistName}
+                    trend={0}
+                  />
+                ))}
               </div>
             </div>
           </div>
