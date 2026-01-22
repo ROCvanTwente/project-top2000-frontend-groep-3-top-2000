@@ -14,11 +14,18 @@ function FAQ() {
             <main className="faq-content">
                 <h1 className="faq-title">Frequently Asked Questions</h1>
                  {/* FAQ dropdown */}
-                <Faq />
-                <Faq />
+                <Faq
+                question="What is the top 2000?" 
+                answer="the top 2000 is a music event which ranks the 2000 most popular songs as voted by the public."
+                />
+                <Faq 
+                question="mdkwd?" 
+                answer="mdkvmdk"
+                />
                 <Faq />
                 <Faq />
             </main>
+            <Footer />
         </div>
     );                    
 }
