@@ -1,6 +1,20 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
 .auth-container {
   max-width: 420px;
-  margin: 40px auto;
+  width: 100%;
   padding: 20px 28px;
   box-sizing: border-box;
   text-align: center;
