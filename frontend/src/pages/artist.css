@@ -1,0 +1,56 @@
+.image-container {
+  position: relative;
+  display: inline-block; /* keeps overlay confined to image */
+  overflow: hidden;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 50px;
+}
+
+.image-artist {
+  min-width: 600px;
+  min-height: 350px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+.artist-name {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  z-index: 10;
+  font-size: 1rem;
+}
+
+.links-container {
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.link {
+  margin-bottom: 10px;
+  background-color: lightgray;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.artist-bio {
+    margin-top: 20px;
+}
+
+.artist-positions p {
+    font-weight: bold;
+}
+
+.songs-listtiles {
+    margin-top: 30px;
+}
