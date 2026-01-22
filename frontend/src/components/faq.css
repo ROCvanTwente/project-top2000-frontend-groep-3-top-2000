@@ -56,6 +56,10 @@
   font-weight: 600;
 }
 
+.faq-question * {
+  pointer-events: none;
+}
+
 /* Arrow */
 
 .faq-arrow {
