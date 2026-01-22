@@ -37,9 +37,14 @@ export default function Account() {
       }
 
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/account/profile`, {
+        const apiUrl = `${import.meta.env.VITE_API_URL}/api/account/profile`;
+        console.log('Fetching profile from:', apiUrl);
+        
+        const res = await fetch(apiUrl, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
+
+        console.log('Profile response status:', res.status);
 
         if (res.status === 401) {
           // not authorized - redirect to login
@@ -47,17 +52,25 @@ export default function Account() {
           return;
         }
 
-        if (!res.ok) throw new Error('Failed to load profile');
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('Profile error:', res.status, errorText);
+          throw new Error(`Failed to load profile: ${res.status}`);
+        }
 
         const data = await res.json();
         setEmail(data.email || '');
         // keep local copy too
         try { localStorage.setItem('userEmail', data.email || ''); } catch (e) {}
       } catch (err) {
+        console.error('Profile fetch error:', err);
         // on error fallback to localStorage email
         const e = typeof window !== 'undefined' && localStorage.getItem('userEmail');
         setEmail(e || '');
-        setError('Kon profiel niet laden');
+        // Only show error if we don't have a fallback email
+        if (!e) {
+          setError('Kon profiel niet laden: ' + (err.message || 'Netwerkfout'));
+        }
       }
     };
 
@@ -77,6 +90,8 @@ export default function Account() {
     try {
       const payload = { currentPassword: currentPasswordForChange, newPassword };
       const apiUrl = `${import.meta.env.VITE_API_URL}/api/account/password`;
+      
+      console.log('Updating password at:', apiUrl);
 
       const res = await fetch(apiUrl, {
         method: 'PUT',
@@ -87,7 +102,11 @@ export default function Account() {
         body: JSON.stringify(payload)
       });
 
+      console.log('Password update response status:', res.status);
+
       const text = await res.text();
+      console.log('Password update response:', text);
+      
       let body = null;
       try { body = JSON.parse(text); } catch (err) { /* not JSON */ }
 
@@ -104,7 +123,7 @@ export default function Account() {
       alert('Wachtwoord gewijzigd');
     } catch (err) {
       console.error('updatePassword error', err);
-      setError('Netwerkfout');
+      setError('Netwerkfout: ' + (err.message || 'Controleer de console voor details'));
     }
   };
 
