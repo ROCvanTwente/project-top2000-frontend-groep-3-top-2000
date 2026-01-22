@@ -39,7 +39,6 @@ const Songlist = () => {
     "2002",
     "2001",
     "2000",
-    "1999",
   ];
 
   const handleMenuToggle = () => {
@@ -63,7 +62,7 @@ const Songlist = () => {
         setError(null);
 
         const response = await fetch(
-          `https://top2000api.runasp.net/api/Top2000/by-year/${selectedYear}`,
+          `http://top2000api.runasp.net/api/Top2000/by-year/${selectedYear}`,
         );
 
         if (!response.ok) {

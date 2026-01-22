@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { ListTile } from "../components/listTile";
@@ -21,6 +21,9 @@ const carouselItems = [
 
 const Homepage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [songs, setSongs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const handleMenuToggle = () => {
     setSidebarOpen(!sidebarOpen);
@@ -30,37 +33,76 @@ const Homepage = () => {
     setSidebarOpen(false);
   };
 
+  useEffect(() => {
+    const fetchTopSongs = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          "http://top2000api.runasp.net/api/Top2000/top10?year=2024",
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setSongs(data);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching top songs:", err);
+        setError("Failed to load top songs. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTopSongs();
+  }, []); // Empty dependency array means this runs once on mount
+
   return (
     <div className="w-full min-h-screen flex flex-col bg-gray-100">
       <NavBar onMenuToggle={handleMenuToggle} />
       <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
       <main className="flex flex-1 flex-col items-center justify-center text-center p-4">
         <Carousel items={carouselItems} carouselId="myCarousel" />
-        <Link to="/song">
-          <ListTile
-            position={1}
-            imagePath="/some/cover.jpg"
-            songName="Song name"
-            artistName="Artist"
-            trend={12}
-          />
-        </Link>
-        <Link to="/artist">
-          <ListTile
-            position={2}
-            imagePath="/some/cover.jpg"
-            songName="Song name"
-            artistName="Artist"
-            trend={-12}
-          />
-        </Link>
-        <ListTile
-          position={3}
-          imagePath="/some/cover.jpg"
-          songName="Song name"
-          artistName="Artist"
-          trend={0}
-        />
+
+        {loading && (
+          <div className="w-full max-w-4xl p-4 text-center">
+            <p className="text-lg text-gray-600">Loading top songs...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="w-full max-w-4xl p-4 text-center">
+            <p className="text-lg text-red-600">{error}</p>
+          </div>
+        )}
+
+        {!loading && !error && songs.length === 0 && (
+          <div className="w-full max-w-4xl p-4 text-center">
+            <p className="text-lg text-gray-600">No songs found.</p>
+          </div>
+        )}
+
+        {!loading && !error && songs.length > 0 && (
+          <div className="w-full max-w-4xl">
+            {songs.map((song) => (
+              <Link
+                key={`${song.songId}-${song.position}`}
+                to={`/song/${song.songId}`}
+                className="block mb-2"
+              >
+                <ListTile
+                  position={song.position}
+                  imagePath={`/api/images/song/${song.songId}`} // dit komt later nog maar nu laat ik het ff zo staan 
+                  songName={song.titel}
+                  artistName={song.artist}
+                  trend={song.trend}
+                />
+              </Link>
+            ))}
+          </div>
+        )}
       </main>
       <Footer />
     </div>
