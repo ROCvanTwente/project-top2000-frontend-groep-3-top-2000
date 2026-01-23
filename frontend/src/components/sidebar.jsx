@@ -40,6 +40,9 @@ export const Sidebar = ({ isOpen, onClose }) => {
               <a href="#settings">Settings</a>
             </li>
             <li>
+              <a href="/geschiedenis">Geschiedenis</a>
+            </li>
+            <li>
               <a href="#about">About</a>
             </li>
           </ul>
