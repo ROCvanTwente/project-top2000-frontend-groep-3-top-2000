@@ -1,9 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
+import NavBar from '../components/navBar';
+import { Sidebar } from '../components/sidebar';
+import { Footer } from '../components/footer';
 import '../styles/auth.css';
 import logo from '../assets/top-2000-logo.png';
 
 export default function Login() {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -69,44 +73,50 @@ export default function Login() {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-logo">
-                <img src={logo} alt="logo" style={{ height: 140 }} />
-            </div>
-            <div className="auth-title">Log in</div>
+        <div className="auth-page">
+            <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            <main className="auth-main">
+                <div className="auth-container">
+                    <div className="auth-logo">
+                        <img src={logo} alt="logo" style={{ height: 140 }} />
+                    </div>
 
-            <div className="auth-tabs">
-                <div className="auth-tab active">Log in</div>
-                <a href="/register" className="auth-tab">Registreer</a>
-            </div>
+                    <div className="auth-tabs">
+                        <div className="auth-tab active">Log in</div>
+                        <a href="/register" className="auth-tab">Registreer</a>
+                    </div>
 
-            {error && (
-                <div className="auth-error">{error}</div>
-            )}
+                    {error && (
+                        <div className="auth-error">{error}</div>
+                    )}
 
-            <form onSubmit={handleSubmit} className="auth-form">
-                <input
-                    className="auth-input"
-                    type="email"
-                    placeholder="E-mail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
+                    <form onSubmit={handleSubmit} className="auth-form">
+                        <input
+                            className="auth-input"
+                            type="email"
+                            placeholder="E-mail"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
 
-                <input
-                    className="auth-input"
-                    type="password"
-                    placeholder="Wachtwoord"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
+                        <input
+                            className="auth-input"
+                            type="password"
+                            placeholder="Wachtwoord"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
 
-                <button className="auth-button" type="submit" disabled={loading}>
-                    {loading ? 'Logging in...' : 'Inloggen'}
-                </button>
-            </form>
+                        <button className="auth-button" type="submit" disabled={loading}>
+                            {loading ? 'Logging in...' : 'Inloggen'}
+                        </button>
+                    </form>
+                </div>
+            </main>
+            <Footer />
         </div>
     );
 }

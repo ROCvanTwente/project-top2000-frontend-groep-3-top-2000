@@ -28,6 +28,9 @@ export const Sidebar = ({ isOpen, onClose }) => {
               <a href="/Songlist">Top 2000</a>
             </li>
             <li>
+              <a href="/Artistlist">Artiesten Lijst</a>
+            </li>
+            <li>
               <a href="#popular">Popular</a>
             </li>
             <li>
