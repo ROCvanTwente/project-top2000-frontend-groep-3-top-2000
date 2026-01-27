@@ -94,7 +94,7 @@ const Homepage = () => {
               >
                 <ListTile
                   position={song.position}
-                  imagePath={`/api/images/song/${song.songId}`} // dit komt later nog maar nu laat ik het ff zo staan 
+                  imagePath={`/api/images/song/${song.songId}`} // dit komt later nog maar nu laat ik het ff zo staan
                   songName={song.titel}
                   artistName={song.artist}
                   trend={song.trend}

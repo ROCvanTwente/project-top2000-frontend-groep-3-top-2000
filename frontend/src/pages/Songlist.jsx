@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ListTile } from "../components/listTile";
 import { Footer } from "../components/footer";
 import NavBar from "../components/navBar";
@@ -9,9 +10,8 @@ const Songlist = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedYear, setSelectedYear] = useState("2024");
+  const [selectedYear, setSelectedYear] = useState("2024"); // the PO finds this good  
 
-  // Available years for the dropdown (Top 2000 started in 1999)
   // You can customize this list based on what years are actually available
   const availableYears = [
     "2024",
@@ -102,22 +102,146 @@ const Songlist = () => {
     fetchSongs();
   }, [selectedYear]); // Re-fetch when selectedYear changes
 
-  if (loading)
-    return (
-      <div className="w-full min-h-screen flex flex-col bg-gray-100">
-        <NavBar onMenuToggle={handleMenuToggle} />
-        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-        <main className="flex flex-1 flex-col items-center justify-center text-center p-4">
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-            <div className="text-lg">
-              Loading Top 2000 for {selectedYear}...
+  // Skeleton Loading Component
+  const SkeletonLoader = () => (
+    <div className="w-full min-h-screen flex flex-col bg-gray-100">
+      <NavBar onMenuToggle={handleMenuToggle} />
+      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+      <main className="flex flex-1 flex-col items-center p-4">
+        <div className="w-full max-w-4xl flex flex-col md:flex-row justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
+            Top 2000 {selectedYear}
+          </h1>
+
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+            <div className="flex items-center space-x-2">
+              <label
+                htmlFor="year-select"
+                className="text-gray-700 font-medium whitespace-nowrap"
+              >
+                Select Year:
+              </label>
+              <select
+                id="year-select"
+                value={selectedYear}
+                onChange={handleYearChange}
+                className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white min-w-[120px]"
+                disabled={loading}
+              >
+                {availableYears.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+              <span className="skeleton-box" style={{ width: "60px", height: "16px", display: "inline-block", borderRadius: "4px" }}></span>
             </div>
           </div>
-        </main>
-        <Footer />
-      </div>
-    );
+        </div>
+
+        <div className="w-full max-w-4xl">
+          {[...Array(10)].map((_, index) => (
+            <div key={index} className="block mb-2">
+              <div style={{ position: 'relative', marginBottom: '12px' }}>
+                <span
+                  className="skeleton-box"
+                  style={{
+                    position: 'absolute',
+                    left: '-24px',
+                    top: '-20px',
+                    minWidth: '34px',
+                    height: '34px',
+                    borderRadius: '999px',
+                    zIndex: 10,
+                  }}
+                ></span>
+                <div
+                  style={{
+                    borderRadius: '14px',
+                    background: 'transparent',
+                    boxShadow: '4px 8px 2px rgba(0,0,0,0.45)',
+                    padding: '14px 16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    minHeight: '80px',
+                  }}
+                >
+                  <div
+                    className="skeleton-box"
+                    style={{
+                      width: '64px',
+                      height: '64px',
+                      borderRadius: '12px',
+                      flexShrink: 0,
+                    }}
+                  ></div>
+                  <div style={{ flex: '1 1 auto', minWidth: 0 }}>
+                    <div
+                      className="skeleton-box"
+                      style={{
+                        width: '60%',
+                        height: '20px',
+                        borderRadius: '4px',
+                        marginBottom: '8px',
+                      }}
+                    ></div>
+                    <div
+                      className="skeleton-box"
+                      style={{
+                        width: '40%',
+                        height: '16px',
+                        borderRadius: '4px',
+                      }}
+                    ></div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                    <div
+                      className="skeleton-box"
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '4px',
+                      }}
+                    ></div>
+                    <div
+                      className="skeleton-box"
+                      style={{
+                        width: '50px',
+                        height: '28px',
+                        borderRadius: '12px',
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+      <Footer />
+      <style>{`
+        .skeleton-box {
+          background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+          background-size: 200% 100%;
+          animation: skeleton-loading 1.5s ease-in-out infinite;
+        }
+        @keyframes skeleton-loading {
+          0% {
+            background-position: 200% 0;
+          }
+          100% {
+            background-position: -200% 0;
+          }
+        }
+      `}</style>
+    </div>
+  );
+
+  if (loading) return <SkeletonLoader />;
   if (error)
     return (
       <div className="w-full min-h-screen flex flex-col bg-gray-100">
@@ -200,7 +324,7 @@ const Songlist = () => {
           </div>
         </div>
 
-        <div className="w-full max-w-4xl space-y-2">
+        <div className="w-full max-w-4xl">
           {songs.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg shadow">
               <div className="text-gray-500 text-lg mb-2">
@@ -211,26 +335,23 @@ const Songlist = () => {
               </p>
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow overflow-hidden">
-              {/* Optional: Header row for the list */}
-              <div className="hidden md:grid grid-cols-12 gap-4 p-4 bg-gray-50 border-b border-gray-200 text-gray-500 text-sm font-medium">
-                <div className="col-span-1 text-center">#</div>
-                <div className="col-span-1"></div> {/* For image */}
-                <div className="col-span-6">Song Title</div>
-                <div className="col-span-4">Artist</div>
-              </div>
-
+            <>
               {songs.map((song) => (
-                <ListTile
+                <Link
                   key={`${song.songId}-${selectedYear}`}
-                  position={song.position}
-                  imagePath={song.imagePath}
-                  songName={song.songName}
-                  artistName={song.artistName}
-                  // trend={song.trend}
-                />
+                  to={`/song/${song.songId}`}
+                  className="block mb-2"
+                >
+                  <ListTile
+                    position={song.position}
+                    imagePath={song.imagePath}
+                    songName={song.songName}
+                    artistName={song.artistName}
+                    trend={song.trend}
+                  />
+                </Link>
               ))}
-            </div>
+            </>
           )}
         </div>
 

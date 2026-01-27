@@ -153,6 +153,101 @@
   font-size: 1.2rem;
 }
 
+.artist-btn {
+  width: 100%;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: background-color 0.2s;
+}
+
+.artist-btn:hover {
+  background-color: #4f46e5;
+}
+
+.artist-icon {
+  font-size: 1.2rem;
+}
+
+.artist-btn-mobile {
+  width: 100%;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: background-color 0.2s;
+}
+
+.artist-btn-mobile:hover {
+  background-color: #4f46e5;
+}
+
+/* Skeleton Loading Styles */
+.skeleton-box {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* YouTube Embed Container */
+.youtube-embed-container {
+  width: 100%;
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.youtube-embed-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.youtube-embed-container-mobile {
+  width: 100%;
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.youtube-embed-container-mobile iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
 /* Tablet */
 @media (min-width: 768px) {
   .song-page {
@@ -233,6 +328,10 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+  }
+
+  .youtube-embed-container {
+    margin-top: 16px;
   }
 
   .song-right {

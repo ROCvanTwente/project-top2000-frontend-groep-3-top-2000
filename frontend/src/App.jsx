@@ -12,8 +12,8 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
-      <Route path="/song" element={<Song />} />
-      <Route path="/artist" element={<Artist />} />
+      <Route path="/song/:id" element={<Song />} />
+      <Route path="/artist/:id" element={<Artist />} />
       <Route path="/songlist" element={<Songlist />} />
       <Route path="/accountinfo" element={<Account />} />
       <Route path="/login" element={<Login />} />
