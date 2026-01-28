@@ -49,10 +49,6 @@ const Artist = () => {
         }
         return sum / arr.length;
       }
-      const flatSongsWithDetails = songsWithDetails.flat();
-      const positions = flatSongsWithDetails.map(song => song.position);
-      const avgPosition = Math.round(calculateAverage(positions));
-      const highest = Math.min(...positions);
 
         function calculateAverage(arr) {
           let sum = 0;
