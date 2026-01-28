@@ -60,7 +60,7 @@ export default function Admin() {
                     const data = await res.json();
                     setArtists(data);
                 }
-            } catch (err) {
+            } catch {
                 setIsAdmin(false);
             }
         };
@@ -162,7 +162,7 @@ export default function Admin() {
             const data = await res.json();
             setSelectedItem({ ...data, id: getItemId(data) || itemId });
             initializeEditData(data);
-        } catch (err) {
+        } catch {
             setSelectedItem({ ...item, id: itemId });
             initializeEditData(item);
         }

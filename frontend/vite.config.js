@@ -7,7 +7,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
+<<<<<<< HEAD
         target: 'http://top2000api.runasp.net',
+=======
+        target: 'https://top2000api.runasp.net',
+>>>>>>> origin/main
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '/api'),

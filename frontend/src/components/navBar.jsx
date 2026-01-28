@@ -50,29 +50,29 @@ export default function NavBar({ onMenuToggle }) {
     }
   };
 
+  // Handle typing with debounce
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
 
-    // Clear previous timeout
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
 
-    // Set new timeout for debounced search
     searchTimeoutRef.current = setTimeout(() => {
       performSearch(query);
     }, 300);
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-    performSearch(searchQuery);
+  // Clear search query and results
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setSearchResults([]);
   };
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    performSearch(searchQuery);
+  };
 
   const [accountPath, setAccountPath] = useState("/login");
   const [accountEmail, setAccountEmail] = useState(null);
@@ -93,7 +93,6 @@ export default function NavBar({ onMenuToggle }) {
     };
 
     check();
-    // update if other tabs change auth
     const onStorage = (e) => {
       if (e.key === "accessToken" || e.key === "userEmail" || e.key === null)
         check();
@@ -111,14 +110,7 @@ export default function NavBar({ onMenuToggle }) {
             onClick={onMenuToggle}
             aria-label="Toggle menu"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <line x1="3" y1="12" x2="21" y2="12"></line>
               <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -127,10 +119,7 @@ export default function NavBar({ onMenuToggle }) {
           <a className="navbar-brand mb-0">TOP 2000</a>
         </div>
 
-        <form
-          onSubmit={handleSearchSubmit}
-          className="search-form"
-        >
+        <form onSubmit={handleSearchSubmit} className="search-form">
           <div className="search-input-wrapper">
             <input
               className="search-input"
@@ -141,6 +130,16 @@ export default function NavBar({ onMenuToggle }) {
               onChange={handleSearchChange}
               onFocus={handleSearchToggle}
             />
+            {searchQuery && (
+              <button
+                type="button"
+                className="search-clear-btn"
+                onClick={handleClearSearch}
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
             <button
               className="search-icon-btn"
               onClick={handleSearchSubmit}
@@ -148,14 +147,7 @@ export default function NavBar({ onMenuToggle }) {
               aria-label="Search"
               disabled={isLoading}
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
               </svg>
@@ -169,9 +161,7 @@ export default function NavBar({ onMenuToggle }) {
                     to={result.type === "song" ? `/song/${result.id}` : `/artist/${result.id}`}
                     className="search-result-item"
                     onClick={() => {
-                      // Close suggestions and set query to the chosen item
-                      if (result.type === "song") setSearchQuery(result.titel || "");
-                      else setSearchQuery(result.name || "");
+                      setSearchQuery(result.type === "song" ? result.titel : result.name);
                       setSearchResults([]);
                     }}
                   >
@@ -200,14 +190,7 @@ export default function NavBar({ onMenuToggle }) {
           aria-label="Account"
           title={accountEmail ? `Signed in as ${accountEmail}` : "Account"}
         >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
