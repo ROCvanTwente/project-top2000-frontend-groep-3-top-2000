@@ -96,27 +96,33 @@ const Song = () => {
     const fetchYearData = async () => {
       try {
         setLoadingYears(true);
+        // Same approach as in artist.jsx: fetch Top2000 entries for this song
         const response = await fetch(
-          `http://top2000api.runasp.net/api/Song/${id}/years`,
+          `http://top2000api.runasp.net/api/Top2000/by-song/${id}`,
         );
 
-        if (response.ok) {
-          const data = await response.json();
-          setYearData(data);
-        } else {
-          // If no specific endpoint for years, use a fallback or empty array
-          console.warn("No year data endpoint found, using fallback");
-          // You could also fetch from a different endpoint or use fallback data
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const data = await response.json();
+        const list = Array.isArray(data) ? data : [];
+
+        const mapped = list
+          .map((item) => ({
+            year: item.year ?? item.jaar ?? null,
+            // "weeks" isn't guaranteed for this endpoint; keep optional to avoid breaking UI.
+            weeks: item.weeks ?? item.weken ?? null,
+            position: item.position ?? null,
+            trend: item.trend ?? null,
+          }))
+          .filter((x) => x.year != null)
+          .sort((a, b) => b.year - a.year);
+
+        setYearData(mapped);
       } catch (err) {
-        console.error("Error fetching year data:", err);
-        // Use fallback data if API call fails
-        setYearData([
-          { year: 2025, weeks: 1, position: 1, trend: null },
-          { year: 2024, weeks: 24, position: 12, trend: "up" },
-          { year: 2023, weeks: 24, position: 12, trend: "down" },
-          { year: 2022, weeks: 24, position: 12, trend: "up" },
-        ]);
+        console.error("Error fetching Top2000 entries for song:", err);
+        setYearData([]);
       } finally {
         setLoadingYears(false);
       }
@@ -446,7 +452,9 @@ const Song = () => {
                   yearData.map((yearDataItem, index) => (
                     <div key={index} className="year-row">
                       <span className="year-label">{yearDataItem.year}</span>
-                      <span className="year-weeks">{yearDataItem.weeks}</span>
+                      <span className="year-weeks">
+                        {yearDataItem.weeks ?? "—"}
+                      </span>
                       <div
                         className={`year-position ${getTrendClass(
                           yearDataItem.trend,
@@ -511,7 +519,9 @@ const Song = () => {
                   yearData.map((yearDataItem, index) => (
                     <div key={index} className="year-row-mobile">
                       <span className="year-label">{yearDataItem.year}</span>
-                      <span className="year-weeks">{yearDataItem.weeks}</span>
+                      <span className="year-weeks">
+                        {yearDataItem.weeks ?? "—"}
+                      </span>
                       <div
                         className={`year-position ${getTrendClass(
                           yearDataItem.trend,

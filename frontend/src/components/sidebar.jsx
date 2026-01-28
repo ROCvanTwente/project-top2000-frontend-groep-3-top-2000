@@ -46,7 +46,13 @@ export const Sidebar = ({ isOpen, onClose }) => {
               <a href="/geschiedenis">Geschiedenis</a>
             </li>
             <li>
+              <a href="/playlist">Playlist</a>
+            </li>
+            <li>
               <a href="#about">About</a>
+            </li>
+            <li>
+              <a href="/admin">Admin</a>
             </li>
           </ul>
         </nav>
