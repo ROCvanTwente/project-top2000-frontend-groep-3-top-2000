@@ -4,6 +4,7 @@ import { Footer } from '../components/footer';
 import '../styles/auth.css';
 import '../styles/account.css';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { BASE_API_URL } from '../data/api-url';
 
 export default function Account() {
   const [email, setEmail] = useState('');
@@ -37,9 +38,9 @@ export default function Account() {
       }
 
       try {
-        const apiUrl = `${import.meta.env.VITE_API_URL}/api/account/profile`;
+        const apiUrl = `${BASE_API_URL}/api/account/profile`;
         console.log('Fetching profile from:', apiUrl);
-        
+
         const res = await fetch(apiUrl, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -61,7 +62,7 @@ export default function Account() {
         const data = await res.json();
         setEmail(data.email || '');
         // keep local copy too
-        try { localStorage.setItem('userEmail', data.email || ''); } catch (e) {}
+        try { localStorage.setItem('userEmail', data.email || ''); } catch (e) { }
       } catch (err) {
         console.error('Profile fetch error:', err);
         // on error fallback to localStorage email
@@ -89,8 +90,8 @@ export default function Account() {
 
     try {
       const payload = { currentPassword: currentPasswordForChange, newPassword };
-      const apiUrl = `${import.meta.env.VITE_API_URL}/api/account/password`;
-      
+      const apiUrl = `${BASE_API_URL}/api/account/password`;
+
       console.log('Updating password at:', apiUrl);
 
       const res = await fetch(apiUrl, {
@@ -106,7 +107,7 @@ export default function Account() {
 
       const text = await res.text();
       console.log('Password update response:', text);
-      
+
       let body = null;
       try { body = JSON.parse(text); } catch (err) { /* not JSON */ }
 
@@ -130,14 +131,14 @@ export default function Account() {
   const onDeleteAccount = async () => {
     const password = prompt('Voer je wachtwoord in om je account te verwijderen:');
     if (!password) return;
-    
+
     if (!confirm('Weet je zeker dat je je account wilt verwijderen? Dit kan niet ongedaan worden gemaakt.')) return;
-    
+
     const token = localStorage.getItem('accessToken');
     if (!token) return window.location.href = '/login';
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/account`, {
+      const res = await fetch(`${BASE_API_URL}/api/account`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -158,7 +159,7 @@ export default function Account() {
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('tokenExpiresAt');
       localStorage.removeItem('userEmail');
-      
+
       alert('Account verwijderd');
       window.location.href = '/';
     } catch (err) {
@@ -167,69 +168,69 @@ export default function Account() {
     }
   };
 
-    return (
-        <div className="account-page">
-            <NavBar />
+  return (
+    <div className="account-page">
+      <NavBar />
 
-            <main className="account-main container">
-                <header className="account-header">
-                    <div className="avatar" aria-hidden>
-                        <svg viewBox="0 0 24 24" width="72" height="72" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                    </div>
-                    <div className="welcome">Welkom {shortName} <span className="muted">({email})</span></div>
-                </header>
+      <main className="account-main container">
+        <header className="account-header">
+          <div className="avatar" aria-hidden>
+            <svg viewBox="0 0 24 24" width="72" height="72" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div className="welcome">Welkom {shortName} <span className="muted">({email})</span></div>
+        </header>
 
-                <section className="account-card">
-                    <h2>Account informatie</h2>
+        <section className="account-card">
+          <h2>Account informatie</h2>
 
-                    <div className="info-row">
-                        <div className="label">E-mail:</div>
-                        <div className="value">{email || 'Onbekend'}</div>
-                    </div>
+          <div className="info-row">
+            <div className="label">E-mail:</div>
+            <div className="value">{email || 'Onbekend'}</div>
+          </div>
 
-                    <div className="info-row">
-                        <div className="label">Wachtwoord veranderen:</div>
-                        <div className="value">
-                          {editingPassword ? (
-                            <div className="edit-inline">
-                              <input className="edit-input" type="password" placeholder="Huidig wachtwoord" value={currentPasswordForChange} onChange={e => setCurrentPasswordForChange(e.target.value)} />
-                              <input className="edit-input" type="password" placeholder="Nieuw wachtwoord" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
-                              <input className="edit-input" type="password" placeholder="Bevestig nieuw wachtwoord" value={confirmNewPassword} onChange={e => setConfirmNewPassword(e.target.value)} />
-                              <button className="btn-save" onClick={updatePassword}>Opslaan</button>
-                              <button className="btn-cancel" onClick={() => { setEditingPassword(false); setCurrentPasswordForChange(''); setNewPassword(''); setConfirmNewPassword(''); }}>Annuleer</button>
-                            </div>
-                          ) : (
-                            <>
-                              *********
-                              <button className="icon-btn" title="Wijzig wachtwoord" aria-label="Wijzig wachtwoord" onClick={() => setEditingPassword(true)}>
-                                <FiEdit />
-                              </button>
-                            </>
-                          )}
-                        </div>
-                    </div>
-                    {error && <div className="error">{error}</div>}
+          <div className="info-row">
+            <div className="label">Wachtwoord veranderen:</div>
+            <div className="value">
+              {editingPassword ? (
+                <div className="edit-inline">
+                  <input className="edit-input" type="password" placeholder="Huidig wachtwoord" value={currentPasswordForChange} onChange={e => setCurrentPasswordForChange(e.target.value)} />
+                  <input className="edit-input" type="password" placeholder="Nieuw wachtwoord" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
+                  <input className="edit-input" type="password" placeholder="Bevestig nieuw wachtwoord" value={confirmNewPassword} onChange={e => setConfirmNewPassword(e.target.value)} />
+                  <button className="btn-save" onClick={updatePassword}>Opslaan</button>
+                  <button className="btn-cancel" onClick={() => { setEditingPassword(false); setCurrentPasswordForChange(''); setNewPassword(''); setConfirmNewPassword(''); }}>Annuleer</button>
+                </div>
+              ) : (
+                <>
+                  *********
+                  <button className="icon-btn" title="Wijzig wachtwoord" aria-label="Wijzig wachtwoord" onClick={() => setEditingPassword(true)}>
+                    <FiEdit />
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+          {error && <div className="error">{error}</div>}
 
-                    <div className="advanced">
-                        <h3>Geavanceerde Opties</h3>
-                        <div className="danger-row">
-                            <button className="link-danger" aria-label="Delete account" onClick={onDeleteAccount}>
-                                <FiTrash2 style={{ verticalAlign: 'middle', marginRight: 6 }} />
-                                Delete account
-                            </button>
-                        </div>
-                    </div>
+          <div className="advanced">
+            <h3>Geavanceerde Opties</h3>
+            <div className="danger-row">
+              <button className="link-danger" aria-label="Delete account" onClick={onDeleteAccount}>
+                <FiTrash2 style={{ verticalAlign: 'middle', marginRight: 6 }} />
+                Delete account
+              </button>
+            </div>
+          </div>
 
-                    <div className="actions">
-                        <button className="btn-logout" onClick={handleLogout}>Uitloggen</button>
-                    </div>
-                </section>
-            </main>
+          <div className="actions">
+            <button className="btn-logout" onClick={handleLogout}>Uitloggen</button>
+          </div>
+        </section>
+      </main>
 
-            <Footer />
-        </div>
-    );
+      <Footer />
+    </div>
+  );
 }

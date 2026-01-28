@@ -5,6 +5,7 @@ import { Sidebar } from "../components/sidebar";
 import { ListTile } from "../components/listTile";
 import { Footer } from "../components/footer";
 import "./artist.css";
+import { BASE_API_URL } from "../data/api-url";
 
 const Artist = () => {
   const { id } = useParams();
@@ -26,15 +27,15 @@ const Artist = () => {
   useEffect(() => {
     const fetchArtistData = async () => {
       try {
-        const responseArtist = await fetch(`https://top2000api.runasp.net/api/Artist/${id}`);
-        const responsesongs = await fetch(`https://top2000api.runasp.net/api/Top2000/by-song/${id}`);
+        const responseArtist = await fetch(`${BASE_API_URL}/api/Artist/${id}`);
+        const responsesongs = await fetch(`${BASE_API_URL}/api/Top2000/by-song/${id}`);
         const artistData = await responseArtist.json();
         const songsData = await responsesongs.json();
 
         const songsWithDetails = await Promise.all(
         (artistData.songs || []).map(async (song) => {
           const songRes = await fetch(
-            `https://top2000api.runasp.net/api/Top2000/by-song/${song.songId}`
+            `${BASE_API_URL}/api/Top2000/by-song/${song.songId}`
           );
           const songData = await songRes.json();
           return songData;
@@ -53,6 +54,18 @@ const Artist = () => {
       const avgPosition = Math.round(calculateAverage(positions));
       const highest = Math.min(...positions);
 
+        function calculateAverage(arr) {
+          let sum = 0;
+          for (let i = 0; i < arr.length; i++) {
+            sum += arr[i];
+          }
+          return sum / arr.length;
+        }
+        const flatSongsWithDetails = songsWithDetails.flat();
+        const positions = flatSongsWithDetails.map(song => song.position);
+        const avgPosition = Math.round(calculateAverage(positions));
+        const highest = Math.min(...positions);
+
       const newTrendMap = {};
       flatSongsWithDetails.forEach(song => {
         if (song.year === 2024) {
@@ -67,7 +80,7 @@ const Artist = () => {
         setArtistData(prev => ({
           ...prev,
           name: artistData.name,
-          biography: artistData.biography,  
+          biography: artistData.biography,
           photo: artistData.photo || "/example.png",
           songs: artistData.songs || [],
           trend: songsData?.trend || 0,
@@ -95,7 +108,7 @@ const Artist = () => {
     <div className="w-full min-h-screen flex flex-col bg-gray-100">
       <NavBar onMenuToggle={handleMenuToggle} />
       <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-      
+
       <main>
         <div className="row mx-0">
           <div className="container-left col-6">

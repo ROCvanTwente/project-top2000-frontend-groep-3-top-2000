@@ -4,6 +4,7 @@ import { Sidebar } from '../components/sidebar';
 import { Footer } from '../components/footer';
 import { FiSettings, FiUser, FiMusic, FiX, FiSave } from 'react-icons/fi';
 import '../styles/admin.css';
+import { BASE_API_URL } from '../data/api-url';
 
 export default function Admin() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -25,8 +26,7 @@ export default function Admin() {
     // Check if user is admin
     const [isAdmin, setIsAdmin] = useState(null);
 
-    let apiBase = '';
-    try { apiBase = import.meta?.env?.VITE_API_URL || ''; } catch (e) { apiBase = ''; }
+    let apiBase = BASE_API_URL;
     const apiPrefix = apiBase ? apiBase.replace(/\/$/, '') : '';
 
     const getAuthHeaders = () => {
@@ -125,7 +125,7 @@ export default function Admin() {
             const title = getSongTitle(s) || '';
             const artist = s.artistName || '';
             return title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                   artist.toLowerCase().includes(searchQuery.toLowerCase());
+                artist.toLowerCase().includes(searchQuery.toLowerCase());
         });
 
     // Select item for editing
@@ -347,16 +347,16 @@ export default function Admin() {
                                     onClick={() => handleSelectItem(item)}
                                 >
                                     {mode === 'artists' && item.photo && (
-                                        <img 
-                                            src={item.photo} 
+                                        <img
+                                            src={item.photo}
                                             alt={item.name}
                                             className="admin-list-item-photo"
                                             onError={(e) => e.target.style.display = 'none'}
                                         />
                                     )}
                                     {mode === 'songs' && item.imgUrl && (
-                                        <img 
-                                            src={item.imgUrl} 
+                                        <img
+                                            src={item.imgUrl}
                                             alt={getSongTitle(item)}
                                             className="admin-list-item-photo"
                                             onError={(e) => e.target.style.display = 'none'}
