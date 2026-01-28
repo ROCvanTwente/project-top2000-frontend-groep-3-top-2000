@@ -5,6 +5,8 @@ import "./navBar.css";
 export default function NavBar({ onMenuToggle }) {
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleSearchToggle = () => {
     setSearchExpanded(!searchExpanded);
@@ -12,7 +14,8 @@ export default function NavBar({ onMenuToggle }) {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    console.log("Search for:", searchQuery);
+
+    if (!searchQuery.trim()) {
   };
 
 
@@ -70,11 +73,7 @@ export default function NavBar({ onMenuToggle }) {
         </div>
 
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            runSearch(searchQuery);
-          }}
-        >
+          onSubmit={(e) => {handleSearchSubmit(e);}}        >
           <input
             className="search-input"
             type="search"
