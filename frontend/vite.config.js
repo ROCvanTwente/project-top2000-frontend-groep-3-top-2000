@@ -10,6 +10,7 @@ export default defineConfig({
         target: 'https://top2000api.runasp.net',
         changeOrigin: true,
         secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '/api'),
       },
     },
   },
