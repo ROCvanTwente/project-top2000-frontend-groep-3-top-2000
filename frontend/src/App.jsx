@@ -15,11 +15,10 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
-      <Route path="/Song" element={<Song />} />
-      <Route path="/Artist" element={<Artist />} />
-      <Route path="/Songlist" element={<Songlist />} />
-      <Route path="/Artistlist" element={<ArtistList />} />
-      <Route path="/Accountinfo" element={<Account />} />
+      <Route path="/song/:id" element={<Song />} />
+      <Route path="/artist/:id" element={<Artist />} />
+      <Route path="/songlist" element={<Songlist />} />
+      <Route path="/accountinfo" element={<Account />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/account" element={<Account />} />

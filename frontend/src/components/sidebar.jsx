@@ -25,7 +25,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
               <a href="/">Home</a>
             </li>
             <li>
-              <a href="/Songlist">Top 2000</a>
+              <a href="/songlist">Top 2000</a>
             </li>
             <li>
               <a href="/Artistlist">Artiesten Lijst</a>
