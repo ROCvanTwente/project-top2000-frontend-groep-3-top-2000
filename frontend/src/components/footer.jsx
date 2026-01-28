@@ -10,7 +10,7 @@ export const Footer = () => {
         padding: "1rem 0", // Reduced from 2rem to 1rem (50% reduction)
       }}
     >
-      <div className="row">
+      <div className="row mx-0">
         <div className="col-md-4 col-sm-12 d-flex justify-content-center align-items-center">
           <img
             src="/top-2000-logo-empty.png"
