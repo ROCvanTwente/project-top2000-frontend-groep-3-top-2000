@@ -1,4 +1,5 @@
 import React, { useState, useEffect, cacheSignal } from "react";
+import { useParams } from "react-router-dom";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { ListTile } from "../components/listTile";
@@ -6,6 +7,7 @@ import { Footer } from "../components/footer";
 import "./artist.css";
 
 const Artist = () => {
+  const { id } = useParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [averagePosition, setAveragePosition] = useState(0);
   const [highestPosition, setHighestPosition] = useState(0);  const [trendMap, setTrendMap] = useState({});  const [artistData, setArtistData] = useState({
@@ -22,21 +24,21 @@ const Artist = () => {
   useEffect(() => {
     const fetchArtistData = async () => {
       try {
-        const responseArtist = await fetch("http://top2000api.runasp.net/api/Artist/1");
-        const responsesongs = await fetch("http://top2000api.runasp.net/api/Top2000/by-song/1");
+        const responseArtist = await fetch(`https://top2000api.runasp.net/api/Artist/${id}`);
+        const responsesongs = await fetch(`https://top2000api.runasp.net/api/Top2000/by-song/${id}`);
         const artistData = await responseArtist.json();
         const songsData = await responsesongs.json();
 
         const songsWithDetails = await Promise.all(
         (artistData.songs || []).map(async (song) => {
           const songRes = await fetch(
-            `http://top2000api.runasp.net/api/Top2000/by-song/${song.songId}`
+            `https://top2000api.runasp.net/api/Top2000/by-song/${song.songId}`
           );
           const songData = await songRes.json();
           return songData;
         })
       );
-      
+
       function calculateAverage(arr) {
         let sum = 0;
         for (let i = 0; i < arr.length; i++) {
@@ -74,8 +76,10 @@ const Artist = () => {
       }
     };
 
-    fetchArtistData();
-  }, []);
+    if (id) {
+      fetchArtistData();
+    }
+  }, [id]);
 
   const handleMenuToggle = () => {
     setSidebarOpen(!sidebarOpen);
