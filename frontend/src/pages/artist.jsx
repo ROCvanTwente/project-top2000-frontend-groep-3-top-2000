@@ -1,4 +1,5 @@
 import React, { useState, useEffect, cacheSignal } from "react";
+import { useParams } from "react-router-dom";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { ListTile } from "../components/listTile";
@@ -7,9 +8,12 @@ import "./artist.css";
 import { BASE_API_URL } from "../data/api-url";
 
 const Artist = () => {
+  const { id } = useParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [averagePosition, setAveragePosition] = useState(0);
-  const [highestPosition, setHighestPosition] = useState(0); const [trendMap, setTrendMap] = useState({}); const [artistData, setArtistData] = useState({
+  const [highestPosition, setHighestPosition] = useState(0);
+  const [trendMap, setTrendMap] = useState({});
+  const [artistData, setArtistData] = useState({
     name: "ARTIST NAME",
     image: "/example.png",
     website: "https://artistwebsite.com",
@@ -23,48 +27,44 @@ const Artist = () => {
   useEffect(() => {
     const fetchArtistData = async () => {
       try {
-        const responseArtist = await fetch(`${BASE_API_URL}/api/Artist/1`);
-        const responsesongs = await fetch(`${BASE_API_URL}/api/Top2000/by-song/1`);
+        const responseArtist = await fetch(`${BASE_API_URL}/api/Artist/${id}`);
+        const responsesongs = await fetch(`${BASE_API_URL}/api/Top2000/by-song/${id}`);
         const artistData = await responseArtist.json();
         const songsData = await responsesongs.json();
 
         const songsWithDetails = await Promise.all(
-          (artistData.songs || []).map(async (song) => {
-            const songRes = await fetch(
-<<<<<<< HEAD
-              `http://top2000api.runasp.net/api/Top2000/by-song/${song.songId}`
-=======
-              `${BASE_API_URL}/api/Top2000/by-song/${song.songId}`
->>>>>>> origin/main
-            );
-            const songData = await songRes.json();
-            return songData;
-          })
-        );
+        (artistData.songs || []).map(async (song) => {
+          const songRes = await fetch(
+            `${BASE_API_URL}/api/Top2000/by-song/${song.songId}`
+          );
+          const songData = await songRes.json();
+          return songData;
+        })
+      );
 
-        function calculateAverage(arr) {
-          let sum = 0;
-          for (let i = 0; i < arr.length; i++) {
-            sum += arr[i];
-          }
-          return sum / arr.length;
+      function calculateAverage(arr) {
+        let sum = 0;
+        for (let i = 0; i < arr.length; i++) {
+          sum += arr[i];
         }
-        const flatSongsWithDetails = songsWithDetails.flat();
+        return sum / arr.length;
+      }
+      const flatSongsWithDetails = songsWithDetails.flat();
         const positions = flatSongsWithDetails.map(song => song.position);
         const avgPosition = Math.round(calculateAverage(positions));
         const highest = Math.min(...positions);
 
-        const trendMap = {};
-        flatSongsWithDetails.forEach(song => {
-          if (song.year === 2024) {
-            trendMap[song.songId] = song.trend;
-          }
-        });
+      const newTrendMap = {};
+      flatSongsWithDetails.forEach(song => {
+        if (song.year === 2024) {
+          newTrendMap[song.songId] = song.trend;
+        }
+      });
 
 
         setAveragePosition(avgPosition);
         setHighestPosition(highest);
-        setTrendMap(trendMap);
+        setTrendMap(newTrendMap);
         setArtistData(prev => ({
           ...prev,
           name: artistData.name,
@@ -79,8 +79,10 @@ const Artist = () => {
       }
     };
 
-    fetchArtistData();
-  }, []);
+    if (id) {
+      fetchArtistData();
+    }
+  }, [id]);
 
   const handleMenuToggle = () => {
     setSidebarOpen(!sidebarOpen);
