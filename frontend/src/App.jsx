@@ -10,6 +10,7 @@ import FAQ from "./pages/FAQ.jsx";
 import Admin from "./pages/admin.jsx";
 import Geschiedenis from "./pages/geschiedenis.jsx";
 import ArtistList from "./pages/artistList.jsx";
+import { Playlist } from "./pages/playlist.jsx";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
       <Route path="/FAQ" element={<FAQ />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/geschiedenis" element={<Geschiedenis />} />
+      <Route path="/playlist" element={<Playlist />} />
     </Routes>
   );
 }
