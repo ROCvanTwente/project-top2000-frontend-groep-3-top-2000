@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../components/navBar';
+import { Sidebar } from '../components/sidebar';
+import { Footer } from '../components/footer';
 import '../styles/auth.css';
 import logo from '../assets/top-2000-logo.png';
 
 export default function Register() {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
@@ -11,8 +15,6 @@ export default function Register() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    let apiBase = '';
-    try { apiBase = import.meta?.env?.VITE_API_URL || ''; } catch (e) { apiBase = ''; }
     const apiPrefix = apiBase || '';
 
     const handleSubmit = async (e) => {
@@ -67,55 +69,60 @@ export default function Register() {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-logo">
-                <img src={logo} alt="logo" style={{ height: 140 }} />
-            </div>
-            <div className="auth-title">Registreer</div>
+        <div className="auth-page">
+            <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            <main className="auth-main">
+                <div className="auth-container">
+                    <div className="auth-logo">
+                        <img src={logo} alt="logo" style={{ height: 140 }} />
+                    </div>
 
-            <div className="auth-tabs">
-                <a href="/login" className="auth-tab">Log in</a>
-                <div className="auth-tab active">Registreer</div>
-            </div>
+                    <div className="auth-tabs">
+                        <a href="/login" className="auth-tab">Log in</a>
+                        <div className="auth-tab active">Registreer</div>
+                    </div>
 
-            {error && (
-                <div className="auth-error">{error}</div>
-            )}
+                    {error && (
+                        <div className="auth-error">{error}</div>
+                    )}
 
-            <form onSubmit={handleSubmit} className="auth-form">
-                <input
-                    className="auth-input"
-                    type="email"
-                    placeholder="E-mail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
+                    <form onSubmit={handleSubmit} className="auth-form">
+                        <input
+                            className="auth-input"
+                            type="email"
+                            placeholder="E-mail"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
 
-                <input
-                    className="auth-input"
-                    type="password"
-                    placeholder="Wachtwoord"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
+                        <input
+                            className="auth-input"
+                            type="password"
+                            placeholder="Wachtwoord"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
 
-                <input
-                    className="auth-input"
-                    type="password"
-                    placeholder="Bevestig wachtwoord"
-                    value={confirm}
-                    onChange={(e) => setConfirm(e.target.value)}
-                    required
-                />
+                        <input
+                            className="auth-input"
+                            type="password"
+                            placeholder="Bevestig wachtwoord"
+                            value={confirm}
+                            onChange={(e) => setConfirm(e.target.value)}
+                            required
+                        />
 
-                <button className="auth-button" type="submit" disabled={loading}>
-                    {loading ? 'Registering...' : 'Registreer'}
-                </button>
-            </form>
+                        <button className="auth-button" type="submit" disabled={loading}>
+                            {loading ? 'Registering...' : 'Registreer'}
+                        </button>
+                    </form>
 
-            <a className="auth-link" href="/login">Al een account? Log in</a>
+                </div>
+            </main>
+            <Footer />
         </div>
     );
 }

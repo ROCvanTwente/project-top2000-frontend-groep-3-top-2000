@@ -151,7 +151,9 @@ const styles = {
 
 export const ListTile = ({ position, imagePath, songName, artistName, trend }) => {
     const isMobile = useIsMobile()
-    const trendDirection = trend === null || trend === undefined ? null : trend === 0 ? 'flat' : trend > 0 ? 'up' : 'down'
+    const hasPosition = position !== null && position !== undefined
+    const hasTrend = trend !== null && trend !== undefined
+    const trendDirection = hasTrend ? (trend === 0 ? 'flat' : trend > 0 ? 'up' : 'down') : null
     const trendValue = trendDirection ? Math.abs(trend) : null
 
     const responsiveStyles = {
@@ -199,7 +201,7 @@ export const ListTile = ({ position, imagePath, songName, artistName, trend }) =
 
     return (
         <div style={styles.wrapper}>
-            <span style={styles.positionBadge}>{position}</span>
+            {hasPosition && <span style={styles.positionBadge}>{position}</span>}
 
             <div style={responsiveStyles.card}>
                 <div style={styles.contentArea}>
@@ -212,17 +214,19 @@ export const ListTile = ({ position, imagePath, songName, artistName, trend }) =
                     </div>
                 </div>
 
-                <div style={responsiveStyles.rightArea}>
-                    <img style={responsiveStyles.graph} src={graphIcon} alt="trend graph" />
-                    {trendDirection && (
-                        <span style={badgeStyle}>
-                            {trendValue}
-                            <span style={styles.badgeArrow} aria-hidden="true">
-                                {trendDirection === 'up' ? '▲' : trendDirection === 'down' ? '▼' : '–'}
+                {hasTrend && (
+                    <div style={responsiveStyles.rightArea}>
+                        <img style={responsiveStyles.graph} src={graphIcon} alt="trend graph" />
+                        {trendDirection && (
+                            <span style={badgeStyle}>
+                                {trendValue}
+                                <span style={styles.badgeArrow} aria-hidden="true">
+                                    {trendDirection === 'up' ? '▲' : trendDirection === 'down' ? '▼' : '–'}
+                                </span>
                             </span>
-                        </span>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     )
