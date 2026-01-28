@@ -5,6 +5,7 @@ import { ListTile } from "../components/listTile";
 import { Footer } from "../components/footer";
 import { Carousel } from "../components/carousel";
 import { Link } from "react-router-dom";
+import { BASE_API_URL } from "../data/api-url";
 
 const carouselItems = [
   {
@@ -38,7 +39,7 @@ const Homepage = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "http://top2000api.runasp.net/api/Top2000/top10?year=2024",
+          `${BASE_API_URL}/api/Top2000/top10?year=2024`,
         );
 
         if (!response.ok) {
