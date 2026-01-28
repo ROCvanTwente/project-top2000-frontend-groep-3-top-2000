@@ -7,6 +7,7 @@ import Account from "./pages/account.jsx";
 import Register from "./pages/register.jsx";
 import Songlist from "./pages/Songlist.jsx";
 import FAQ from "./pages/FAQ.jsx";
+import Admin from "./pages/admin.jsx";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/account" element={<Account />} />
       <Route path="/FAQ" element={<FAQ />} />
+      <Route path="/admin" element={<Admin />} />
     </Routes>
   );
 }
