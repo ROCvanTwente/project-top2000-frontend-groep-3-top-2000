@@ -15,8 +15,6 @@ export default function Register() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    let apiBase = '';
-    try { apiBase = import.meta?.env?.VITE_API_URL || ''; } catch (e) { apiBase = ''; }
     const apiPrefix = apiBase || '';
 
     const handleSubmit = async (e) => {

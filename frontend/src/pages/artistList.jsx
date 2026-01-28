@@ -3,8 +3,9 @@ import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { ListTile } from "../components/listTile";
 import { Footer } from "../components/footer";
+import { BASE_API_URL } from "../data/api-url";
 
-const ARTIST_URL = "http://top2000api.runasp.net/api/Artist";
+const ARTIST_URL = `${BASE_API_URL}/api/Artist`;
 
 const ArtistList = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);

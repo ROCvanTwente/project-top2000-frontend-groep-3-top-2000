@@ -5,6 +5,7 @@ import { Sidebar } from '../components/sidebar';
 import { Footer } from '../components/footer';
 import '../styles/auth.css';
 import logo from '../assets/top-2000-logo.png';
+import { BASE_API_URL } from '../data/api-url';
 
 export default function Login() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -18,7 +19,7 @@ export default function Login() {
     // Prefer using relative `/api` so the Vite proxy (vite.config.js) can forward calls to the backend.
     // If you need to target a remote backend directly, set VITE_API_URL in `.env`.
 
-    const apiPrefix = 'http://top2000api.runasp.net';
+    const apiPrefix = BASE_API_URL;
 
     console.log('Login component render, using apiPrefix=', apiPrefix || '/api (proxy)');
 
