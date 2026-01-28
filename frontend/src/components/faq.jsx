@@ -1,19 +1,25 @@
-import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import "../components/faq.css";
-import ArrowIcon from "../assets/arrow.svg";
 
-
-function Faq() {
-    const [open, setOpen] = useState(false);
+const FaqItem = ({ question, answer }) => {
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="faq-item">
-      <button className="faq-question" onClick={() => setOpen(!open)}>
-        {/* Question text */}
-        {/* <span>What is this?</span> */}
+      <div
+        className="faq-question"
+        onClick={() => setOpen((o) => !o)}
+        role="button"
+        aria-expanded={open}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            setOpen((o) => !o);
+          }
+        }}
+      >
+        <h3>{question}</h3>
 
-        {/* Arrow SVG */}
         <svg
           className={`faq-arrow ${open ? "open" : ""}`}
           xmlns="http://www.w3.org/2000/svg"
@@ -24,16 +30,11 @@ function Faq() {
         >
           <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
         </svg>
-      </button>
+      </div>
 
-      {/* Answer */}
-      {open && (
-        <p className="faq-answer">
-          This is a dropdown answer with some detailed information
-        </p>
-      )}
+      {open && <div className="faq-answer">{answer}</div>}
     </div>
   );
-}
+};
 
-export default Faq;
+export default FaqItem;
