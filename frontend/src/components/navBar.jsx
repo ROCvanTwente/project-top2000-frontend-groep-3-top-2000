@@ -3,21 +3,23 @@ import { Link } from "react-router-dom";
 import "./navBar.css";
 
 export default function NavBar({ onMenuToggle }) {
-  const [searchExpanded, setSearchExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
 
-  const handleSearchToggle = () => {
-    setSearchExpanded(!searchExpanded);
-  };
-
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = async (e) => {
     e.preventDefault();
 
-    if (!searchQuery.trim()) {
-  };
+    if (!searchQuery.trim()) return;
 
+    try {
+      const res = await fetch(
+        `/api/search?query=${encodeURIComponent(searchQuery.trim())}`
+      );
+      const data = await res.json();
+      console.log("Search results:", data);
+    } catch (err) {
+      console.error ("Search failed", err);
+    }
+  };
 
   const [accountPath, setAccountPath] = useState("/login");
   const [accountEmail, setAccountEmail] = useState(null);
