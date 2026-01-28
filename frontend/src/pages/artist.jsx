@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, cacheSignal } from "react";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { ListTile } from "../components/listTile";
@@ -7,14 +7,14 @@ import "./artist.css";
 
 const Artist = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [artistData, setArtistData] = useState({
+  const [averagePosition, setAveragePosition] = useState(0);
+  const [highestPosition, setHighestPosition] = useState(0);  const [trendMap, setTrendMap] = useState({});  const [artistData, setArtistData] = useState({
     name: "ARTIST NAME",
     image: "/example.png",
     website: "https://artistwebsite.com",
     wiki: "https://en.wikipedia.org/wiki/Music",
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula erat, tempor a accumsan nec, finibus eget ipsum. Morbi suscipit finibus mauris, at finibus sapien suscipit ut. Integer ultricies enim in dolor pellentesque imperdiet. Mauris hendrerit sed diam sit amet sollicitudin. Aenean at iaculis mi. Nullam id turpis eu velit maximus laoreet eget quis ex. Nulla metus nisl, malesuada maximus diam id, laoreet commodo ligula.",
     amountOfSongs: 4,
-    averagePosition: 722,
     highestPosition: 12,
     songs: [],
   });
@@ -22,7 +22,7 @@ const Artist = () => {
   useEffect(() => {
     const fetchArtistData = async () => {
       try {
-        const responseArtist = await fetch("http://top2000api.runasp.net/api/Artist/4");
+        const responseArtist = await fetch("http://top2000api.runasp.net/api/Artist/1");
         const responsesongs = await fetch("http://top2000api.runasp.net/api/Top2000/by-song/1");
         const artistData = await responseArtist.json();
         const songsData = await responsesongs.json();
@@ -33,15 +33,33 @@ const Artist = () => {
             `http://top2000api.runasp.net/api/Top2000/by-song/${song.songId}`
           );
           const songData = await songRes.json();
-          return {
-            ...song,
-            ...songData,
-          };
+          return songData;
         })
       );
+      
+      function calculateAverage(arr) {
+        let sum = 0;
+        for (let i = 0; i < arr.length; i++) {
+          sum += arr[i];
+        }
+        return sum / arr.length;
+      }
+      const flatSongsWithDetails = songsWithDetails.flat();
+      const positions = flatSongsWithDetails.map(song => song.position);
+      const avgPosition = Math.round(calculateAverage(positions));
+      const highest = Math.min(...positions);
 
-      console.log(songsWithDetails);
+      const trendMap = {};
+      flatSongsWithDetails.forEach(song => {
+        if (song.year === 2024) {
+          trendMap[song.songId] = song.trend;
+        }
+      });
 
+
+        setAveragePosition(avgPosition);
+        setHighestPosition(highest);
+        setTrendMap(trendMap);
         setArtistData(prev => ({
           ...prev,
           name: artistData.name,
@@ -99,8 +117,8 @@ const Artist = () => {
             </div>
             <div className="artist-positions">
               <p>Aantal liedjes dit jaar: {artistData.amountOfSongs}</p>
-              <p>Gemiddelde positie dit jaar: {artistData.averagePosition}</p>
-              <p>Hoogste notering dit jaar: {artistData.highestPosition}</p>
+              <p>Gemiddelde positie dit jaar: {averagePosition}</p>
+              <p>Hoogste notering dit jaar: {highestPosition}</p>
             </div>
             <div className="artist-song-list">
               <h2>Top 2000 nummers</h2>
@@ -112,7 +130,7 @@ const Artist = () => {
                     imagePath={song.imgUrl || "/example.png"}
                     songName={song.titel}
                     artistName={song.artistName}
-                    trend={0}
+                    trend={trendMap[song.songId] || 0}
                   />
                 ))}
               </div>
