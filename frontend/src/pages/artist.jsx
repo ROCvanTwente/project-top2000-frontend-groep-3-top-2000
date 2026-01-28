@@ -31,7 +31,7 @@ const Artist = () => {
         const songsWithDetails = await Promise.all(
           (artistData.songs || []).map(async (song) => {
             const songRes = await fetch(
-              `http://top2000api.runasp.net/api/Top2000/by-song/${song.songId}`
+              `${BASE_API_URL}/api/Top2000/by-song/${song.songId}`
             );
             const songData = await songRes.json();
             return songData;
