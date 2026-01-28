@@ -10,7 +10,9 @@ const Artist = () => {
   const { id } = useParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [averagePosition, setAveragePosition] = useState(0);
-  const [highestPosition, setHighestPosition] = useState(0);  const [trendMap, setTrendMap] = useState({});  const [artistData, setArtistData] = useState({
+  const [highestPosition, setHighestPosition] = useState(0);
+  const [trendMap, setTrendMap] = useState({});
+  const [artistData, setArtistData] = useState({
     name: "ARTIST NAME",
     image: "/example.png",
     website: "https://artistwebsite.com",
@@ -51,17 +53,17 @@ const Artist = () => {
       const avgPosition = Math.round(calculateAverage(positions));
       const highest = Math.min(...positions);
 
-      const trendMap = {};
+      const newTrendMap = {};
       flatSongsWithDetails.forEach(song => {
         if (song.year === 2024) {
-          trendMap[song.songId] = song.trend;
+          newTrendMap[song.songId] = song.trend;
         }
       });
 
 
         setAveragePosition(avgPosition);
         setHighestPosition(highest);
-        setTrendMap(trendMap);
+        setTrendMap(newTrendMap);
         setArtistData(prev => ({
           ...prev,
           name: artistData.name,
