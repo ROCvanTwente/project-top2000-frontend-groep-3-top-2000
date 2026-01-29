@@ -1,5 +1,5 @@
 import React, { useState, useEffect, cacheSignal } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { ListTile } from "../components/listTile";
@@ -10,6 +10,7 @@ import { BASE_API_URL } from "../data/api-url";
 const Artist = () => {
   const { id } = useParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [averagePosition, setAveragePosition] = useState(0);
   const [highestPosition, setHighestPosition] = useState(0);
   const [trendMap, setTrendMap] = useState({});
@@ -19,7 +20,7 @@ const Artist = () => {
     website: "https://artistwebsite.com",
     wiki: "https://en.wikipedia.org/wiki/Music",
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula erat, tempor a accumsan nec, finibus eget ipsum. Morbi suscipit finibus mauris, at finibus sapien suscipit ut. Integer ultricies enim in dolor pellentesque imperdiet. Mauris hendrerit sed diam sit amet sollicitudin. Aenean at iaculis mi. Nullam id turpis eu velit maximus laoreet eget quis ex. Nulla metus nisl, malesuada maximus diam id, laoreet commodo ligula.",
-    amountOfSongs: 4,
+    amountOfSongs: 0,
     highestPosition: 12,
     songs: [],
   });
@@ -74,12 +75,15 @@ const Artist = () => {
           trend: songsData?.trend || 0,
           amountOfSongs: artistData.songs.length || 0,
         }));
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching artist data:", error);
+        setLoading(false);
       }
     };
 
     if (id) {
+      setLoading(true);
       fetchArtistData();
     }
   }, [id]);
@@ -91,6 +95,127 @@ const Artist = () => {
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
   };
+
+  // Skeleton Loading Component
+  const SkeletonLoader = () => (
+    <div className="w-full min-h-screen flex flex-col bg-gray-100">
+      <NavBar onMenuToggle={handleMenuToggle} />
+      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+
+      <main>
+        <div className="row mx-0">
+          <div className="container-left col-6">
+            <div className="image-container">
+              <div
+                className="skeleton-box"
+                style={{
+                  width: "100%",
+                  height: "400px",
+                  borderRadius: "12px",
+                }}
+              ></div>
+            </div>
+            <div className="links-container">
+              <div
+                className="skeleton-box"
+                style={{
+                  width: "120px",
+                  height: "40px",
+                  borderRadius: "20px",
+                }}
+              ></div>
+              <div
+                className="skeleton-box"
+                style={{
+                  width: "120px",
+                  height: "40px",
+                  borderRadius: "20px",
+                }}
+              ></div>
+            </div>
+            <div className="artist-bio">
+              <div
+                className="skeleton-box"
+                style={{
+                  width: "100px",
+                  height: "24px",
+                  marginBottom: "12px",
+                  borderRadius: "4px",
+                }}
+              ></div>
+              <div
+                className="skeleton-box"
+                style={{
+                  width: "100%",
+                  height: "100px",
+                  borderRadius: "4px",
+                }}
+              ></div>
+            </div>
+          </div>
+          <div className="container-right col-6">
+            <div className="artist-positions">
+              <div
+                className="skeleton-box"
+                style={{
+                  width: "200px",
+                  height: "40px",
+                  borderRadius: "20px",
+                }}
+              ></div>
+              <div
+                className="skeleton-box"
+                style={{
+                  width: "200px",
+                  height: "40px",
+                  borderRadius: "20px",
+                }}
+              ></div>
+              <div
+                className="skeleton-box"
+                style={{
+                  width: "200px",
+                  height: "40px",
+                  borderRadius: "20px",
+                }}
+              ></div>
+            </div>
+            <div className="artist-song-list">
+              <div
+                className="skeleton-box"
+                style={{
+                  width: "150px",
+                  height: "24px",
+                  marginBottom: "12px",
+                  borderRadius: "4px",
+                }}
+              ></div>
+              <div className="songs-listtiles">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="skeleton-box"
+                    style={{
+                      width: "100%",
+                      height: "120px",
+                      borderRadius: "10px",
+                    }}
+                  ></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+
+  // Show skeleton while loading
+  if (loading) {
+    return <SkeletonLoader />;
+  }
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-gray-100">
@@ -116,12 +241,12 @@ const Artist = () => {
                 wiki
               </a>
             </div>
-          </div>
-          <div className="container-right col-6">
             <div className="artist-bio">
               <h2>Biografie</h2>
               <p>{artistData.biography}</p>
             </div>
+          </div>
+          <div className="container-right col-6">
             <div className="artist-positions">
               <p>Aantal liedjes dit jaar: {artistData.amountOfSongs}</p>
               <p>Gemiddelde positie dit jaar: {averagePosition}</p>
@@ -131,14 +256,15 @@ const Artist = () => {
               <h2>Top 2000 nummers</h2>
               <div className="songs-listtiles">
                 {artistData.songs?.map((song, index) => (
-                  <ListTile
-                    key={song.songId}
-                    position={index + 1}
-                    imagePath={song.imgUrl || "/example.png"}
-                    songName={song.titel}
-                    artistName={song.artistName}
-                    trend={trendMap[song.songId] || 0}
-                  />
+                  <Link key={song.songId} to={`/song/${song.songId}`} style={{ textDecoration: 'none' }}>
+                    <ListTile
+                      position={index + 1}
+                      imagePath={song.imgUrl || "/example.png"}
+                      songName={song.titel}
+                      artistName={song.artistName}
+                      trend={trendMap[song.songId] || 0}
+                    />
+                  </Link>
                 ))}
               </div>
             </div>

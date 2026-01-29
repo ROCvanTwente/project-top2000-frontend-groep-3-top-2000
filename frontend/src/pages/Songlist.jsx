@@ -88,8 +88,9 @@ const Songlist = () => {
           songId: song.songId,
           songName: song.titel,
           artistName: song.artist,
-          imagePath: "", // You can add image paths later or use a placeholder
+          imagePath: song.songImage ?? null,
         }));
+        console.log("Fetched songs for year", selectedYear, ":", data);
 
         setSongs(mappedSongs);
       } catch (err) {
