@@ -96,22 +96,16 @@ const Song = () => {
       try {
         setLoadingYears(true);
         // Same approach as in artist.jsx: fetch Top2000 entries for this song
-        // (Promise.all pattern retained, even though this is 1 request)
-        const songsWithDetails = await Promise.all(
-          [id].map(async (songId) => {
-            const songRes = await fetch(
-              `${BASE_API_URL}/api/Top2000/by-song/${songId}`,
-            );
-            if (!songRes.ok) {
-              throw new Error(`HTTP error! status: ${songRes.status}`);
-            }
-            const songTop2000Entries = await songRes.json();
-            return songTop2000Entries;
-          }),
+        const response = await fetch(
+          `http://top2000api.runasp.net/api/Top2000/by-song/${id}`,
         );
 
-        const flat = songsWithDetails.flat();
-        const list = Array.isArray(flat) ? flat : [];
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const list = Array.isArray(data) ? data : [];
 
         const mapped = list
           .map((item) => ({
@@ -126,7 +120,7 @@ const Song = () => {
 
         setYearData(mapped);
       } catch (err) {
-        console.error("Error fetching year data:", err);
+        console.error("Error fetching Top2000 entries for song:", err);
         setYearData([]);
       } finally {
         setLoadingYears(false);

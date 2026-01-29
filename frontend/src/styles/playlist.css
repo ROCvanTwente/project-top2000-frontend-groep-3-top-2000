@@ -4,6 +4,7 @@
     height: 100vh;
     background-color: #f5f5f5;
     padding: 20px;
+    padding-bottom: 140px;
     position: relative;
 }
 
@@ -280,6 +281,21 @@
     transform: scale(0.95);
 }
 
+.playlist-floating-actions {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 5000;
+}
+
+/* Override sidebar-specific layout rules when buttons are used as floating actions */
+.playlist-floating-actions .add-playlist-button {
+    margin-top: 0;
+}
+
 /* Error Message */
 .error-message {
     background-color: #fee2e2;
@@ -321,6 +337,7 @@
 @media (max-width: 768px) {
     .playlist-container {
         padding: 16px;
+        padding-bottom: 140px;
     }
 
     .playlist-wrapper {
@@ -365,7 +382,7 @@
         gap: 12px;
     }
 
-    .add-playlist-button {
+    .playlists-sidebar .add-playlist-button {
         display: none;
     }
 
@@ -436,12 +453,27 @@
         width: 56px;
         height: 56px;
     }
+
+    .playlist-floating-actions {
+        right: 16px;
+        bottom: 16px;
+        gap: 10px;
+    }
+
+    .playlist-floating-actions .add-playlist-button,
+    .playlist-floating-actions .add-song-button {
+        width: auto;
+        padding: 12px 16px;
+        font-size: 14px;
+        border-radius: 12px;
+    }
 }
 
 /* Small Mobile */
 @media (max-width: 480px) {
     .playlist-container {
         padding: 12px;
+        padding-bottom: 140px;
     }
 
     .sidebar-title {
