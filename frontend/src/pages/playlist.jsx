@@ -367,9 +367,6 @@ export const Playlist = () => {
                                 </button>
                             ))}
                         </div>
-                        <button className="add-playlist-button" onClick={handleAddPlaylist} aria-label="Add new playlist">
-                            + Add Playlist
-                        </button>
                     </aside>
 
                     {/* Main content - Songs list */}
@@ -384,9 +381,6 @@ export const Playlist = () => {
                             <>
                                 <div className="playlist-header">
                                     <h1 className="playlist-title">{playlistDetail.name}</h1>
-                                    <button className="add-song-button" onClick={handleAddSong}>
-                                        + Add Song
-                                    </button>
                                 </div>
                                 <div className="songs-list">
                                     {playlistDetail.songs.map((song) => (
@@ -415,10 +409,16 @@ export const Playlist = () => {
                     </main>
                 </div>
 
-                {/* Floating action button for mobile */}
-                <button className="fab-add-playlist" onClick={handleAddPlaylist} aria-label="Add new playlist">
-                    +
-                </button>
+                <div className="playlist-floating-actions" aria-label="Playlist actions">
+                    {playlistDetail && (
+                        <button className="add-song-button" onClick={handleAddSong} aria-label="Add song">
+                            + Add Song
+                        </button>
+                    )}
+                    <button className="add-playlist-button" onClick={handleAddPlaylist} aria-label="Add playlist">
+                        + Add Playlist
+                    </button>
+                </div>
 
                 {/* Search Modal */}
                 {showSearchModal && (
