@@ -16,12 +16,28 @@ export default function NavBar({ onMenuToggle }) {
     }
   };
 
+  const normalize = (str) => str.toLowerCase().trim();
+  
+  const getDisplayText = (item) => {
+    return item.type === "song" ? item.titel : item.name;
+  };
+
+  const relevanceScore = (item, query) => {
+    const text = normalize(getDisplayText(item));
+    const q = normalize(query);
+
+    if (text === q) return 0;         // exact match
+    if (text.startsWith(q)) return 1; // starts with query
+    if (text.includes(q)) return 2;   // contains query
+    return 3;                         // no match
+  };
+
   const performSearch = async (query) => {
     if (!query.trim()) {
       setSearchResults([]);
       return;
     }
-
+     
     setIsLoading(true);
     try {
       const encodedQuery = encodeURIComponent(query.trim());
@@ -41,7 +57,16 @@ export default function NavBar({ onMenuToggle }) {
         ...(Array.isArray(artists) ? artists.map(a => ({ ...a, type: 'artist', id: a.artistId })) : [])
       ];
       
-      setSearchResults(combinedResults);
+      // Sort results by relevance
+     const sortedResults = combinedResults.sort((a, b) => {
+        const scoreDiff = relevanceScore(a, query) - relevanceScore(b, query);
+        if (scoreDiff !== 0) return scoreDiff;
+
+        return getDisplayText(a).length - getDisplayText(b).length;
+      });
+
+      setSearchResults(sortedResults);
+
     } catch (err) {
       console.error("Search failed", err);
       setSearchResults([]);
@@ -130,16 +155,6 @@ export default function NavBar({ onMenuToggle }) {
               onChange={handleSearchChange}
               onFocus={handleSearchToggle}
             />
-            {searchQuery && (
-              <button
-                type="button"
-                className="search-clear-btn"
-                onClick={handleClearSearch}
-                aria-label="Clear search"
-              >
-                ✕
-              </button>
-            )}
             <button
               className="search-icon-btn"
               onClick={handleSearchSubmit}
