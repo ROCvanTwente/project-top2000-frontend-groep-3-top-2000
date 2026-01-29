@@ -45,6 +45,9 @@ export const Sidebar = ({ isOpen, onClose }) => {
             <li>
               <a href="/admin">Admin</a>
             </li>
+            <li>
+              <a href="/statistics">Statistics</a>
+            </li>
           </ul>
         </nav>
       </aside>
