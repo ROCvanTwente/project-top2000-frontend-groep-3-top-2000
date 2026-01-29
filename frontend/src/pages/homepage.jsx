@@ -5,19 +5,7 @@ import { ListTile } from "../components/listTile";
 import { Footer } from "../components/footer";
 import { Carousel } from "../components/carousel";
 import { Link } from "react-router-dom";
-
-const carouselItems = [
-  {
-    image: "/example.png",
-    href: "/",
-    alt: "Description",
-  },
-  {
-    image: "example.png",
-    href: "/",
-    alt: "Description 2",
-  },
-];
+import { BASE_API_URL } from "../data/api-url";
 
 const Homepage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -38,7 +26,7 @@ const Homepage = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "http://top2000api.runasp.net/api/Top2000/top10?year=2024",
+          `${BASE_API_URL}/api/Top2000/top10?year=2024`,
         );
 
         if (!response.ok) {
@@ -46,6 +34,7 @@ const Homepage = () => {
         }
 
         const data = await response.json();
+        console.log("Fetched top songs data:", data);
         setSongs(data);
         setError(null);
       } catch (err) {
@@ -57,14 +46,21 @@ const Homepage = () => {
     };
 
     fetchTopSongs();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-gray-100">
       <NavBar onMenuToggle={handleMenuToggle} />
       <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
       <main className="flex flex-1 flex-col items-center justify-center text-center p-4">
-        <Carousel items={carouselItems} carouselId="myCarousel" />
+        <Carousel
+          items={songs.slice(0, 3).map(song => ({
+            image: song.thumbnail,
+            href: `/song/${song.songId}`,
+            alt: song.titel
+          }))}
+          carouselId="myCarousel"
+        />
 
         {loading && (
           <div className="w-full max-w-4xl p-4 text-center">
@@ -94,7 +90,7 @@ const Homepage = () => {
               >
                 <ListTile
                   position={song.position}
-                  imagePath={`/api/images/song/${song.songId}`} // dit komt later nog maar nu laat ik het ff zo staan
+                  imagePath={song.artistImage}
                   songName={song.titel}
                   artistName={song.artist}
                   trend={song.trend}

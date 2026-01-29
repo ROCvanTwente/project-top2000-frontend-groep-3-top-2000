@@ -4,6 +4,7 @@ import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { Footer } from "../components/footer";
 import "./song.css";
+import { BASE_API_URL } from "../data/api-url";
 
 const Song = () => {
   const { id } = useParams(); // Get the song ID from the URL
@@ -73,9 +74,7 @@ const Song = () => {
     const fetchSongData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          `http://top2000api.runasp.net/api/Song/${id}`,
-        );
+        const response = await fetch(`${BASE_API_URL}/api/Song/${id}`);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -417,7 +416,7 @@ const Song = () => {
                     to={`/artist/${displayData.artistId}`}
                     className="artist-btn"
                   >
-                    <span className="artist-icon">👤</span> View Artist
+                    <span className="artist-icon"></span> Artist Pagina
                   </Link>
                 )}
                 <a
@@ -472,7 +471,7 @@ const Song = () => {
                     </div>
                   ))
                 ) : (
-                  //here we need to add the list of songs via the api http://top2000api.runasp.net/api/Top2000/by-song/ {songid}
+                  //here we need to add the list of songs via the api `${BASE_API_URL}/api/Top2000/by-song/ {songid}`
                   <p className="text-center py-4">
                     No year data available rn sorry
                   </p>
@@ -508,7 +507,7 @@ const Song = () => {
                   to={`/artist/${displayData.artistId}`}
                   className="artist-btn-mobile"
                 >
-                  <span className="artist-icon">👤</span> View Artist
+                  <span className="artist-icon"></span> Artist Pagina
                 </Link>
               )}
 

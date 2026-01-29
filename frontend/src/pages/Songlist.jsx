@@ -4,6 +4,7 @@ import { ListTile } from "../components/listTile";
 import { Footer } from "../components/footer";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
+import { BASE_API_URL } from "../data/api-url";
 
 const Songlist = () => {
   const [songs, setSongs] = useState([]);
@@ -62,7 +63,7 @@ const Songlist = () => {
         setError(null);
 
         const response = await fetch(
-          `http://top2000api.runasp.net/api/Top2000/by-year/${selectedYear}`,
+          `${BASE_API_URL}/api/Top2000/by-year/${selectedYear}`,
         );
 
         if (!response.ok) {
@@ -87,8 +88,9 @@ const Songlist = () => {
           songId: song.songId,
           songName: song.titel,
           artistName: song.artist,
-          imagePath: "", // You can add image paths later or use a placeholder
+          imagePath: song.songImage ?? null,
         }));
+        console.log("Fetched songs for year", selectedYear, ":", data);
 
         setSongs(mappedSongs);
       } catch (err) {
@@ -255,7 +257,7 @@ const Songlist = () => {
             <div className="text-gray-700 mb-4">{error}</div>
             <p className="text-sm text-gray-600 mb-4">
               Failed to fetch from:
-              http://top2000api.runasp.net/api/Top2000/by-year/{selectedYear}
+              `${BASE_API_URL}/api/Top2000/by-year/{selectedYear}`
             </p>
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
               <button

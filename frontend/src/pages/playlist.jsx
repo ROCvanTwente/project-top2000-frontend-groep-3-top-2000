@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import NavBar from '../components/navBar'
 import { Sidebar } from '../components/sidebar'
 import '../styles/playlist.css'
+import { BASE_API_URL } from '../data/api-url'
 
 export const Playlist = () => {
     const navigate = useNavigate()
@@ -42,7 +43,7 @@ export const Playlist = () => {
 
     // Get API base URL
     const getApiBase = () => {
-        return "http://top2000api.runasp.net/";
+        return BASE_API_URL;
     }
 
     const searchSongs = async (query) => {
