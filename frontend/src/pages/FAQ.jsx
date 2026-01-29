@@ -30,32 +30,32 @@ function FAQ() {
           answer="the top 2000 is a music event which ranks the 2000 most popular songs as voted by the public."
         />
         <Faq
-          question="Wanneer wordt de Top 2000 uitgezonden?"
-          answer="De Top 2000 wordt elk jaar uitgezonden van 25 december tot en met 31 december, 24 uur per dag."
+          question="When will the Top 2000 be broadcast?"
+          answer="The Top 2000 is broadcast every year from December 25th to December 31st, 24 hours a day."
         />
         <Faq
-          question="Wie bepaalt welke nummers in de Top 2000 staan?"
-          answer="De lijst wordt volledig bepaald door het publiek. Iedereen kan tijdens de stemweek zijn of haar favoriete nummers insturen."
+          question="Who decides which songs are in the Top 2000?"
+          answer="The list is determined entirely by the public. Everyone can submit their favorite songs during voting week."
         />
         <Faq
-          question="Hoe kan ik stemmen voor de Top 2000?"
-          answer="Stemmen kan online via de website van NPO Radio 2 tijdens de officiële stemperiode, meestal begin december."
+          question="How can I vote for the Top 2000?"
+          answer="Voting is possible online via the NPO Radio 2 website during the official voting period, usually in early December."
         />
         <Faq
-          question="Mag ik elk nummer kiezen dat ik wil?"
-          answer="Ja, je mag vrijwel elk nummer insturen, zolang het officieel is uitgebracht. Je kunt kiezen uit een suggestielijst of zelf een nummer toevoegen."
+          question="Can I choose any song I want?"
+          answer="Yes, you can submit almost any song, as long as it's officially released. You can choose from a list of suggestions or add your own."
         />
         <Faq
-          question="Welk nummer staat het vaakst op nummer 1?"
-          answer="Bohemian Rhapsody van Queen staat het vaakst op nummer 1 in de geschiedenis van de Top 2000."
+          question="Which song is number 1 most often?"
+          answer="Queen's Bohemian Rhapsody has been at number 1 most times in the history of the Top 2000."
         />
         <Faq
-          question="Kan ik de Top 2000 ook online of via een app luisteren?"
-          answer="Ja, de Top 2000 is te beluisteren via NPO Radio 2, de NPO Luister-app en via diverse online streams."
+          question="Can I also listen to the Top 2000 online or via an app?"
+          answer="Yes, the Top 2000 can be heard via NPO Radio 2, the NPO Luister app and via various online streams."
         />
         <Faq
-          question="Bestaat de Top 2000 ook als lijst na afloop?"
-          answer="Ja, na de uitzending is de volledige lijst online terug te vinden, inclusief statistieken, artiestenoverzichten en jaartallen."
+          question="Does the Top 2000 also exist as a list after the event?"
+          answer="Yes, after the broadcast, the full list can be found online, including statistics, artist overviews, and dates."
         />
       </main>
       <Footer />
