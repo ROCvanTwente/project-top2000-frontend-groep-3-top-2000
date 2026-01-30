@@ -1,0 +1,49 @@
+# Dependencies
+/node_modules/
+
+# Production builds
+/build/
+/dist/
+
+# Local environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE-specific
+.vscode/
+.idea/
+*.swp
+
+# Testing
+/coverage/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Cache
+.cache/
+*.cache
+.cache-loader/
+.eslintcache
+
+# Optional: if using Next.js frontend
+.next/
+out/
+
+# Optional: if using Storybook
+.storybook-out/
+storybook-static/

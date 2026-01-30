@@ -1,0 +1,262 @@
+/* Modernized Artist page styles ⚡️ */
+:root {
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --accent: linear-gradient(90deg,#b01920,#06b6d4);
+  --accent-solid: #b01920;
+  --glass: rgba(255,255,255,0.6);
+  --radius: 12px;
+  --shadow-md: 0 6px 18px rgba(15,23,42,0.08);
+}
+
+/* Page layout */
+.row {
+  display: flex;
+  gap: 32px;
+  padding: 48px 24px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  overflow-x: hidden; /* prevent content from pushing columns off-screen */
+} 
+
+.container-left, .container-right {
+  background: transparent;
+}
+
+.container-left {
+  flex: 1 1 380px;
+  min-width: 300px;
+}
+
+.container-right {
+  flex: 1 1 420px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Image and overlay */
+.image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+.image-container:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(15,23,42,0.12);
+}
+
+.image-artist {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+}
+
+/* Ensure the image container doesn't force a minimum width */
+.image-container { width: 100%; max-width: 100%; }
+
+
+.artist-name {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  z-index: 10;
+  color: #fff;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 2vw, 1.8rem);
+  background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.6));
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* Links */
+.links-container {
+  margin-top: 18px;
+  margin-bottom: 18px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  color: var(--accent-solid);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 999px;
+  box-shadow: 0 6px 14px rgba(79,70,229,0.08);
+  border: 1px solid rgba(79,70,229,0.08);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px rgba(79,70,229,0.12);
+}
+
+/* Card sections */
+.artist-bio, .artist-positions, .artist-song-list {
+  background: var(--card);
+  padding: 18px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.artist-bio h2, .artist-song-list h2 {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+}
+
+.artist-bio p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Positions - show as chips */
+.artist-positions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 18px; /* spacing between positions and song list */
+}
+
+.artist-positions p {
+  margin: 0;
+  background: linear-gradient(90deg, rgba(79,70,229,0.08), rgba(6,182,212,0.03));
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: var(--accent-solid);
+  font-weight: 700;
+}
+
+/* Songs list - present as a grid of cards */
+.songs-listtiles {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+/* Target the ListTile wrapper elements (generic selector to style children) */
+.songs-listtiles > * {
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.9));
+  border-radius: 10px;
+  padding: 20px 8px 8px 44px; /* make space for the position badge */
+  box-shadow: 0 8px 20px rgba(2,6,23,0.04);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  width: 100% !important; /* ensure each tile fills the grid column */
+  box-sizing: border-box;
+  overflow: hidden; /* prevent inner content from spilling out */
+}
+
+/* Keep hover behaviour */
+.songs-listtiles > *:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(2,6,23,0.08);
+}
+
+/* Override inline badge position (no component changes) so the red bubble is visible inside the tile */
+.songs-listtiles > * > span[style] {
+  left: 12px !important;
+  top: 12px !important;
+  z-index: 20 !important;
+}
+
+/* For very small tiles ensure badge doesn't collide with content */
+@media (max-width: 480px) {
+  .songs-listtiles > * { padding-left: 36px; }
+  .songs-listtiles > * > span[style] { left: 8px !important; top: 8px !important; }
+}
+
+/* Small screens - stack everything */
+@media (min-width: 720px) {
+  /* tablet and up: two equal columns filling the available width while allowing content to shrink */
+  .row, .row.mx-0 {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 32px !important;
+    align-items: start !important;
+    width: 100% !important;
+  }
+  /* Ensure the children behave as grid items rather than flex items */
+  .container-left, .container-right {
+    flex: none !important;
+    width: auto !important;
+    display: block !important;
+    min-width: 0; /* allow children to shrink */
+  }
+  .container-left { grid-column: 1; }
+  .container-right { grid-column: 2; }
+
+  /* Make the songs list a single column inside the right column for tablet/laptop sizes - increased specificity */
+  .artist-song-list .songs-listtiles {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Large screens: allow two song columns when there's plenty of space */
+@media (min-width: 1280px) {
+  .songs-listtiles {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 880px) {
+  .row {
+    padding: 28px 16px;
+  }
+  .container-left, .container-right {
+    flex: 1 1 100%;
+  }
+  .image-artist {
+    max-height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .image-artist {
+    max-height: 220px;
+  }
+  .links-container { gap: 8px; }
+  .artist-positions p { padding: 6px 8px; font-size: 0.9rem; }
+}
+
+/* Skeleton Loading Styles */
+.skeleton-box {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Utility tweaks */
+.artist-bio, .artist-song-list { word-wrap: break-word; }
+
+/* subtle focus styles for accessibility */
+.link:focus { outline: 3px solid rgba(79,70,229,0.18); outline-offset: 4px; }
+
