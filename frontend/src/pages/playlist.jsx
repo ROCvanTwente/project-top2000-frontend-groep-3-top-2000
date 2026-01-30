@@ -48,6 +48,27 @@ export const Playlist = () => {
     return BASE_API_URL;
   };
 
+  // Helper functions for search relevance scoring
+  const normalize = (str) => str.toLowerCase().trim();
+
+  const relevanceScore = (song, query) => {
+    const normalisedSongTitle = normalize(song.titel);
+    const normalisedArtistName = normalize(song.artistName);
+    const normalisedQuery = normalize(query);
+
+    // Check title first
+    if (normalisedSongTitle === normalisedQuery) return 0;         // exact match
+    if (normalisedSongTitle.startsWith(normalisedQuery)) return 1; // starts with query
+    if (normalisedSongTitle.includes(normalisedQuery)) return 2;   // contains query
+    
+    // Check artist name
+    if (normalisedArtistName === normalisedQuery) return 0;        // exact match
+    if (normalisedArtistName.startsWith(normalisedQuery)) return 1; // starts with query
+    if (normalisedArtistName.includes(normalisedQuery)) return 2;   // contains query
+    
+    return 3;                         // no match
+  };
+
   // Search for songs by title or artist name, but only show songs
   const searchSongs = async (query) => {
     if (!query || query.trim().length < 2) {
@@ -97,14 +118,25 @@ export const Playlist = () => {
         });
       }
 
-      setSearchResults(allSongs);
+      // Sort results by relevance
+      const sortedResults = allSongs.sort((a, b) => {
+        const scoreDiff = relevanceScore(a, query) - relevanceScore(b, query);
+        if (scoreDiff !== 0) return scoreDiff;
+
+        // Secondary sort by title length if relevance scores are equal
+        return (a.titel || "").length - (b.titel || "").length;
+      });
+
+      setSearchResults(sortedResults);
+
     } catch (err) {
-      console.error("Search error:", err);
+      console.error("Search failed", err);
       setSearchResults([]);
     } finally {
       setSearchLoading(false);
     }
   };
+
 
   // Debounce search queries
   useEffect(() => {
