@@ -5,6 +5,7 @@ import { Sidebar } from '../components/sidebar';
 import { Footer } from '../components/footer';
 import '../styles/auth.css';
 import logo from '../assets/top-2000-logo.png';
+import { BASE_API_URL } from '../data/api-url';
 
 export default function Register() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -14,8 +15,6 @@ export default function Register() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
-    const apiPrefix = apiBase || '';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,8 +26,7 @@ export default function Register() {
         setLoading(true);
 
         try {
-            const base = apiPrefix ? apiPrefix.replace(/\/$/, '') : '';
-            const url = (base || '') + '/api/auth/register';
+            const url = BASE_API_URL + '/api/auth/register';
             console.log('POST', url, { email });
 
             const res = await fetch(url, {
@@ -42,7 +40,9 @@ export default function Register() {
 
             if (!res.ok) {
                 let body = null;
-                try { body = JSON.parse(raw); } catch (e) { body = null; }
+                try { body = JSON.parse(raw); } catch (e) { 
+                    console.log('Failed to parse error response JSON', e);
+                    body = null; }
                 const serverMsg = body?.message || body?.error || raw || `Register failed (${res.status})`;
                 setError(serverMsg);
                 setLoading(false);
@@ -50,13 +50,15 @@ export default function Register() {
             }
 
             let data = {};
-            try { data = JSON.parse(raw); } catch (e) { data = {}; }
+            try { data = JSON.parse(raw); } catch (e) {
+                console.log('Failed to parse success response JSON', e);
+                data = {}; }
 
             // Save tokens and email
             if (data.token) localStorage.setItem('accessToken', data.token);
             if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
             if (data.expiresAt) localStorage.setItem('tokenExpiresAt', new Date(data.expiresAt).toISOString());
-            try { localStorage.setItem('userEmail', email); } catch (e) { }
+            try { localStorage.setItem('userEmail', email); } catch (e) {console.log('Failed to save userEmail', e); }
 
             // Redirect to account page
             navigate('/account');
@@ -79,47 +81,48 @@ export default function Register() {
                     </div>
 
                     <div className="auth-tabs">
-                        <a href="/login" className="auth-tab">Log in</a>
-                        <div className="auth-tab active">Registreer</div>
+                        <a href="/login" className="auth-tab btn btn-secondary">Log in</a>
+                        <div style={{ backgroundColor: "#363b4b" }} className="auth-tab active btn btn-primary">Registreer</div>
                     </div>
 
                     {error && (
-                        <div className="auth-error">{error}</div>
+                        <div className="auth-error" style={{ marginBottom: 20 }}>{error}</div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="auth-form">
-                        <input
-                            className="auth-input"
-                            type="email"
-                            placeholder="E-mail"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+                    {!error && (
+                        <form onSubmit={handleSubmit} className="auth-form">
+                            <input
+                                className="form-control auth-input mb-3"
+                                type="email"
+                                placeholder="E-mail"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
 
-                        <input
-                            className="auth-input"
-                            type="password"
-                            placeholder="Wachtwoord"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                            <input
+                                className="form-control auth-input mb-3"
+                                type="password"
+                                placeholder="Wachtwoord"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
 
-                        <input
-                            className="auth-input"
-                            type="password"
-                            placeholder="Bevestig wachtwoord"
-                            value={confirm}
-                            onChange={(e) => setConfirm(e.target.value)}
-                            required
-                        />
+                            <input
+                                className="form-control auth-input mb-3"
+                                type="password"
+                                placeholder="Bevestig wachtwoord"
+                                value={confirm}
+                                onChange={(e) => setConfirm(e.target.value)}
+                                required
+                            />
 
-                        <button className="auth-button" type="submit" disabled={loading}>
-                            {loading ? 'Registering...' : 'Registreer'}
-                        </button>
-                    </form>
-
+                            <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
+                                {loading ? 'Registering...' : 'Registreer'}
+                            </button>
+                        </form>
+                    )}
                 </div>
             </main>
             <Footer />

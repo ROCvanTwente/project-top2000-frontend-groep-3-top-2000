@@ -82,8 +82,8 @@ export default function Login() {
                     </div>
 
                     <div className="auth-tabs">
-                        <div className="auth-tab active">Log in</div>
-                        <a href="/register" className="auth-tab">Registreer</a>
+                        <div style={{ backgroundColor: "#363b4b" }} className="auth-tab active btn btn-primary">Log in</div>
+                        <a href="/register" className="auth-tab btn btn-secondary">Registreer</a>
                     </div>
 
                     {error && (
@@ -92,7 +92,7 @@ export default function Login() {
 
                     <form onSubmit={handleSubmit} className="auth-form">
                         <input
-                            className="auth-input"
+                            className="form-control auth-input mb-3"
                             type="email"
                             placeholder="E-mail"
                             value={email}
@@ -101,7 +101,7 @@ export default function Login() {
                         />
 
                         <input
-                            className="auth-input"
+                            className="form-control auth-input mb-3"
                             type="password"
                             placeholder="Wachtwoord"
                             value={password}
@@ -109,7 +109,7 @@ export default function Login() {
                             required
                         />
 
-                        <button className="auth-button" type="submit" disabled={loading}>
+                        <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
                             {loading ? 'Logging in...' : 'Inloggen'}
                         </button>
                     </form>
