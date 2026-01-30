@@ -87,12 +87,6 @@ export default function NavBar({ onMenuToggle }) {
     }, 300);
   };
 
-  // Clear search query and results
-  const handleClearSearch = () => {
-    setSearchQuery("");
-    setSearchResults([]);
-  };
-
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
@@ -127,7 +121,7 @@ export default function NavBar({ onMenuToggle }) {
   }, []);
 
   return (
-    <nav className="navbar bg-body-tertiary sticky-top">
+    <nav className="navbar  sticky-top ">
       <div className="container-fluid d-flex align-items-center justify-content-between">
         <div className="d-flex align-items-center gap-2">
           <button
@@ -135,13 +129,15 @@ export default function NavBar({ onMenuToggle }) {
             onClick={onMenuToggle}
             aria-label="Toggle menu"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" color="#fff">
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <line x1="3" y1="12" x2="21" y2="12"></line>
               <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
           </button>
-          <a className="navbar-brand mb-0">TOP 2000</a>
+          <Link className="navbar-brand" to={"/"}>
+            <img src="top-2000-logo-empty.png" alt="Top 2000 logo" width={100}></img>
+          </Link>
         </div>
 
         <form onSubmit={handleSearchSubmit} className="search-form">
@@ -205,7 +201,7 @@ export default function NavBar({ onMenuToggle }) {
           aria-label="Account"
           title={accountEmail ? `Signed in as ${accountEmail}` : "Account"}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" color="#fff">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
