@@ -469,7 +469,7 @@ export const Playlist = () => {
         {/* Search Modal */}
         {showSearchModal && (
           <div className="modal-overlay" onClick={handleCloseSearchModal}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content p-4 rounded" style={{ backgroundColor: "#fff" }} onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
                 <h2>Search for a Song</h2>
                 <button
