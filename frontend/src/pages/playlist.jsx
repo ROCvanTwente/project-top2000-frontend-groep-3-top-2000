@@ -20,6 +20,8 @@ export const Playlist = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+  const [playlistNameInput, setPlaylistNameInput] = useState("");
 
   // Check if user is logged in
   useEffect(() => {
@@ -282,10 +284,18 @@ export const Playlist = () => {
     }
   };
 
-  const handleAddPlaylist = async () => {
-    const playlistName = prompt("Enter playlist name:");
+  const handleAddPlaylist = () => {
+    setShowPlaylistModal(true);
+    setPlaylistNameInput("");
+  };
 
-    if (!playlistName || playlistName.trim() === "") {
+  const handleClosePlaylistModal = () => {
+    setShowPlaylistModal(false);
+    setPlaylistNameInput("");
+  };
+
+  const handleCreatePlaylist = async () => {
+    if (!playlistNameInput || playlistNameInput.trim() === "") {
       return;
     }
 
@@ -301,7 +311,7 @@ export const Playlist = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ name: playlistName.trim() }),
+        body: JSON.stringify({ name: playlistNameInput.trim() }),
       });
 
       if (!response.ok) {
@@ -322,6 +332,7 @@ export const Playlist = () => {
       setSelectedPlaylist(newPlaylist.playlistId);
       await fetchPlaylistDetail(newPlaylist.playlistId);
       setError(null);
+      handleClosePlaylistModal();
     } catch (err) {
       setError("Failed to create playlist");
       console.error(err);
@@ -517,6 +528,55 @@ export const Playlist = () => {
                   searchResults.length === 0 && (
                     <p className="no-results">No songs found</p>
                   )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Add Playlist Modal */}
+        {showPlaylistModal && (
+          <div className="modal-overlay" onClick={handleClosePlaylistModal}>
+            <div className="modal-content p-4 rounded" style={{ backgroundColor: "#fff" }} onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h2>Create New Playlist</h2>
+                <button
+                  className="modal-close"
+                  onClick={handleClosePlaylistModal}
+                >
+                  &times;
+                </button>
+              </div>
+              <div className="modal-body">
+                <input
+                  type="text"
+                  id="playlist-name-input"
+                  name="playlistName"
+                  className="search-input-playlist"
+                  placeholder="Enter playlist name..."
+                  value={playlistNameInput}
+                  onChange={(e) => setPlaylistNameInput(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      handleCreatePlaylist();
+                    }
+                  }}
+                  autoFocus
+                />
+              </div>
+              <div className="modal-footer" style={{ display: "flex", gap: "10px", justifyContent: "flex-end", padding: "15px" }}>
+                <button
+                  className="btn btn-secondary"
+                  onClick={handleClosePlaylistModal}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleCreatePlaylist}
+                  disabled={!playlistNameInput.trim()}
+                >
+                  Create
+                </button>
               </div>
             </div>
           </div>
