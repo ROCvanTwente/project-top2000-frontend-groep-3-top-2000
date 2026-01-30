@@ -81,8 +81,8 @@ export default function Register() {
                     </div>
 
                     <div className="auth-tabs">
-                        <a href="/login" className="auth-tab">Log in</a>
-                        <div className="auth-tab active">Registreer</div>
+                        <a href="/login" className="auth-tab btn btn-secondary">Log in</a>
+                        <div style={{ backgroundColor: "#363b4b" }} className="auth-tab active btn btn-primary">Registreer</div>
                     </div>
 
                     {error && (
@@ -91,7 +91,7 @@ export default function Register() {
 
                     <form onSubmit={handleSubmit} className="auth-form">
                         <input
-                            className="auth-input"
+                            className="form-control auth-input mb-3"
                             type="email"
                             placeholder="E-mail"
                             value={email}
@@ -100,7 +100,7 @@ export default function Register() {
                         />
 
                         <input
-                            className="auth-input"
+                            className="form-control auth-input mb-3"
                             type="password"
                             placeholder="Wachtwoord"
                             value={password}
@@ -109,7 +109,7 @@ export default function Register() {
                         />
 
                         <input
-                            className="auth-input"
+                            className="form-control auth-input mb-3"
                             type="password"
                             placeholder="Bevestig wachtwoord"
                             value={confirm}
@@ -117,7 +117,7 @@ export default function Register() {
                             required
                         />
 
-                        <button className="auth-button" type="submit" disabled={loading}>
+                        <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
                             {loading ? 'Registering...' : 'Registreer'}
                         </button>
                     </form>
