@@ -48,6 +48,7 @@ export const Playlist = () => {
     return BASE_API_URL;
   };
 
+  // Search for songs by title or artist name, but only show songs
   const searchSongs = async (query) => {
     if (!query || query.trim().length < 2) {
       setSearchResults([]);
@@ -56,24 +57,47 @@ export const Playlist = () => {
 
     setSearchLoading(true);
     try {
-      const apiBase = getApiBase();
-      const base = apiBase ? apiBase.replace(/\/$/, "") : "";
-      const url =
-        (base || "") + `/api/Song/search/${encodeURIComponent(query.trim())}`;
+      const encodedQuery = encodeURIComponent(query.trim());
+      
+      // Search both songs and artists
+      const [songsRes, artistsRes] = await Promise.all([
+        fetch(`/api/Song/search/${encodedQuery}`),
+        fetch(`/api/Artist/search/${encodedQuery}`)
+      ]);
 
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const songs = await songsRes.json();
+      const artists = await artistsRes.json();
 
-      if (!response.ok) {
-        throw new Error(`Failed to search songs (${response.status})`);
+      // If artist(s) found, get all their songs
+      let artistSongResults = [];
+      if (Array.isArray(artists) && artists.length > 0) {
+        // For each artist, fetch their songs
+        const artistSongFetches = artists.map(artist =>
+          fetch(`/api/Artist/${artist.artistId}/songs`)
+            .then(res => res.json())
+            .catch(err => {
+              console.error(`Failed to fetch songs for artist ${artist.artistId}:`, err);
+              return [];
+            })
+        );
+        const artistSongsArrays = await Promise.all(artistSongFetches);
+        // Flatten arrays
+        artistSongResults = artistSongsArrays.flat();
       }
 
-      const data = await response.json();
-      setSearchResults(data || []);
+      // Combine songs from title search and artist search, deduplicate by songId
+      let allSongs = Array.isArray(songs) ? [...songs] : [];
+      if (artistSongResults.length > 0) {
+        const seen = new Set(allSongs.map(s => s.songId));
+        artistSongResults.forEach(song => {
+          if (!seen.has(song.songId)) {
+            allSongs.push(song);
+            seen.add(song.songId);
+          }
+        });
+      }
+
+      setSearchResults(allSongs);
     } catch (err) {
       console.error("Search error:", err);
       setSearchResults([]);
@@ -88,7 +112,7 @@ export const Playlist = () => {
       if (searchQuery && searchQuery.trim().length >= 2) {
         searchSongs(searchQuery);
       }
-    }, 250);
+    }, 300);
 
     return () => clearTimeout(delayTimer);
   }, [searchQuery]);
@@ -485,7 +509,7 @@ export const Playlist = () => {
                   id="song-search-input"
                   name="songSearch"
                   className="search-input-playlist"
-                  placeholder="Search by song title..."
+                  placeholder="Search by song title or artist..."
                   value={searchQuery}
                   onChange={handleSearchInputChange}
                   autoFocus
