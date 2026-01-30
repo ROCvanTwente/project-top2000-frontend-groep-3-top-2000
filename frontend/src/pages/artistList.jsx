@@ -111,13 +111,6 @@ const ArtistList = () => {
                     <div>
                         <h1 className="fs-2 mb-0">Artiesten</h1>
                     </div>
-                    <button
-                        type="button"
-                        className="btn btn-outline-dark mt-2 mt-md-0"
-                        onClick={() => fetchArtists()}
-                    >
-                        Opnieuw laden
-                    </button>
                 </header>
 
                 {renderContent()}
