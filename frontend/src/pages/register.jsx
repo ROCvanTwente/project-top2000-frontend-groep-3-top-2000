@@ -86,42 +86,43 @@ export default function Register() {
                     </div>
 
                     {error && (
-                        <div className="auth-error">{error}</div>
+                        <div className="auth-error" style={{ marginBottom: 20 }}>{error}</div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="auth-form">
-                        <input
-                            className="form-control auth-input mb-3"
-                            type="email"
-                            placeholder="E-mail"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+                    {!error && (
+                        <form onSubmit={handleSubmit} className="auth-form">
+                            <input
+                                className="form-control auth-input mb-3"
+                                type="email"
+                                placeholder="E-mail"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
 
-                        <input
-                            className="form-control auth-input mb-3"
-                            type="password"
-                            placeholder="Wachtwoord"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                            <input
+                                className="form-control auth-input mb-3"
+                                type="password"
+                                placeholder="Wachtwoord"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
 
-                        <input
-                            className="form-control auth-input mb-3"
-                            type="password"
-                            placeholder="Bevestig wachtwoord"
-                            value={confirm}
-                            onChange={(e) => setConfirm(e.target.value)}
-                            required
-                        />
+                            <input
+                                className="form-control auth-input mb-3"
+                                type="password"
+                                placeholder="Bevestig wachtwoord"
+                                value={confirm}
+                                onChange={(e) => setConfirm(e.target.value)}
+                                required
+                            />
 
-                        <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
-                            {loading ? 'Registering...' : 'Registreer'}
-                        </button>
-                    </form>
-
+                            <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
+                                {loading ? 'Registering...' : 'Registreer'}
+                            </button>
+                        </form>
+                    )}
                 </div>
             </main>
             <Footer />
