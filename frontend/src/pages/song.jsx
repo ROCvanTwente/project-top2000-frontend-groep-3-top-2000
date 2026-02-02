@@ -97,7 +97,7 @@ const Song = () => {
         setLoadingYears(true);
         // Same approach as in artist.jsx: fetch Top2000 entries for this song
         const response = await fetch(
-          `http://top2000api.runasp.net/api/Top2000/by-song/${id}`,
+          `${BASE_API_URL}/api/Top2000/by-song/${id}`,
         );
 
         if (!response.ok) {
