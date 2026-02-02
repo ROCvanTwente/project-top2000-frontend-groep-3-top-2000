@@ -326,6 +326,42 @@ export const Playlist = () => {
           setIsLoggedIn(false);
           setError("Your session has expired. Please log in again.");
           return;
+
+
+    const handleRemoveSong = async (songId) => {
+        try {
+            const apiBase = getApiBase()
+            const base = apiBase ? apiBase.replace(/\/$/, '') : ''
+            const url = (base || '') + `/api/Playlist/${selectedPlaylist}/songs/${songId}`
+            const token = localStorage.getItem('accessToken')
+
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    localStorage.removeItem('accessToken')
+                    localStorage.removeItem('refreshToken')
+                    setIsLoggedIn(false)
+                    setError('Your session has expired. Please log in again.')
+                    return
+                }
+                throw new Error(`Failed to remove song (${response.status})`)
+            }
+
+            // Update local state
+            setPlaylistDetail({
+                ...playlistDetail,
+                songs: playlistDetail.songs.filter(s => s.songId !== songId)
+            })
+        } catch (err) {
+            setError('Failed to remove song from playlist')
+            console.error(err)
         }
         throw new Error(`Failed to add song (${response.status})`);
       }
