@@ -11,7 +11,8 @@ const Songlist = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedYear, setSelectedYear] = useState("2024"); // the PO finds this good  
+  const [selectedYear, setSelectedYear] = useState("2024"); // the PO finds this good
+  const [sortOption, setSortOption] = useState("positie+");  
 
   // You can customize this list based on what years are actually available
   const availableYears = [
@@ -54,6 +55,29 @@ const Songlist = () => {
     setSelectedYear(event.target.value);
     // When year changes, reset loading to show loading state
     setLoading(true);
+  };
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  const getSortedSongs = () => {
+    if (!songs.length) return [];
+
+    const sorted = [...songs];
+
+    switch (sortOption) {
+      case "positie+":
+        return sorted.sort((a, b) => a.position - b.position);
+      case "positie-":
+        return sorted.sort((a, b) => b.position - a.position);
+      case "a-z":
+        return sorted.sort((a, b) => a.songName.localeCompare(b.songName));
+      case "z-a":
+        return sorted.sort((a, b) => b.songName.localeCompare(a.songName));
+      default:
+        return sorted;
+    }
   };
 
   useEffect(() => {
@@ -319,6 +343,27 @@ const Songlist = () => {
               </select>
             </div>
 
+            <div className="flex items-center mt-2">
+              <label
+                htmlFor="sort-select"
+                className="text-gray-700 font-medium whitespace-nowrap"
+              >
+                Sorteren op:
+              </label>
+              <select
+                id="sort-select"
+                value={sortOption}
+                onChange={handleSortChange}
+                className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white min-w-[120px]"
+                disabled={loading}
+              >
+                <option value="positie+">positie oplopend</option>
+                <option value="positie-">positie aflopend</option>
+                <option value="a-z">a-z</option>
+                <option value="z-a">z-a</option>
+              </select>
+            </div>
+
             {/* Display the count of songs */}
             <div className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
               {songs.length} songs
@@ -338,7 +383,7 @@ const Songlist = () => {
             </div>
           ) : (
             <>
-              {songs.map((song) => (
+              {getSortedSongs().map((song) => (
                 <Link
                   key={`${song.songId}-${selectedYear}`}
                   to={`/song/${song.songId}`}

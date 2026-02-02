@@ -12,6 +12,7 @@ const ArtistList = () => {
     const [artists, setArtists] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [sortOption, setSortOption] = useState("positie+");
 
     const handleMenuToggle = () => {
         setSidebarOpen(!sidebarOpen);
@@ -25,6 +26,29 @@ const ArtistList = () => {
         if (!text) return "Geen biografie beschikbaar";
         if (text.length <= maxLength) return text;
         return `${text.slice(0, maxLength).trim()}…`;
+    };
+
+    const handleSortChange = (e) => {
+        setSortOption(e.target.value);
+    };
+
+    const getSortedArtists = () => {
+        if (!artists.length) return [];
+
+        const sorted = [...artists];
+
+        switch (sortOption) {
+            case "positie-":
+                return sorted.sort((a, b) => b.artistId - a.artistId);
+            case "positie+":
+                return sorted.sort((a, b) => a.artistId - b.artistId);
+            case "a-z":
+                return sorted.sort((a, b) => a.name.localeCompare(b.name));
+            case "z-a":
+                return sorted.sort((a, b) => b.name.localeCompare(a.name));
+            default:
+                return sorted;
+        }
     };
 
     const fetchArtists = useCallback(async (signal) => {
@@ -85,9 +109,11 @@ const ArtistList = () => {
             );
         }
 
+        const sortedArtists = getSortedArtists();
+
         return (
             <div className="d-grid gap-3">
-                {artists.map((artist, index) => (
+                {sortedArtists.map((artist, index) => (
                     <ListTile
                         key={artist.artistId || `${artist.name}-${index}`}
                         position={null}
@@ -110,6 +136,13 @@ const ArtistList = () => {
                 <header className="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3">
                     <div>
                         <h1 className="fs-2 mb-0">Artiesten</h1>
+                        <label htmlFor="artists-sort">sorteren op: </label>
+                        <select name="sort" id="artists-sort" value={sortOption} onChange={handleSortChange}>
+                            <option value="positie+">positie oplopend</option>
+                            <option value="positie-">positie aflopend</option>
+                            <option value="a-z">a-z</option>
+                            <option value="z-a">z-a</option>
+                        </select>
                     </div>
                 </header>
 
