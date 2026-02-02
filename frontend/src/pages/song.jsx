@@ -15,6 +15,34 @@ const Song = () => {
   const [yearData, setYearData] = useState([]);
   const [loadingYears, setLoadingYears] = useState(true);
 
+  const normalizePosition = (value) => {
+    if (value == null) return null;
+    if (typeof value === "number" && Number.isFinite(value)) return value;
+
+    const s = String(value).trim();
+    if (!s) return null;
+
+    // If API sends "1(0)" / "2()" / "1()0", take the number before the first "(".
+    const parenIdx = s.indexOf("(");
+    if (parenIdx !== -1) {
+      const beforeParen = s.slice(0, parenIdx).trim();
+      const mBefore = beforeParen.match(/-?\d+/);
+      if (mBefore) return Number(mBefore[0]);
+    }
+
+    const m = s.match(/-?\d+/);
+    return m ? Number(m[0]) : null;
+  };
+
+  const normalizeTrend = (value) => {
+    if (value == null) return null;
+    if (typeof value === "number" && Number.isFinite(value)) return value;
+    const s = String(value).trim();
+    if (!s) return null;
+    const n = Number(s);
+    return Number.isFinite(n) ? n : null;
+  };
+
   const handleMenuToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -112,8 +140,8 @@ const Song = () => {
             year: item.year ?? item.jaar ?? null,
             // "weeks" isn't guaranteed for this endpoint; keep optional to avoid breaking UI.
             weeks: item.weeks ?? item.weken ?? null,
-            position: item.position ?? null,
-            trend: item.trend ?? null,
+            position: normalizePosition(item.position),
+            trend: normalizeTrend(item.trend),
           }))
           .filter((x) => x.year != null)
           .sort((a, b) => b.year - a.year);
@@ -134,15 +162,13 @@ const Song = () => {
   }, [id]); // Re-run when ID changes
 
   const getTrendIcon = (trend) => {
-    if (trend === "up") return "▲";
-    if (trend === "down") return "▼";
-    return null;
+    if (trend == null || trend === 0) return null;
+    return trend > 0 ? "▲" : "▼";
   };
 
   const getTrendClass = (trend) => {
-    if (trend === "up") return "trend-up";
-    if (trend === "down") return "trend-down";
-    return "";
+    if (trend == null || trend === 0) return "";
+    return trend > 0 ? "trend-up" : "trend-down";
   };
 
   // Skeleton Loading Component
@@ -445,25 +471,30 @@ const Song = () => {
 
               {/* Right side - Year statistics */}
               <div className="song-right">
+                <div className="year-stats-header">
+                  <h2 className="year-stats-title">Top 2000 per jaar</h2>
+                  <div className="year-stats-columns" aria-hidden="true">
+                    <span>Jaar</span>
+                    <span className="year-stats-columns-right">Positie</span>
+                  </div>
+                </div>
                 {loadingYears ? (
                   <p className="text-center py-4">Loading year data...</p>
                 ) : yearData.length > 0 ? (
                   yearData.map((yearDataItem, index) => (
                     <div key={index} className="year-row">
                       <span className="year-label">{yearDataItem.year}</span>
-                      <span className="year-weeks">
-                        {yearDataItem.weeks ?? "—"}
-                      </span>
                       <div
                         className={`year-position ${getTrendClass(
                           yearDataItem.trend,
                         )}`}
                       >
                         <span className="position-number">
-                          {yearDataItem.position}
+                          {yearDataItem.position ?? "—"}
                         </span>
-                        {yearDataItem.trend && (
+                        {yearDataItem.trend != null && yearDataItem.trend !== 0 && (
                           <span className="trend-icon">
+                            {Math.abs(yearDataItem.trend)}
                             {getTrendIcon(yearDataItem.trend)}
                           </span>
                         )}
@@ -518,19 +549,17 @@ const Song = () => {
                   yearData.map((yearDataItem, index) => (
                     <div key={index} className="year-row-mobile">
                       <span className="year-label">{yearDataItem.year}</span>
-                      <span className="year-weeks">
-                        {yearDataItem.weeks ?? "—"}
-                      </span>
                       <div
                         className={`year-position ${getTrendClass(
                           yearDataItem.trend,
                         )}`}
                       >
                         <span className="position-number">
-                          {yearDataItem.position}
+                          {yearDataItem.position ?? "—"}
                         </span>
-                        {yearDataItem.trend && (
+                        {yearDataItem.trend != null && yearDataItem.trend !== 0 && (
                           <span className="trend-icon">
+                            {Math.abs(yearDataItem.trend)}
                             {getTrendIcon(yearDataItem.trend)}
                           </span>
                         )}
