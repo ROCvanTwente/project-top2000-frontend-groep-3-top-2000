@@ -57,16 +57,16 @@ export const Playlist = () => {
     const normalisedQuery = normalize(query);
 
     // Check title first
-    if (normalisedSongTitle === normalisedQuery) return 0;         // exact match
+    if (normalisedSongTitle === normalisedQuery) return 0; // exact match
     if (normalisedSongTitle.startsWith(normalisedQuery)) return 1; // starts with query
-    if (normalisedSongTitle.includes(normalisedQuery)) return 2;   // contains query
-    
+    if (normalisedSongTitle.includes(normalisedQuery)) return 2; // contains query
+
     // Check artist name
-    if (normalisedArtistName === normalisedQuery) return 0;        // exact match
+    if (normalisedArtistName === normalisedQuery) return 0; // exact match
     if (normalisedArtistName.startsWith(normalisedQuery)) return 1; // starts with query
-    if (normalisedArtistName.includes(normalisedQuery)) return 2;   // contains query
-    
-    return 3;                         // no match
+    if (normalisedArtistName.includes(normalisedQuery)) return 2; // contains query
+
+    return 3; // no match
   };
 
   // Search for songs by title or artist name, but only show songs
@@ -79,11 +79,11 @@ export const Playlist = () => {
     setSearchLoading(true);
     try {
       const encodedQuery = encodeURIComponent(query.trim());
-      
+
       // Search both songs and artists
       const [songsRes, artistsRes] = await Promise.all([
         fetch(`/api/Song/search/${encodedQuery}`),
-        fetch(`/api/Artist/search/${encodedQuery}`)
+        fetch(`/api/Artist/search/${encodedQuery}`),
       ]);
 
       const songs = await songsRes.json();
@@ -93,13 +93,16 @@ export const Playlist = () => {
       let artistSongResults = [];
       if (Array.isArray(artists) && artists.length > 0) {
         // For each artist, fetch their songs
-        const artistSongFetches = artists.map(artist =>
+        const artistSongFetches = artists.map((artist) =>
           fetch(`/api/Artist/${artist.artistId}/songs`)
-            .then(res => res.json())
-            .catch(err => {
-              console.error(`Failed to fetch songs for artist ${artist.artistId}:`, err);
+            .then((res) => res.json())
+            .catch((err) => {
+              console.error(
+                `Failed to fetch songs for artist ${artist.artistId}:`,
+                err,
+              );
               return [];
-            })
+            }),
         );
         const artistSongsArrays = await Promise.all(artistSongFetches);
         // Flatten arrays
@@ -109,8 +112,8 @@ export const Playlist = () => {
       // Combine songs from title search and artist search, deduplicate by songId
       let allSongs = Array.isArray(songs) ? [...songs] : [];
       if (artistSongResults.length > 0) {
-        const seen = new Set(allSongs.map(s => s.songId));
-        artistSongResults.forEach(song => {
+        const seen = new Set(allSongs.map((s) => s.songId));
+        artistSongResults.forEach((song) => {
           if (!seen.has(song.songId)) {
             allSongs.push(song);
             seen.add(song.songId);
@@ -128,7 +131,6 @@ export const Playlist = () => {
       });
 
       setSearchResults(sortedResults);
-
     } catch (err) {
       console.error("Search failed", err);
       setSearchResults([]);
@@ -136,7 +138,6 @@ export const Playlist = () => {
       setSearchLoading(false);
     }
   };
-
 
   // Debounce search queries
   useEffect(() => {
@@ -326,42 +327,6 @@ export const Playlist = () => {
           setIsLoggedIn(false);
           setError("Your session has expired. Please log in again.");
           return;
-
-
-    const handleRemoveSong = async (songId) => {
-        try {
-            const apiBase = getApiBase()
-            const base = apiBase ? apiBase.replace(/\/$/, '') : ''
-            const url = (base || '') + `/api/Playlist/${selectedPlaylist}/songs/${songId}`
-            const token = localStorage.getItem('accessToken')
-
-            const response = await fetch(url, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-
-            if (!response.ok) {
-                if (response.status === 401) {
-                    localStorage.removeItem('accessToken')
-                    localStorage.removeItem('refreshToken')
-                    setIsLoggedIn(false)
-                    setError('Your session has expired. Please log in again.')
-                    return
-                }
-                throw new Error(`Failed to remove song (${response.status})`)
-            }
-
-            // Update local state
-            setPlaylistDetail({
-                ...playlistDetail,
-                songs: playlistDetail.songs.filter(s => s.songId !== songId)
-            })
-        } catch (err) {
-            setError('Failed to remove song from playlist')
-            console.error(err)
         }
         throw new Error(`Failed to add song (${response.status})`);
       }
@@ -561,7 +526,11 @@ export const Playlist = () => {
         {/* Search Modal */}
         {showSearchModal && (
           <div className="modal-overlay" onClick={handleCloseSearchModal}>
-            <div className="modal-content p-4 rounded" style={{ backgroundColor: "#fff" }} onClick={(e) => e.stopPropagation()}>
+            <div
+              className="modal-content p-4 rounded"
+              style={{ backgroundColor: "#fff" }}
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="modal-header">
                 <h2>Search for a Song</h2>
                 <button
@@ -628,7 +597,11 @@ export const Playlist = () => {
         {/* Add Playlist Modal */}
         {showPlaylistModal && (
           <div className="modal-overlay" onClick={handleClosePlaylistModal}>
-            <div className="modal-content p-4 rounded" style={{ backgroundColor: "#fff" }} onClick={(e) => e.stopPropagation()}>
+            <div
+              className="modal-content p-4 rounded"
+              style={{ backgroundColor: "#fff" }}
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="modal-header">
                 <h2>Create New Playlist</h2>
                 <button
@@ -655,7 +628,15 @@ export const Playlist = () => {
                   autoFocus
                 />
               </div>
-              <div className="modal-footer" style={{ display: "flex", gap: "10px", justifyContent: "flex-end", padding: "15px" }}>
+              <div
+                className="modal-footer"
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  justifyContent: "flex-end",
+                  padding: "15px",
+                }}
+              >
                 <button
                   className="btn btn-secondary"
                   onClick={handleClosePlaylistModal}
