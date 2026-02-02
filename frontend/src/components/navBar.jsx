@@ -17,7 +17,7 @@ export default function NavBar({ onMenuToggle }) {
   };
 
   const normalize = (str) => str.toLowerCase().trim();
-  
+
   const getDisplayText = (item) => {
     return item.type === "song" ? item.titel : item.name;
   };
@@ -26,10 +26,10 @@ export default function NavBar({ onMenuToggle }) {
     const text = normalize(getDisplayText(item));
     const q = normalize(query);
 
-    if (text === q) return 0;         // exact match
+    if (text === q) return 0; // exact match
     if (text.startsWith(q)) return 1; // starts with query
-    if (text.includes(q)) return 2;   // contains query
-    return 3;                         // no match
+    if (text.includes(q)) return 2; // contains query
+    return 3; // no match
   };
 
   const performSearch = async (query) => {
@@ -37,15 +37,15 @@ export default function NavBar({ onMenuToggle }) {
       setSearchResults([]);
       return;
     }
-     
+
     setIsLoading(true);
     try {
       const encodedQuery = encodeURIComponent(query.trim());
-      
+
       // Search both songs and artists
       const [songsRes, artistsRes] = await Promise.all([
         fetch(`/api/Song/search/${encodedQuery}`),
-        fetch(`/api/Artist/search/${encodedQuery}`)
+        fetch(`/api/Artist/search/${encodedQuery}`),
       ]);
 
       const songs = await songsRes.json();
@@ -53,12 +53,16 @@ export default function NavBar({ onMenuToggle }) {
 
       // Combine results and normalize an `id` field: songs use `songId`, artists use `artistId`
       const combinedResults = [
-        ...(Array.isArray(songs) ? songs.map(s => ({ ...s, type: 'song', id: s.songId })) : []),
-        ...(Array.isArray(artists) ? artists.map(a => ({ ...a, type: 'artist', id: a.artistId })) : [])
+        ...(Array.isArray(songs)
+          ? songs.map((s) => ({ ...s, type: "song", id: s.songId }))
+          : []),
+        ...(Array.isArray(artists)
+          ? artists.map((a) => ({ ...a, type: "artist", id: a.artistId }))
+          : []),
       ];
-      
+
       // Sort results by relevance
-     const sortedResults = combinedResults.sort((a, b) => {
+      const sortedResults = combinedResults.sort((a, b) => {
         const scoreDiff = relevanceScore(a, query) - relevanceScore(b, query);
         if (scoreDiff !== 0) return scoreDiff;
 
@@ -66,7 +70,6 @@ export default function NavBar({ onMenuToggle }) {
       });
 
       setSearchResults(sortedResults);
-
     } catch (err) {
       console.error("Search failed", err);
       setSearchResults([]);
@@ -129,14 +132,26 @@ export default function NavBar({ onMenuToggle }) {
             onClick={onMenuToggle}
             aria-label="Toggle menu"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" color="#fff">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              color="#fff"
+            >
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <line x1="3" y1="12" x2="21" y2="12"></line>
               <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
           </button>
           <Link className="navbar-brand" to={"/"}>
-            <img src="top-2000-logo-empty.png" alt="Top 2000 logo" width={100}></img>
+            <img
+              src="/top-2000-logo-empty.png"
+              alt="Top 2000 logo"
+              width={100}
+            ></img>
           </Link>
         </div>
 
@@ -158,7 +173,14 @@ export default function NavBar({ onMenuToggle }) {
               aria-label="Search"
               disabled={isLoading}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
               </svg>
@@ -169,22 +191,32 @@ export default function NavBar({ onMenuToggle }) {
                 {searchResults.slice(0, 5).map((result, index) => (
                   <Link
                     key={index}
-                    to={result.type === "song" ? `/song/${result.id}` : `/artist/${result.id}`}
+                    to={
+                      result.type === "song"
+                        ? `/song/${result.id}`
+                        : `/artist/${result.id}`
+                    }
                     className="search-result-item"
                     onClick={() => {
-                      setSearchQuery(result.type === "song" ? result.titel : result.name);
+                      setSearchQuery(
+                        result.type === "song" ? result.titel : result.name,
+                      );
                       setSearchResults([]);
                     }}
                   >
                     {result.type === "song" ? (
                       <div className="result-content">
                         <span className="result-song">{result.titel}</span>
-                        <span className="result-artist">{result.artistName}</span>
+                        <span className="result-artist">
+                          {result.artistName}
+                        </span>
                       </div>
                     ) : (
                       <div className="result-content">
                         <span className="result-artist">🎤 {result.name}</span>
-                        {result.genre && <span className="result-genre">{result.genre}</span>}
+                        {result.genre && (
+                          <span className="result-genre">{result.genre}</span>
+                        )}
                       </div>
                     )}
                   </Link>
@@ -201,7 +233,15 @@ export default function NavBar({ onMenuToggle }) {
           aria-label="Account"
           title={accountEmail ? `Signed in as ${accountEmail}` : "Account"}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" color="#fff">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            color="#fff"
+          >
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
