@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./navBar.css";
+import { BASE_API_URL } from '../data/api-url';
+
 
 export default function NavBar({ onMenuToggle }) {
   const [searchExpanded, setSearchExpanded] = useState(false);
@@ -44,8 +46,8 @@ export default function NavBar({ onMenuToggle }) {
 
       // Search both songs and artists
       const [songsRes, artistsRes] = await Promise.all([
-        fetch(`/api/Song/search/${encodedQuery}`),
-        fetch(`/api/Artist/search/${encodedQuery}`),
+        fetch(`${BASE_API_URL}/api/Song/search/${encodedQuery}`),
+        fetch(`${BASE_API_URL}/api/Artist/search/${encodedQuery}`),
       ]);
 
       const songs = await songsRes.json();
