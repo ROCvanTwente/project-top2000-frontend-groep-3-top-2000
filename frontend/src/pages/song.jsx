@@ -15,32 +15,48 @@ const Song = () => {
   const [yearData, setYearData] = useState([]);
   const [loadingYears, setLoadingYears] = useState(true);
 
-  const normalizePosition = (value) => {
-    if (value == null) return null;
-    if (typeof value === "number" && Number.isFinite(value)) return value;
+  // Normalise year-entry data so position shows as a clean number
+  // and trend is derived from either an explicit field or the "(…)" part.
+  const mapYearEntry = (item) => {
+    const year = item.year ?? item.jaar ?? null;
+    const weeks = item.weeks ?? item.weken ?? null;
 
-    const s = String(value).trim();
-    if (!s) return null;
+    let rawPosition = item.position ?? null;
+    let position = null;
+    let trend = item.trend ?? null;
 
-    // If API sends "1(0)" / "2()" / "1()0", take the number before the first "(".
-    const parenIdx = s.indexOf("(");
-    if (parenIdx !== -1) {
-      const beforeParen = s.slice(0, parenIdx).trim();
-      const mBefore = beforeParen.match(/-?\d+/);
-      if (mBefore) return Number(mBefore[0]);
+    if (typeof rawPosition === "string") {
+      const s = rawPosition.trim();
+      // Pattern like "1(0)", "12(-3)", "5(+2)"
+      const m = s.match(/^(\d+)\s*\(\s*([-+]?\d+)\s*\)\s*$/);
+      if (m) {
+        position = Number(m[1]);
+        const delta = Number(m[2]);
+        if (Number.isFinite(delta) && delta !== 0 && trend == null) {
+          // Negative delta means a better (lower) chart position → up.
+          trend = delta < 0 ? "up" : "down";
+        } else if (delta === 0 && trend == null) {
+          trend = null;
+        }
+      } else {
+        // Fallback: just take the first integer we find as the position.
+        const posMatch = s.match(/\d+/);
+        position = posMatch ? Number(posMatch[0]) : null;
+      }
+    } else if (typeof rawPosition === "number" && Number.isFinite(rawPosition)) {
+      position = rawPosition;
     }
 
-    const m = s.match(/-?\d+/);
-    return m ? Number(m[0]) : null;
-  };
+    // If API sends a numeric trend (like ListTile), convert to "up"/"down".
+    if (typeof trend === "number") {
+      if (trend > 0) trend = "up";
+      else if (trend < 0) trend = "down";
+      else trend = null;
+    } else if (trend !== "up" && trend !== "down") {
+      trend = null;
+    }
 
-  const normalizeTrend = (value) => {
-    if (value == null) return null;
-    if (typeof value === "number" && Number.isFinite(value)) return value;
-    const s = String(value).trim();
-    if (!s) return null;
-    const n = Number(s);
-    return Number.isFinite(n) ? n : null;
+    return { year, weeks, position, trend };
   };
 
   const handleMenuToggle = () => {
@@ -125,7 +141,7 @@ const Song = () => {
         setLoadingYears(true);
         // Same approach as in artist.jsx: fetch Top2000 entries for this song
         const response = await fetch(
-          `http://top2000api.runasp.net/api/Top2000/by-song/${id}`,
+          `${BASE_API_URL}/api/Top2000/by-song/${id}`,
         );
 
         if (!response.ok) {
@@ -136,13 +152,7 @@ const Song = () => {
         const list = Array.isArray(data) ? data : [];
 
         const mapped = list
-          .map((item) => ({
-            year: item.year ?? item.jaar ?? null,
-            // "weeks" isn't guaranteed for this endpoint; keep optional to avoid breaking UI.
-            weeks: item.weeks ?? item.weken ?? null,
-            position: normalizePosition(item.position),
-            trend: normalizeTrend(item.trend),
-          }))
+          .map(mapYearEntry)
           .filter((x) => x.year != null)
           .sort((a, b) => b.year - a.year);
 
@@ -162,13 +172,15 @@ const Song = () => {
   }, [id]); // Re-run when ID changes
 
   const getTrendIcon = (trend) => {
-    if (trend == null || trend === 0) return null;
-    return trend > 0 ? "▲" : "▼";
+    if (trend === "up") return "▲";
+    if (trend === "down") return "▼";
+    return null;
   };
 
   const getTrendClass = (trend) => {
-    if (trend == null || trend === 0) return "";
-    return trend > 0 ? "trend-up" : "trend-down";
+    if (trend === "up") return "trend-up";
+    if (trend === "down") return "trend-down";
+    return "";
   };
 
   // Skeleton Loading Component
@@ -490,11 +502,10 @@ const Song = () => {
                         )}`}
                       >
                         <span className="position-number">
-                          {yearDataItem.position ?? "—"}
+                          {yearDataItem.position}
                         </span>
-                        {yearDataItem.trend != null && yearDataItem.trend !== 0 && (
+                        {yearDataItem.trend && (
                           <span className="trend-icon">
-                            {Math.abs(yearDataItem.trend)}
                             {getTrendIcon(yearDataItem.trend)}
                           </span>
                         )}
@@ -555,14 +566,8 @@ const Song = () => {
                         )}`}
                       >
                         <span className="position-number">
-                          {yearDataItem.position ?? "—"}
+                          {yearDataItem.position}
                         </span>
-                        {yearDataItem.trend != null && yearDataItem.trend !== 0 && (
-                          <span className="trend-icon">
-                            {Math.abs(yearDataItem.trend)}
-                            {getTrendIcon(yearDataItem.trend)}
-                          </span>
-                        )}
                       </div>
                     </div>
                   ))

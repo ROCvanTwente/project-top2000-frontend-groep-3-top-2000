@@ -41,11 +41,6 @@ export const Playlist = () => {
         setSidebarOpen(false)
     }
 
-    // Get API base URL
-    const getApiBase = () => {
-        return BASE_API_URL;
-    }
-
     const searchSongs = async (query) => {
         if (!query || query.trim().length < 2) {
             setSearchResults([])
@@ -189,10 +184,6 @@ export const Playlist = () => {
         }
     }
 
-    const handlePlaySong = (song) => {
-        console.log('Playing song:', song)
-        // TODO: Implement actual playback functionality
-    }
 
     const handleRemoveSong = async (songId) => {
         try {
