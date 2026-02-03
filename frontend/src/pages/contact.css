@@ -1,0 +1,106 @@
+/* =========================
+   Layout
+========================= */
+
+.contact-page {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.contact-container {
+  max-width: 800px;
+  width: 100%;
+  padding: 2rem;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr; /* info | address | map */
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* =========================
+   Typography
+========================= */
+
+.contact-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.contact-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.contact-text {
+  color: #000;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.contact-address {
+  margin-bottom: 1rem;
+}
+
+/* =========================
+   Sections
+========================= */
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-map {
+  display: flex;
+  align-items: stretch;
+}
+
+.contact-map iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 350px;
+  border: 0;
+  border-radius: 8px;
+}
+
+.contact-email {
+  text-align: center;
+}
+
+/* =========================
+   Buttons
+========================= */
+
+.email-button {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #0d00ff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.email-button:hover {
+  background-color: #13007e;
+  color: #fff;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 900px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-map iframe {
+    min-height: 300px;
+  }
+}

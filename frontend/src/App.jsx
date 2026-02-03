@@ -12,6 +12,7 @@ import Geschiedenis from "./pages/geschiedenis.jsx";
 import ArtistList from "./pages/artistList.jsx";
 import { Playlist } from "./pages/playlist.jsx";
 import { StatsPage } from "./pages/stats-page.jsx";
+import Contact from "./pages/contact.jsx";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
       <Route path="/geschiedenis" element={<Geschiedenis />} />
       <Route path="/playlist" element={<Playlist />} />
       <Route path="/statistics" element={<StatsPage />} />
+      <Route path="/contact" element={<Contact />} />
     </Routes>
   );
 }
