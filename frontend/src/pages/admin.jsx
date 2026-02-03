@@ -4,6 +4,7 @@ import { Sidebar } from '../components/sidebar';
 import { Footer } from '../components/footer';
 import { FiSettings, FiUser, FiMusic, FiX, FiSave } from 'react-icons/fi';
 import '../styles/admin.css';
+import { BASE_API_URL } from '../data/api-url';
 
 export default function Admin() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -25,8 +26,7 @@ export default function Admin() {
     // Check if user is admin
     const [isAdmin, setIsAdmin] = useState(null);
 
-    let apiBase = '';
-    try { apiBase = import.meta?.env?.VITE_API_URL || ''; } catch (e) { apiBase = ''; }
+    let apiBase = BASE_API_URL;
     const apiPrefix = apiBase ? apiBase.replace(/\/$/, '') : '';
 
     const getAuthHeaders = () => {
@@ -47,20 +47,37 @@ export default function Admin() {
             }
 
             try {
-                // Try to access admin endpoint to verify admin status
-                const res = await fetch(`${apiPrefix}/api/admin/artists`, {
+                // Check user profile to verify admin status
+                const res = await fetch(`${apiPrefix}/api/Account/profile`, {
                     headers: getAuthHeaders()
                 });
 
-                if (res.status === 403 || res.status === 401) {
+
+                if (!res.ok) {
                     setIsAdmin(false);
-                } else {
-                    setIsAdmin(true);
+                    return;
+                }
+
+                const data = await res.json();
+                const isAdminUser = data.roles && Array.isArray(data.roles) && data.roles.includes('Admin');
+                setIsAdmin(isAdminUser);
+
+                if (isAdminUser) {
                     // Load artists by default
-                    const data = await res.json();
-                    setArtists(data);
+                    try {
+                        const artistRes = await fetch(`${apiPrefix}/api/Artist`, {
+                            headers: getAuthHeaders()
+                        });
+                        if (artistRes.ok) {
+                            const artistData = await artistRes.json();
+                            setArtists(artistData);
+                        }
+                    } catch (err) {
+                        console.error('Error loading artists:', err);
+                    }
                 }
             } catch (err) {
+                console.error('Error checking admin status:', err);
                 setIsAdmin(false);
             }
         };
@@ -79,12 +96,13 @@ export default function Admin() {
             setEditData({});
 
             try {
-                const endpoint = mode === 'artists' ? '/api/admin/artists' : '/api/admin/songs';
+                const endpoint = mode === 'artists' ? '/api/Artist' : '/api/Song';
                 const res = await fetch(`${apiPrefix}${endpoint}`, {
                     headers: getAuthHeaders()
                 });
 
                 if (!res.ok) {
+                    console.error(`Failed to load ${mode}: ${res.status}`);
                     throw new Error(`Failed to load ${mode}`);
                 }
 
@@ -106,10 +124,11 @@ export default function Admin() {
 
     // Helper to get item ID (API returns 'artistId' for artists, 'songId' for songs)
     const getItemId = (item) => {
+        if (!item) return null;
         if (mode === 'artists') {
-            return item.id || item.artistId;
+            return item.artistId || item.id;
         } else {
-            return item.id || item.songId;
+            return item.songId || item.id;
         }
     };
 
@@ -125,7 +144,7 @@ export default function Admin() {
             const title = getSongTitle(s) || '';
             const artist = s.artistName || '';
             return title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                   artist.toLowerCase().includes(searchQuery.toLowerCase());
+                artist.toLowerCase().includes(searchQuery.toLowerCase());
         });
 
     // Select item for editing
@@ -136,35 +155,37 @@ export default function Admin() {
         const itemId = getItemId(item);
 
         if (!itemId) {
-            setSelectedItem(item);
-            initializeEditData(item);
+            console.error('No item ID found', item);
+            setError('Kon item ID niet bepalen');
             return;
         }
 
+        // Set selected item immediately with current data
+        setSelectedItem({ ...item, id: itemId });
+        initializeEditData(item);
+
+        // Try to fetch more detailed info
         try {
             const endpoint = mode === 'artists'
-                ? `/api/admin/artists/${itemId}`
-                : `/api/admin/songs/${itemId}`;
+                ? `/api/Artist/${itemId}`
+                : `/api/Song/${itemId}`;
 
             const res = await fetch(`${apiPrefix}${endpoint}`, {
                 headers: getAuthHeaders()
             });
+            console.log('Fetch item details response status:', res.status);
+            console.log('Fetch item details response:', res);
 
-            if (!res.ok) {
-                if (res.status === 404) {
-                    setSelectedItem({ ...item, id: itemId });
-                    initializeEditData(item);
-                    return;
-                }
-                throw new Error('Failed to load details');
+            if (res.ok) {
+                const data = await res.json();
+                setSelectedItem({ ...data, id: getItemId(data) || itemId });
+                initializeEditData(data);
+            } else {
+                console.error(`Failed to fetch details: ${res.status}`);
             }
-
-            const data = await res.json();
-            setSelectedItem({ ...data, id: getItemId(data) || itemId });
-            initializeEditData(data);
         } catch (err) {
-            setSelectedItem({ ...item, id: itemId });
-            initializeEditData(item);
+            console.error('Error fetching item details:', err);
+            // Continue with what we have
         }
     };
 
@@ -204,11 +225,15 @@ export default function Admin() {
                 ? `/api/admin/artists/${itemId}`
                 : `/api/admin/songs/${itemId}`;
 
+            console.log('Saving to url:', `${apiPrefix}${endpoint}`);
+            console.log('Data being saved:', editData);
             const res = await fetch(`${apiPrefix}${endpoint}`, {
                 method: 'PUT',
                 headers: getAuthHeaders(),
                 body: JSON.stringify(editData)
             });
+            console.log('Save response status:', res.status);
+            console.log('Save response:', res);
 
             if (!res.ok) {
                 const errorText = await res.text();
@@ -229,6 +254,7 @@ export default function Admin() {
 
             setSelectedItem(prev => ({ ...prev, ...editData }));
         } catch (err) {
+            console.error('Error saving changes:', err);
             setError('Kon niet opslaan: ' + err.message);
         } finally {
             setSaving(false);
@@ -340,49 +366,53 @@ export default function Admin() {
                                     {searchQuery ? 'Geen resultaten gevonden' : `Geen ${mode} gevonden`}
                                 </li>
                             )}
-                            {filteredItems.map((item, index) => (
-                                <li
-                                    key={`${mode}-${getItemId(item)}-${index}`}
-                                    className={`admin-list-item ${selectedItem?.id === getItemId(item) ? 'selected' : ''}`}
-                                    onClick={() => handleSelectItem(item)}
-                                >
-                                    {mode === 'artists' && item.photo && (
-                                        <img 
-                                            src={item.photo} 
-                                            alt={item.name}
-                                            className="admin-list-item-photo"
-                                            onError={(e) => e.target.style.display = 'none'}
-                                        />
-                                    )}
-                                    {mode === 'songs' && item.imgUrl && (
-                                        <img 
-                                            src={item.imgUrl} 
-                                            alt={getSongTitle(item)}
-                                            className="admin-list-item-photo"
-                                            onError={(e) => e.target.style.display = 'none'}
-                                        />
-                                    )}
-                                    <div className="admin-list-item-info">
-                                        <span className="admin-list-item-title">
-                                            {mode === 'artists' ? item.name : getSongTitle(item)}
-                                        </span>
-                                        {mode === 'songs' && (
-                                            <span className="admin-list-item-subtitle">
-                                                door {item.artistName || 'Onbekend'}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <button
-                                        className="admin-list-item-action"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleSelectItem(item);
-                                        }}
+                            {filteredItems.map((item, index) => {
+                                const itemId = getItemId(item);
+                                const isSelected = selectedItem && selectedItem.id === itemId;
+                                return (
+                                    <li
+                                        key={`${mode}-${itemId}-${index}`}
+                                        className={`admin-list-item ${isSelected ? 'selected' : ''}`}
+                                        onClick={() => handleSelectItem(item)}
                                     >
-                                        Bewerken
-                                    </button>
-                                </li>
-                            ))}
+                                        {mode === 'artists' && item.photo && (
+                                            <img
+                                                src={item.photo}
+                                                alt={item.name}
+                                                className="admin-list-item-photo"
+                                                onError={(e) => e.target.style.display = 'none'}
+                                            />
+                                        )}
+                                        {mode === 'songs' && item.imgUrl && (
+                                            <img
+                                                src={item.imgUrl}
+                                                alt={getSongTitle(item)}
+                                                className="admin-list-item-photo"
+                                                onError={(e) => e.target.style.display = 'none'}
+                                            />
+                                        )}
+                                        <div className="admin-list-item-info">
+                                            <span className="admin-list-item-title">
+                                                {mode === 'artists' ? item.name : getSongTitle(item)}
+                                            </span>
+                                            {mode === 'songs' && (
+                                                <span className="admin-list-item-subtitle">
+                                                    door {item.artistName || 'Onbekend'}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <button
+                                            className="admin-list-item-action"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleSelectItem(item);
+                                            }}
+                                        >
+                                            Bewerken
+                                        </button>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     )}
 

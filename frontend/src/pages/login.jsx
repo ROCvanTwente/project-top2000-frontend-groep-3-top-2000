@@ -5,6 +5,7 @@ import { Sidebar } from '../components/sidebar';
 import { Footer } from '../components/footer';
 import '../styles/auth.css';
 import logo from '../assets/top-2000-logo.png';
+import { BASE_API_URL } from '../data/api-url';
 
 export default function Login() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -17,10 +18,8 @@ export default function Login() {
     // Read Vite env safely; fallback to process.env. If still not set, default to the backend you mentioned.
     // Prefer using relative `/api` so the Vite proxy (vite.config.js) can forward calls to the backend.
     // If you need to target a remote backend directly, set VITE_API_URL in `.env`.
-    let apiBase = '';
-    try { apiBase = import.meta?.env?.VITE_API_URL || ''; } catch (e) { apiBase = '';  }
 
-    const apiPrefix = apiBase || '';
+    const apiPrefix = BASE_API_URL;
 
     console.log('Login component render, using apiPrefix=', apiPrefix || '/api (proxy)');
 
@@ -53,7 +52,7 @@ export default function Login() {
             }
 
             let data = {};
-            try { data = JSON.parse(raw); } catch (e) { data = {e}; }
+            try { data = JSON.parse(raw); } catch (e) { data = { e }; }
 
             if (data.token) localStorage.setItem('accessToken', data.token);
             if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
@@ -83,8 +82,8 @@ export default function Login() {
                     </div>
 
                     <div className="auth-tabs">
-                        <div className="auth-tab active">Log in</div>
-                        <a href="/register" className="auth-tab">Registreer</a>
+                        <div style={{ backgroundColor: "#363b4b" }} className="auth-tab active btn btn-primary">Log in</div>
+                        <a href="/register" className="auth-tab btn btn-secondary">Registreer</a>
                     </div>
 
                     {error && (
@@ -93,7 +92,7 @@ export default function Login() {
 
                     <form onSubmit={handleSubmit} className="auth-form">
                         <input
-                            className="auth-input"
+                            className="form-control auth-input mb-3"
                             type="email"
                             placeholder="E-mail"
                             value={email}
@@ -102,7 +101,7 @@ export default function Login() {
                         />
 
                         <input
-                            className="auth-input"
+                            className="form-control auth-input mb-3"
                             type="password"
                             placeholder="Wachtwoord"
                             value={password}
@@ -110,7 +109,7 @@ export default function Login() {
                             required
                         />
 
-                        <button className="auth-button" type="submit" disabled={loading}>
+                        <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
                             {loading ? 'Logging in...' : 'Inloggen'}
                         </button>
                     </form>

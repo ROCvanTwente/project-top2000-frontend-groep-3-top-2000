@@ -25,31 +25,31 @@ export const Sidebar = ({ isOpen, onClose }) => {
               <a href="/">Home</a>
             </li>
             <li>
-              <a href="/Songlist">Top 2000</a>
+              <a href="/songlist">Top 2000</a>
             </li>
             <li>
               <a href="/Artistlist">Artiesten Lijst</a>
             </li>
             <li>
-              <a href="#popular">Popular</a>
+              <a href="/songlist">Nummers Lijst</a>
             </li>
             <li>
               <a href="/FAQ">FAQ</a>
             </li>
             <li>
-              <a href="#categories">Categories</a>
-            </li>
-            <li>
-              <a href="#settings">Settings</a>
-            </li>
-            <li>
               <a href="/geschiedenis">Geschiedenis</a>
             </li>
             <li>
-              <a href="#about">About</a>
+              <a href="/playlist">Playlist</a>
             </li>
             <li>
               <a href="/admin">Admin</a>
+            </li>
+            <li>
+              <a href="/statistics">Statistics</a>
+            </li>
+            <li>
+              <a href="/contact">Contact</a>
             </li>
           </ul>
         </nav>

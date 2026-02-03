@@ -3,8 +3,9 @@ import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { ListTile } from "../components/listTile";
 import { Footer } from "../components/footer";
+import { BASE_API_URL } from "../data/api-url";
 
-const ARTIST_URL = "http://top2000api.runasp.net/api/Artist";
+const ARTIST_URL = `${BASE_API_URL}/api/Artist`;
 
 const ArtistList = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -110,13 +111,6 @@ const ArtistList = () => {
                     <div>
                         <h1 className="fs-2 mb-0">Artiesten</h1>
                     </div>
-                    <button
-                        type="button"
-                        className="btn btn-outline-dark mt-2 mt-md-0"
-                        onClick={() => fetchArtists()}
-                    >
-                        Opnieuw laden
-                    </button>
                 </header>
 
                 {renderContent()}

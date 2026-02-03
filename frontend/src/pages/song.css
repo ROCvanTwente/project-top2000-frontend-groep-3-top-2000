@@ -77,7 +77,8 @@
 }
 
 .year-row-mobile {
-  background-color: #e8e8e8;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
   padding: 12px 16px;
   border-radius: 8px;
   display: flex;
@@ -104,16 +105,16 @@
   gap: 6px;
   padding: 6px 12px;
   border-radius: 16px;
-  border: 2px solid;
-  background-color: #fff;
+  border: 1px solid #d6d6d6;
+  background-color: #fafafa;
 }
 
 .year-position.trend-up {
-  border-color: #90ee90;
+  border-color: rgba(40, 167, 69, 0.35);
 }
 
 .year-position.trend-down {
-  border-color: #ff6b6b;
+  border-color: rgba(220, 53, 69, 0.35);
 }
 
 .position-number {
@@ -131,6 +132,34 @@
 
 .trend-down .trend-icon {
   color: #dc3545;
+}
+
+.year-stats-header {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.year-stats-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: 0.2px;
+}
+
+.year-stats-columns {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 12px;
+  font-size: 0.8rem;
+  color: #777;
+  padding: 0 2px;
+}
+
+.year-stats-columns-right {
+  text-align: right;
 }
 
 .youtube-btn-mobile {
@@ -151,6 +180,101 @@
 
 .youtube-icon {
   font-size: 1.2rem;
+}
+
+.artist-btn {
+  width: 100%;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: background-color 0.2s;
+}
+
+.artist-btn:hover {
+  background-color: #4f46e5;
+}
+
+.artist-icon {
+  font-size: 1.2rem;
+}
+
+.artist-btn-mobile {
+  width: 100%;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: background-color 0.2s;
+}
+
+.artist-btn-mobile:hover {
+  background-color: #4f46e5;
+}
+
+/* Skeleton Loading Styles */
+.skeleton-box {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* YouTube Embed Container */
+.youtube-embed-container {
+  width: 100%;
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.youtube-embed-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.youtube-embed-container-mobile {
+  width: 100%;
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.youtube-embed-container-mobile iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 /* Tablet */
@@ -235,35 +359,60 @@
     gap: 8px;
   }
 
+  .youtube-embed-container {
+    margin-top: 16px;
+  }
+
   .song-right {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 12px;
+    padding: 16px;
   }
 
   .year-row {
-    background-color: #e8e8e8;
-    padding: 16px 24px;
-    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #ededed;
+    padding: 14px 16px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .year-row:hover {
+    background-color: #fafafa;
+    border-color: #e2e2e2;
   }
 
   .year-row .year-label {
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1rem;
     min-width: 60px;
   }
 
   .year-row .year-weeks {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #666;
     min-width: 40px;
   }
 
   .year-row .year-position {
     margin-left: auto;
+  }
+
+  .year-stats-title {
+    font-size: 1.05rem;
+  }
+
+  .year-stats-columns {
+    grid-template-columns: 70px 1fr auto;
   }
 }
