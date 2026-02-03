@@ -81,7 +81,7 @@ export default function Register() {
                     </div>
 
                     <div className="auth-tabs">
-                        <a href="/login" className="auth-tab btn btn-secondary">Log in</a>
+                        <a href="/login" className="auth-tab btn btn-secondary">Inloggen</a>
                         <div style={{ backgroundColor: "#363b4b" }} className="auth-tab active btn btn-primary">Registreer</div>
                     </div>
 
@@ -118,8 +118,8 @@ export default function Register() {
                                 required
                             />
 
-                            <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
-                                {loading ? 'Registering...' : 'Registreer'}
+            <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
+                                {loading ? 'Bezig met registreren...' : 'Registreer'}
                             </button>
                         </form>
                     )}

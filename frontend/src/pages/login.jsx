@@ -82,7 +82,7 @@ export default function Login() {
                     </div>
 
                     <div className="auth-tabs">
-                        <div style={{ backgroundColor: "#363b4b" }} className="auth-tab active btn btn-primary">Log in</div>
+                        <div style={{ backgroundColor: "#363b4b" }} className="auth-tab active btn btn-primary">Inloggen</div>
                         <a href="/register" className="auth-tab btn btn-secondary">Registreer</a>
                     </div>
 
@@ -110,7 +110,7 @@ export default function Login() {
                         />
 
                         <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
-                            {loading ? 'Logging in...' : 'Inloggen'}
+                        {loading ? 'Bezig met inloggen...' : 'Inloggen'}
                         </button>
                     </form>
                 </div>

@@ -402,10 +402,10 @@ export const Playlist = () => {
       <div className="playlist-container d-flex justify-content-center align-items-center">
         <div>
           <div className="login-required">
-            <h2>Login Required</h2>
-            <p>You must be logged in to access your playlists.</p>
+            <h2>Inloggen vereist</h2>
+            <p>Je moet ingelogd zijn om je afspeellijsten te bekijken.</p>
             <a href="/login" className="login-link">
-              Go to Login Page
+              Ga naar inloggen
             </a>
           </div>
         </div>
@@ -439,7 +439,7 @@ export const Playlist = () => {
           <aside
             className={`playlists-sidebar ${showSongsOnMobile ? "hidden-mobile" : ""}`}
           >
-            <h2 className="sidebar-title">playlists</h2>
+            <h2 className="sidebar-title">afspeellijsten</h2>
             <div className="playlists-list">
               {playlists.map((playlist) => (
                 <button

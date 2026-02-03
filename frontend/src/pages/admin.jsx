@@ -312,8 +312,8 @@ export default function Admin() {
 
             <main className="admin-main">
                 <header className="admin-header">
-                    <h1><FiSettings style={{ verticalAlign: 'middle', marginRight: 8 }} /> Admin Panel</h1>
-                    <p>Beheer artiesten en nummers extra informatie</p>
+                    <h1><FiSettings style={{ verticalAlign: 'middle', marginRight: 8 }} /> Admin Paneel</h1>
+                    <p>Beheer artiesten en nummers en extra informatie</p>
                 </header>
 
                 {/* Mode Tabs */}

@@ -64,7 +64,7 @@ const Homepage = () => {
 
         {loading && (
           <div className="w-full max-w-4xl p-4 text-center">
-            <p className="text-lg text-gray-600">Loading top songs...</p>
+            <p className="text-lg text-gray-600">Topnummers laden...</p>
           </div>
         )}
 
@@ -76,7 +76,7 @@ const Homepage = () => {
 
         {!loading && !error && songs.length === 0 && (
           <div className="w-full max-w-4xl p-4 text-center">
-            <p className="text-lg text-gray-600">No songs found.</p>
+            <p className="text-lg text-gray-600">Geen nummers gevonden.</p>
           </div>
         )}
 

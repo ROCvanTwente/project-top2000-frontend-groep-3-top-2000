@@ -36,8 +36,8 @@ export const Footer = () => {
         </div>
         <div className="col-md-4 col-sm-12">
           <div className="contact-info">
-            {[
-              ["Tel.nr.Studio", "0800-1122 (gratis)"],
+              {[
+              ["Tel.nr. Studio", "0800-1122 (gratis)"],
               ["E-mail", "info@radio2.nl"],
               ["Twitter", "twitter.com/NPORadio2"],
               ["Facebook", "Facebook.com/top2000"],

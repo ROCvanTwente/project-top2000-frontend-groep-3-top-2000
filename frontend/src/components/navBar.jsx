@@ -162,8 +162,8 @@ export default function NavBar({ onMenuToggle }) {
             <input
               className="search-input"
               type="search"
-              placeholder="Search songs or artists..."
-              aria-label="Search"
+              placeholder="Zoek nummers of artiesten..."
+              aria-label="Zoeken"
               value={searchQuery}
               onChange={handleSearchChange}
               onFocus={handleSearchToggle}
@@ -233,7 +233,7 @@ export default function NavBar({ onMenuToggle }) {
           to={accountPath}
           className="btn btn-link account-btn"
           aria-label="Account"
-          title={accountEmail ? `Signed in as ${accountEmail}` : "Account"}
+          title={accountEmail ? `Ingelogd als ${accountEmail}` : "Account"}
         >
           <svg
             width="24"
