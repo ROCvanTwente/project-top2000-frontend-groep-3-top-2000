@@ -6,6 +6,7 @@ import '../styles/auth.css';
 import '../styles/account.css';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { BASE_API_URL } from '../data/api-url';
+import { AnimatedBackground } from '../components/AnimatedBackground';
 
 export default function Account() {
   const [email, setEmail] = useState('');
@@ -171,9 +172,10 @@ export default function Account() {
   };
 
     return (
-    <div className="account-page">
-      <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    <AnimatedBackground>
+      <div className="account-page">
+        <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <main className="account-main container">
         <header className="account-header">
@@ -234,6 +236,7 @@ export default function Account() {
       </main>
 
       <Footer />
-    </div>
+      </div>
+    </AnimatedBackground>
   );
 }

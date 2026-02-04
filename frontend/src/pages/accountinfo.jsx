@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Footer } from "../components/footer";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 
 const AccountInfo = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -43,9 +44,10 @@ const AccountInfo = () => {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
 
       <main className="flex flex-1 flex-col items-center p-8">
         <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-8">
@@ -146,7 +148,8 @@ const AccountInfo = () => {
       </main>
 
       <Footer />
-    </div>
+      </div>
+    </AnimatedBackground>
   );
 };
 

@@ -4,6 +4,7 @@ import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import "../styles/playlist.css";
 import { BASE_API_URL } from "../data/api-url";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 
 export const Playlist = () => {
   const navigate = useNavigate();
@@ -430,10 +431,11 @@ export const Playlist = () => {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-      <div className="playlist-container">
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+        <div className="playlist-container">
         <div className="playlist-wrapper">
           {/* Left sidebar - Playlists list */}
           <aside
@@ -655,6 +657,7 @@ export const Playlist = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </AnimatedBackground>
   );
 };

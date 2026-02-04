@@ -3,6 +3,7 @@ import { Sidebar } from "../components/sidebar";
 import { Footer } from "../components/footer";
 import React, { useState } from "react";
 import "./contact.css";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 
 function Contact() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -16,9 +17,10 @@ function Contact() {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
 
       <main className="contact-page">
         <div className="contact-container">
@@ -78,7 +80,8 @@ function Contact() {
       </main>
 
       <Footer />
-    </div>
+      </div>
+    </AnimatedBackground>
   );
 }
 

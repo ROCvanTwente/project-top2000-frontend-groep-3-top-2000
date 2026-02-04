@@ -5,6 +5,7 @@ import { Footer } from '../components/footer';
 import { FiSettings, FiUser, FiMusic, FiX, FiSave } from 'react-icons/fi';
 import '../styles/admin.css';
 import { BASE_API_URL } from '../data/api-url';
+import { AnimatedBackground } from '../components/AnimatedBackground';
 
 export default function Admin() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -272,49 +273,54 @@ export default function Admin() {
     // Render access denied
     if (isAdmin === false) {
         return (
-            <div className="admin-page">
-                <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
-                <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-                <main className="admin-main">
-                    <div className="admin-content">
-                        <div className="admin-access-denied">
-                            <h2>Toegang geweigerd</h2>
-                            <p>Je hebt geen admin rechten om deze pagina te bekijken.</p>
-                            <p><a href="/login">Log in</a> met een admin account om verder te gaan.</p>
+            <AnimatedBackground>
+                <div className="admin-page">
+                    <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+                    <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+                    <main className="admin-main">
+                        <div className="admin-content">
+                            <div className="admin-access-denied">
+                                <h2>Toegang geweigerd</h2>
+                                <p>Je hebt geen admin rechten om deze pagina te bekijken.</p>
+                                <p><a href="/login">Log in</a> met een admin account om verder te gaan.</p>
+                            </div>
                         </div>
-                    </div>
-                </main>
-                <Footer />
-            </div>
+                    </main>
+                    <Footer />
+                </div>
+            </AnimatedBackground>
         );
     }
 
     // Loading admin check
     if (isAdmin === null) {
         return (
-            <div className="admin-page">
-                <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
-                <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-                <main className="admin-main">
-                    <div className="admin-content">
-                        <div className="admin-loading">Laden...</div>
-                    </div>
-                </main>
-                <Footer />
-            </div>
+            <AnimatedBackground>
+                <div className="admin-page">
+                    <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+                    <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+                    <main className="admin-main">
+                        <div className="admin-content">
+                            <div className="admin-loading">Laden...</div>
+                        </div>
+                    </main>
+                    <Footer />
+                </div>
+            </AnimatedBackground>
         );
     }
 
     return (
-        <div className="admin-page">
-            <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <AnimatedBackground>
+            <div className="admin-page">
+                <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+                <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-            <main className="admin-main">
-                <header className="admin-header">
-                    <h1><FiSettings style={{ verticalAlign: 'middle', marginRight: 8 }} /> Admin Paneel</h1>
-                    <p>Beheer artiesten en nummers en extra informatie</p>
-                </header>
+                <main className="admin-main">
+                    <header className="admin-header">
+                        <h1><FiSettings style={{ verticalAlign: 'middle', marginRight: 8 }} /> Admin Paneel</h1>
+                        <p>Beheer artiesten en nummers en extra informatie</p>
+                    </header>
 
                 {/* Mode Tabs */}
                 <div className="admin-tabs">
@@ -572,6 +578,7 @@ export default function Admin() {
             </main>
 
             <Footer />
-        </div>
+            </div>
+        </AnimatedBackground>
     );
 }

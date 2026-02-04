@@ -34,7 +34,7 @@ const styles = {
         gap: '16px',
         minHeight: '84px',
         overflow: 'hidden',
-        border: '5px solid rgba(0,0,0,0.9)'
+        border: '2px solid rgba(0,0,0,0.6)'
     },
     positionBadge: {
         position: 'absolute',

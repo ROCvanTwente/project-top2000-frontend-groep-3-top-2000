@@ -6,6 +6,7 @@ import { Footer } from '../components/footer';
 import '../styles/auth.css';
 import logo from '../assets/top-2000-logo.png';
 import { BASE_API_URL } from '../data/api-url';
+import { AnimatedBackground } from '../components/AnimatedBackground';
 
 export default function Login() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -72,8 +73,9 @@ export default function Login() {
     };
 
     return (
-        <div className="auth-page">
-            <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+        <AnimatedBackground>
+            <div className="auth-page">
+                <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
             <main className="auth-main">
                 <div className="auth-container">
@@ -116,6 +118,7 @@ export default function Login() {
                 </div>
             </main>
             <Footer />
-        </div>
+            </div>
+        </AnimatedBackground>
     );
 }

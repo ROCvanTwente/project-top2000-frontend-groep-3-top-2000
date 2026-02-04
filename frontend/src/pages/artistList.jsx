@@ -4,6 +4,7 @@ import { Sidebar } from "../components/sidebar";
 import { ListTile } from "../components/listTile";
 import { Footer } from "../components/footer";
 import { BASE_API_URL } from "../data/api-url";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 
 const ARTIST_URL = `${BASE_API_URL}/api/Artist`;
 
@@ -102,9 +103,10 @@ const ArtistList = () => {
     };
 
     return (
-        <div className="w-full min-h-screen flex flex-col bg-gray-100">
-            <NavBar onMenuToggle={handleMenuToggle} />
-            <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+        <AnimatedBackground>
+            <div className="w-full min-h-screen flex flex-col">
+                <NavBar onMenuToggle={handleMenuToggle} />
+                <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
 
             <main className="container py-4">
                 <header className="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3">
@@ -117,7 +119,8 @@ const ArtistList = () => {
             </main>
 
             <Footer />
-        </div>
+            </div>
+        </AnimatedBackground>
     );
 };
 

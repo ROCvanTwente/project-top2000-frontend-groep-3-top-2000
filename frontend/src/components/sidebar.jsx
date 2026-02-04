@@ -31,9 +31,6 @@ export const Sidebar = ({ isOpen, onClose }) => {
               <a href="/Artistlist">Artiesten Lijst</a>
             </li>
             <li>
-              <a href="/songlist">Nummers Lijst</a>
-            </li>
-            <li>
               <a href="/FAQ">FAQ</a>
             </li>
             <li>

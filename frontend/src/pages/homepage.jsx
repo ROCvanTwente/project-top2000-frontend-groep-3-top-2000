@@ -6,6 +6,7 @@ import { Footer } from "../components/footer";
 import { Carousel } from "../components/carousel";
 import { Link } from "react-router-dom";
 import { BASE_API_URL } from "../data/api-url";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 
 const Homepage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -49,13 +50,14 @@ const Homepage = () => {
   }, []);
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-      <main className="flex flex-1 flex-col items-center justify-center text-center p-4">
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+        <main className="flex flex-1 flex-col items-center justify-center text-center p-4">
         <Carousel
-          items={songs.slice(0, 3).map(song => ({
-            image: song.thumbnail,
+          items={songs.map(song => ({
+            image: song.thumbnail || song.artistImage,
             href: `/song/${song.songId}`,
             alt: song.titel
           }))}
@@ -99,9 +101,10 @@ const Homepage = () => {
             ))}
           </div>
         )}
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </AnimatedBackground>
   );
 };
 

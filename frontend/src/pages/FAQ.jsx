@@ -4,6 +4,7 @@ import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { Footer } from "../components/footer";
 import React, { useState} from "react";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 
 function FAQ() {
   // useState voor open/closed state
@@ -18,9 +19,10 @@ function FAQ() {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
 
       <main className="faq-content">
         <h1 className="faq-title">Veel gevraagde vragen</h1>
@@ -59,7 +61,8 @@ function FAQ() {
         />
       </main>
       <Footer />
-    </div>
+      </div>
+    </AnimatedBackground>
   );
 }
 
