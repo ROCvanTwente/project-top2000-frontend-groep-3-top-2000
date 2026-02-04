@@ -89,7 +89,15 @@ const Songlist = () => {
           songId: song.songId,
           songName: song.titel,
           artistName: song.artist,
-          imagePath: song.songImage ?? null,
+          // Choose image the same way as homepage / song detail:
+          // prefer artistImage, then songImage/thumbnail/image.
+          imagePath:
+            song.artistImage ||
+            song.songImage ||
+            song.thumbnail ||
+            song.image ||
+            null,
+          trend: song.trend,
         }));
         console.log("Fetched songs for year", selectedYear, ":", data);
 
