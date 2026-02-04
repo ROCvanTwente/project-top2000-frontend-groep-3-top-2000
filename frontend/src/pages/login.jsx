@@ -6,6 +6,7 @@ import { Footer } from '../components/footer';
 import '../styles/auth.css';
 import logo from '../assets/top-2000-logo.png';
 import { BASE_API_URL } from '../data/api-url';
+import { AnimatedBackground } from '../components/AnimatedBackground';
 
 export default function Login() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -72,8 +73,9 @@ export default function Login() {
     };
 
     return (
-        <div className="auth-page">
-            <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+        <AnimatedBackground>
+            <div className="auth-page">
+                <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
             <main className="auth-main">
                 <div className="auth-container">
@@ -82,7 +84,7 @@ export default function Login() {
                     </div>
 
                     <div className="auth-tabs">
-                        <div style={{ backgroundColor: "#363b4b" }} className="auth-tab active btn btn-primary">Log in</div>
+                        <div style={{ backgroundColor: "#363b4b" }} className="auth-tab active btn btn-primary">Inloggen</div>
                         <a href="/register" className="auth-tab btn btn-secondary">Registreer</a>
                     </div>
 
@@ -110,12 +112,13 @@ export default function Login() {
                         />
 
                         <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
-                            {loading ? 'Logging in...' : 'Inloggen'}
+                        {loading ? 'Bezig met inloggen...' : 'Inloggen'}
                         </button>
                     </form>
                 </div>
             </main>
             <Footer />
-        </div>
+            </div>
+        </AnimatedBackground>
     );
 }

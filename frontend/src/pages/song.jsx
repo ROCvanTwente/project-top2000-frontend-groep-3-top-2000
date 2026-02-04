@@ -5,6 +5,7 @@ import { Sidebar } from "../components/sidebar";
 import { Footer } from "../components/footer";
 import "./song.css";
 import { BASE_API_URL } from "../data/api-url";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 
 const Song = () => {
   const { id } = useParams(); // Get the song ID from the URL
@@ -185,10 +186,11 @@ const Song = () => {
 
   // Skeleton Loading Component
   const SkeletonLoader = () => (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-      <main className="flex-1">
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+        <main className="flex-1">
         <div className="song-page">
           <div className="song-container">
             {/* Desktop Skeleton */}
@@ -374,6 +376,7 @@ const Song = () => {
         <Footer />
       </main>
     </div>
+    </AnimatedBackground>
   );
 
   // Loading state
@@ -384,26 +387,30 @@ const Song = () => {
   // Error state
   if (error) {
     return (
-      <div className="w-full min-h-screen flex flex-col bg-gray-100">
-        <NavBar onMenuToggle={handleMenuToggle} />
-        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-        <main className="flex-1 flex items-center justify-center">
-          <p className="text-lg text-red-600">{error}</p>
-        </main>
-      </div>
+      <AnimatedBackground>
+        <div className="w-full min-h-screen flex flex-col">
+          <NavBar onMenuToggle={handleMenuToggle} />
+          <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+          <main className="flex-1 flex items-center justify-center">
+            <p className="text-lg text-red-600">{error}</p>
+          </main>
+        </div>
+      </AnimatedBackground>
     );
   }
 
   // No data state
   if (!songData) {
     return (
-      <div className="w-full min-h-screen flex flex-col bg-gray-100">
-        <NavBar onMenuToggle={handleMenuToggle} />
-        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-        <main className="flex-1 flex items-center justify-center">
-          <p className="text-lg text-gray-600">Song not found.</p>
-        </main>
-      </div>
+      <AnimatedBackground>
+        <div className="w-full min-h-screen flex flex-col">
+          <NavBar onMenuToggle={handleMenuToggle} />
+          <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+          <main className="flex-1 flex items-center justify-center">
+            <p className="text-lg text-gray-600">Song not found.</p>
+          </main>
+        </div>
+      </AnimatedBackground>
     );
   }
 
@@ -422,11 +429,12 @@ const Song = () => {
   const youtubeEmbedUrl = getYouTubeEmbedUrl();
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
 
-      <main className="flex-1">
+        <main className="flex-1">
         <div className="song-page">
           <div className="song-container">
             {/* Desktop Layout */}
@@ -604,7 +612,8 @@ const Song = () => {
         </div>
         <Footer />
       </main>
-    </div>
+      </div>
+    </AnimatedBackground>
   );
 };
 

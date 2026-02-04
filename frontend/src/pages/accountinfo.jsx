@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Footer } from "../components/footer";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 
 const AccountInfo = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -43,14 +44,15 @@ const AccountInfo = () => {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
 
       <main className="flex flex-1 flex-col items-center p-8">
         <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-            Account Information
+            Accountinformatie
           </h1>
           <div className="flex flex-col items-center mb-8">
             <img
@@ -60,7 +62,7 @@ const AccountInfo = () => {
             />
             {/* TODO: Add API call to upload new photo */}
             <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-              Change Photo
+              Foto wijzigen
             </button>
           </div>
 
@@ -68,7 +70,7 @@ const AccountInfo = () => {
           <div className="mb-6">
             <h1>account</h1>
             <label className="block text-gray-700 font-semibold mb-2">
-              Email
+              E-mail
             </label>
             <div className="flex gap-2">
               <input
@@ -79,18 +81,18 @@ const AccountInfo = () => {
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               />
               {isEditingEmail ? (
-                <button
+                  <button
                   onClick={handleSaveEmail}
                   className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
                 >
-                  Save
+                  Opslaan
                 </button>
               ) : (
-                <button
+                  <button
                   onClick={() => setIsEditingEmail(true)}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
-                  Edit
+                  Wijzigen
                 </button>
               )}
             </div>
@@ -99,7 +101,7 @@ const AccountInfo = () => {
           {/* Password Field */}
           <div className="mb-8">
             <label className="block text-gray-700 font-semibold mb-2">
-              Password
+              Wachtwoord
             </label>
             <div className="flex gap-2">
               <input
@@ -114,14 +116,14 @@ const AccountInfo = () => {
                   onClick={handleSavePassword}
                   className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
                 >
-                  Save
+                  Opslaan
                 </button>
               ) : (
                 <button
                   onClick={() => setIsEditingPassword(true)}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
-                  Edit
+                  Wijzigen
                 </button>
               )}
             </div>
@@ -130,24 +132,24 @@ const AccountInfo = () => {
           {/* Delete Account Button */}
           <div className="border-t pt-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              account verwijderen
+              Account verwijderen
             </h2>
             <button
               onClick={handleDeleteAccount}
               className="w-full px-4 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 font-semibold"
             >
-              Delete Account
+              Verwijder account
             </button>
             <p className="text-sm text-gray-500 mt-2 text-center">
-              This action cannot be undone. All your data will be permanently
-              deleted.
+              Deze actie kan niet ongedaan worden gemaakt. Al je gegevens worden permanent verwijderd.
             </p>
           </div>
         </div>
       </main>
 
       <Footer />
-    </div>
+      </div>
+    </AnimatedBackground>
   );
 };
 

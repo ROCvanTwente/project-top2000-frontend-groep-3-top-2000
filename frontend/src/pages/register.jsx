@@ -6,6 +6,7 @@ import { Footer } from '../components/footer';
 import '../styles/auth.css';
 import logo from '../assets/top-2000-logo.png';
 import { BASE_API_URL } from '../data/api-url';
+import { AnimatedBackground } from '../components/AnimatedBackground';
 
 export default function Register() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -71,8 +72,9 @@ export default function Register() {
     };
 
     return (
-        <div className="auth-page">
-            <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+        <AnimatedBackground>
+            <div className="auth-page">
+                <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
             <main className="auth-main">
                 <div className="auth-container">
@@ -81,7 +83,7 @@ export default function Register() {
                     </div>
 
                     <div className="auth-tabs">
-                        <a href="/login" className="auth-tab btn btn-secondary">Log in</a>
+                        <a href="/login" className="auth-tab btn btn-secondary">Inloggen</a>
                         <div style={{ backgroundColor: "#363b4b" }} className="auth-tab active btn btn-primary">Registreer</div>
                     </div>
 
@@ -118,14 +120,15 @@ export default function Register() {
                                 required
                             />
 
-                            <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
-                                {loading ? 'Registering...' : 'Registreer'}
+            <button style={{ backgroundColor: "#363b4b" }} className={"btn btn-primary auth-button"} type="submit" disabled={loading}>
+                                {loading ? 'Bezig met registreren...' : 'Registreer'}
                             </button>
                         </form>
                     )}
                 </div>
             </main>
             <Footer />
-        </div>
+            </div>
+        </AnimatedBackground>
     );
 }

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from '../components/navBar';
+import { Sidebar } from '../components/sidebar';
 import { Footer } from '../components/footer';
 import '../styles/auth.css';
 import '../styles/account.css';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { BASE_API_URL } from '../data/api-url';
+import { AnimatedBackground } from '../components/AnimatedBackground';
 
 export default function Account() {
   const [email, setEmail] = useState('');
@@ -15,6 +17,7 @@ export default function Account() {
   const [currentPasswordForChange, setCurrentPasswordForChange] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
     try {
@@ -168,9 +171,11 @@ export default function Account() {
     }
   };
 
-  return (
-    <div className="account-page">
-      <NavBar />
+    return (
+    <AnimatedBackground>
+      <div className="account-page">
+        <NavBar onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <main className="account-main container">
         <header className="account-header">
@@ -217,9 +222,9 @@ export default function Account() {
           <div className="advanced">
             <h3>Geavanceerde Opties</h3>
             <div className="danger-row">
-              <button className="link-danger" aria-label="Delete account" onClick={onDeleteAccount}>
+              <button className="link-danger" aria-label="Verwijder account" onClick={onDeleteAccount}>
                 <FiTrash2 style={{ verticalAlign: 'middle', marginRight: 6 }} />
-                Delete account
+                Account verwijderen
               </button>
             </div>
           </div>
@@ -231,6 +236,7 @@ export default function Account() {
       </main>
 
       <Footer />
-    </div>
+      </div>
+    </AnimatedBackground>
   );
 }

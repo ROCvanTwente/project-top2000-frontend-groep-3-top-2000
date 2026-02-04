@@ -12,6 +12,13 @@ export default defineConfig({
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '/api'),
       },
+      // Proxy for external images to avoid CORS issues with canvas color sampling
+      '/proxy-image': {
+        target: 'https://i.scdn.co',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/proxy-image/, ''),
+      },
     },
   },
 })

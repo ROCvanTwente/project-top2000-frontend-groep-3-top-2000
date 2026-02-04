@@ -6,6 +6,7 @@ import { ListTile } from "../components/listTile";
 import { Footer } from "../components/footer";
 import "./artist.css";
 import { BASE_API_URL } from "../data/api-url";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 
 const Artist = () => {
   const { id } = useParams();
@@ -98,9 +99,10 @@ const Artist = () => {
 
   // Skeleton Loading Component
   const SkeletonLoader = () => (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
 
       <main>
         <div className="row mx-0">
@@ -209,7 +211,8 @@ const Artist = () => {
       </main>
 
       <Footer />
-    </div>
+      </div>
+    </AnimatedBackground>
   );
 
   // Show skeleton while loading
@@ -218,9 +221,10 @@ const Artist = () => {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
 
       <main>
         <div className="row mx-0">
@@ -273,7 +277,8 @@ const Artist = () => {
       </main>
 
       <Footer />
-    </div>
+      </div>
+    </AnimatedBackground>
   );
 };
 

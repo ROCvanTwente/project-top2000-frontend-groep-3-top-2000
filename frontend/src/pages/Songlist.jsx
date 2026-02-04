@@ -5,6 +5,7 @@ import { Footer } from "../components/footer";
 import NavBar from "../components/navBar";
 import { Sidebar } from "../components/sidebar";
 import { BASE_API_URL } from "../data/api-url";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 
 const Songlist = () => {
   const [songs, setSongs] = useState([]);
@@ -106,10 +107,11 @@ const Songlist = () => {
 
   // Skeleton Loading Component
   const SkeletonLoader = () => (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-      <main className="flex flex-1 flex-col items-center p-4">
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+        <main className="flex flex-1 flex-col items-center p-4">
         <div className="w-full max-w-4xl flex flex-col md:flex-row justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
             Top 2000 {selectedYear}
@@ -241,15 +243,17 @@ const Songlist = () => {
         }
       `}</style>
     </div>
+    </AnimatedBackground>
   );
 
   if (loading) return <SkeletonLoader />;
   if (error)
     return (
-      <div className="w-full min-h-screen flex flex-col bg-gray-100">
-        <NavBar onMenuToggle={handleMenuToggle} />
-        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-        <main className="flex flex-1 flex-col items-center justify-center text-center p-4">
+      <AnimatedBackground>
+        <div className="w-full min-h-screen flex flex-col">
+          <NavBar onMenuToggle={handleMenuToggle} />
+          <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+          <main className="flex flex-1 flex-col items-center justify-center text-center p-4">
           <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md">
             <div className="text-red-600 font-bold text-lg mb-2">
               Error Loading Songs
@@ -281,16 +285,18 @@ const Songlist = () => {
               </button>
             </div>
           </div>
-        </main>
-        <Footer />
-      </div>
+          </main>
+          <Footer />
+        </div>
+      </AnimatedBackground>
     );
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gray-100">
-      <NavBar onMenuToggle={handleMenuToggle} />
-      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-      <main className="flex flex-1 flex-col items-center p-4">
+    <AnimatedBackground>
+      <div className="w-full min-h-screen flex flex-col">
+        <NavBar onMenuToggle={handleMenuToggle} />
+        <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
+        <main className="flex flex-1 flex-col items-center p-4">
         <div className="w-full max-w-4xl flex flex-col md:flex-row justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
             Top 2000 {selectedYear}
@@ -391,9 +397,10 @@ const Songlist = () => {
             {availableYears[availableYears.indexOf(selectedYear) - 1] || ""}) →
           </button>
         </div>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </AnimatedBackground>
   );
 };
 

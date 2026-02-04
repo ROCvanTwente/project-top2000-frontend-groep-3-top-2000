@@ -2,13 +2,10 @@ import React, { useState, useEffect } from 'react'
 import graphIcon from '/icons/graph.png'
 
 const useIsMobile = () => {
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+    const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 768 : false)
 
     useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768)
-        }
-
+        const handleResize = () => setIsMobile(window.innerWidth <= 768)
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
@@ -20,43 +17,52 @@ const styles = {
     wrapper: {
         position: 'relative',
         marginBottom: '12px',
+        paddingLeft: '0',
+        overflow: 'visible',
+        color: 'inherit',
+        textDecoration: 'none'
     },
     card: {
-        borderRadius: '14px',
-        background: 'transparent',
-        boxShadow: '4px 8px 2px rgba(0,0,0,0.45)',
-        padding: '14px 16px',
+        position: 'relative',
+        borderRadius: '12px',
+        background: 'var(--main-red)',
+        color: 'var(--text-color)',
+        boxShadow: '0 8px 18px rgba(0,0,0,0.45)',
+        padding: '16px 20px',
         display: 'flex',
         alignItems: 'center',
-        gap: '12px',
-        minHeight: '80px',
+        gap: '16px',
+        minHeight: '84px',
         overflow: 'hidden',
+        border: '2px solid rgba(0,0,0,0.6)'
     },
     positionBadge: {
         position: 'absolute',
         left: '-24px',
-        top: '-20px',
-        minWidth: '34px',
-        height: '34px',
+        top: '-24px',
+        width: '48px',
+        height: '48px',
         borderRadius: '999px',
-        background: 'var(--main-red)',
+        background: 'var(--secondary)',
         color: 'var(--text-color)',
-        fontWeight: 700,
+        fontWeight: 800,
+        fontSize: '1.05rem',
         display: 'grid',
         placeItems: 'center',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.12)',
-        zIndex: 10,
+        boxShadow: '0 6px 14px rgba(0,0,0,0.45)',
+        zIndex: 30,
     },
     cover: {
-        width: '64px',
-        height: '64px',
-        borderRadius: '12px',
+        width: '72px',
+        height: '72px',
+        borderRadius: '10px',
         overflow: 'hidden',
-        background: 'linear-gradient(135deg, #d0d0d0, #bcbcbc)',
+        background: '#000',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
+        border: '3px solid rgba(0,0,0,0.35)',
     },
     coverImg: {
         width: '100%',
@@ -67,30 +73,30 @@ const styles = {
     placeholder: {
         width: '70%',
         height: '70%',
-        borderRadius: '10px',
-        background: 'rgba(255,255,255,0.45)',
+        borderRadius: '8px',
+        background: 'rgba(255,255,255,0.12)',
         display: 'block',
     },
     title: {
         fontWeight: 700,
-        fontSize: '1rem',
-        lineHeight: 1.2,
-        color: 'var(--dark-text)',
+        fontSize: '1.35rem',
+        lineHeight: 1.05,
+        color: 'var(--text-color)',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
     },
     artist: {
-        color: 'var(--dark-text)',
-        fontSize: '0.9rem',
-        lineHeight: 1.2,
+        color: 'rgba(255,255,255,0.9)',
+        fontSize: '1rem',
+        lineHeight: 1.1,
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
     },
     graph: {
-        width: '36px',
-        height: '36px',
+        width: '56px',
+        height: '56px',
         objectFit: 'contain',
     },
     badgeBase: {
@@ -98,34 +104,22 @@ const styles = {
         alignItems: 'center',
         gap: '6px',
         padding: '6px 10px',
-        borderRadius: '12px',
-        fontWeight: 700,
-        fontSize: '0.9rem',
-        border: '1px solid transparent',
-    },
-    badgeUp: {
-        background: '#e6f7eb',
+        borderRadius: '14px',
+        fontWeight: 800,
+        fontSize: '0.95rem',
+        border: '2px solid #1f9d55',
+        background: '#ffffff',
         color: '#1f9d55',
-        borderColor: '#b7e2c7',
-    },
-    badgeDown: {
-        background: '#fdeaea',
-        color: '#c0392b',
-        borderColor: '#f3c5c5',
-    },
-    badgeFlat: {
-        background: '#f1f1f1',
-        color: '#555',
-        borderColor: '#d9d9d9',
     },
     badgeArrow: {
-        fontSize: '0.8rem',
+        fontSize: '0.95rem',
         lineHeight: 1,
+        color: '#1f9d55'
     },
     contentArea: {
         display: 'flex',
         alignItems: 'center',
-        gap: '12px',
+        gap: '16px',
         flex: '1 1 auto',
         minWidth: 0,
         overflow: 'hidden',
@@ -133,7 +127,7 @@ const styles = {
     textContainer: {
         display: 'flex',
         flexDirection: 'column',
-        gap: '4px',
+        gap: '6px',
         flex: '1 1 auto',
         minWidth: 0,
         overflow: 'hidden',
@@ -143,7 +137,7 @@ const styles = {
     rightArea: {
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
+        gap: '12px',
         flexShrink: 0,
         flexWrap: 'nowrap',
     },
@@ -159,71 +153,73 @@ export const ListTile = ({ position, imagePath, songName, artistName, trend }) =
     const responsiveStyles = {
         card: {
             ...styles.card,
-            padding: isMobile ? '12px 14px' : '14px 16px',
-            gap: isMobile ? '8px' : '12px',
+            padding: isMobile ? '12px 14px' : styles.card.padding,
+            gap: isMobile ? '12px' : '16px',
         },
         cover: {
             ...styles.cover,
-            width: isMobile ? '48px' : '64px',
-            height: isMobile ? '48px' : '64px',
-        },
-        textContainer: {
-            ...styles.textContainer,
-            textAlign: isMobile ? 'center' : 'left',
-            alignItems: isMobile ? 'center' : 'flex-start',
+            width: isMobile ? '56px' : styles.cover.width,
+            height: isMobile ? '56px' : styles.cover.height,
         },
         title: {
             ...styles.title,
-            fontSize: isMobile ? '0.9rem' : '1rem',
+            fontSize: isMobile ? '1.1rem' : styles.title.fontSize,
         },
         artist: {
             ...styles.artist,
-            fontSize: isMobile ? '0.8rem' : '0.9rem',
+            fontSize: isMobile ? '0.95rem' : styles.artist.fontSize,
         },
         graph: {
             ...styles.graph,
-            width: isMobile ? '24px' : '36px',
-            height: isMobile ? '24px' : '36px',
-        },
-        rightArea: {
-            ...styles.rightArea,
-            gap: isMobile ? '6px' : '8px',
+            width: isMobile ? 44 : styles.graph.width,
+            height: isMobile ? 44 : styles.graph.height,
         },
     }
 
-    const badgeStyle = {
+    const pillStyle = (direction) => ({
         ...styles.badgeBase,
-        padding: isMobile ? '4px 8px' : '6px 10px',
-        fontSize: isMobile ? '0.8rem' : '0.9rem',
-        gap: isMobile ? '4px' : '6px',
-        ...(trendDirection === 'up' ? styles.badgeUp : trendDirection === 'down' ? styles.badgeDown : styles.badgeFlat),
+        padding: isMobile ? '4px 8px' : styles.badgeBase.padding,
+        fontSize: isMobile ? '0.85rem' : styles.badgeBase.fontSize,
+        borderColor: direction === 'up' ? '#1f9d55' : direction === 'down' ? '#c0392b' : '#999',
+        color: direction === 'up' ? '#1f9d55' : direction === 'down' ? '#c0392b' : '#666'
+    })
+
+    const wrapperStyle = {
+        ...styles.wrapper,
+        marginTop: isMobile ? '14px' : '22px',
+        paddingTop: isMobile ? '4px' : '6px'
     }
 
     return (
-        <div style={styles.wrapper}>
+        <div style={wrapperStyle}>
             {hasPosition && <span style={styles.positionBadge}>{position}</span>}
 
             <div style={responsiveStyles.card}>
                 <div style={styles.contentArea}>
                     <div style={responsiveStyles.cover} aria-hidden={!imagePath}>
-                        {imagePath ? <img style={styles.coverImg} src={imagePath} alt={`${songName} cover`} /> : <span style={styles.placeholder} />}
+                        {imagePath ? (
+                            <img style={styles.coverImg} src={imagePath} alt={`${songName} cover`} />
+                        ) : (
+                            <span style={styles.placeholder} />
+                        )}
                     </div>
-                    <div style={responsiveStyles.textContainer}>
+
+                    <div style={styles.textContainer}>
                         <div style={responsiveStyles.title}>{songName}</div>
                         <div style={responsiveStyles.artist}>{artistName}</div>
                     </div>
                 </div>
 
                 {hasTrend && (
-                    <div style={responsiveStyles.rightArea}>
+                    <div style={styles.rightArea}>
                         <img style={responsiveStyles.graph} src={graphIcon} alt="trend graph" />
                         {trendDirection && (
-                            <span style={badgeStyle}>
-                                {trendValue}
-                                <span style={styles.badgeArrow} aria-hidden="true">
+                            <div style={pillStyle(trendDirection)}>
+                                <span style={{ background: '#fff', color: (trendDirection === 'down' ? '#c0392b' : '#1f9d55'), padding: '4px 8px', borderRadius: 8, fontWeight: 800 }}>{trendValue}</span>
+                                <span style={{ ...styles.badgeArrow, color: (trendDirection === 'down' ? '#c0392b' : '#1f9d55') }} aria-hidden>
                                     {trendDirection === 'up' ? '▲' : trendDirection === 'down' ? '▼' : '–'}
                                 </span>
-                            </span>
+                            </div>
                         )}
                     </div>
                 )}
