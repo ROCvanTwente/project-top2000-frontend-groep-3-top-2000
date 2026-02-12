@@ -1,0 +1,29 @@
+/* ===== FAQ base styles ===== */
+
+.FAQ-page {
+  min-height: 100vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.FAQ-content {
+  flex: 1;
+  padding: 1rem;
+}
+
+.FAQ-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Cover image / box */
+
+.FAQ-cover {
+  width: 280px;
+  height: 280px;
+  background-color: transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
